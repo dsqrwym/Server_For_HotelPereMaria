@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
-
+    id ("org.jetbrains.kotlin.plugin.serialization") version "1.9.0" //Nav
     id("kotlin-kapt") //implementation of hilt
     id("com.google.dagger.hilt.android") //implementation of hilt
 }
@@ -64,13 +64,15 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-    implementation(libs.hilt.android) //implementation of hilt
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.runtime.livedata) //implementation of hilt
     kapt(libs.hilt.android.compiler) //implementation of hilt
     implementation(libs.androidx.navigation.compose) //navgation
     implementation(libs.androidx.lifecycle.viewmodel.compose) //viewmodel
     implementation(libs.coil.compose) //implementation of coil
     implementation(libs.coil.network.okhttp) //implementation of coil network
     implementation(libs.retrofit) //implementation of retrofit
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
