@@ -1,0 +1,60 @@
+Index: ../../Desktop/WPFIntermodular/WPFIntermodular.csproj.user
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<Project ToolsVersion=\"Current\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">\r\n  <PropertyGroup />\r\n  <ItemGroup>\r\n    <ApplicationDefinition Update=\"App.xaml\">\r\n      <SubType>Designer</SubType>\r\n    </ApplicationDefinition>\r\n  </ItemGroup>\r\n  <ItemGroup>\r\n    <Page Update=\"MainWindow.xaml\">\r\n      <SubType>Designer</SubType>\r\n    </Page>\r\n  </ItemGroup>\r\n</Project>
+===================================================================
+diff --git a/../../Desktop/WPFIntermodular/WPFIntermodular.csproj.user b/../../Desktop/WPFIntermodular/WPFIntermodular.csproj.user
+--- a/../../Desktop/WPFIntermodular/WPFIntermodular.csproj.user	
++++ b/../../Desktop/WPFIntermodular/WPFIntermodular.csproj.user	
+@@ -7,7 +7,15 @@
+     </ApplicationDefinition>
+   </ItemGroup>
+   <ItemGroup>
++    <Compile Update="vistaReserva\AdministrarReserva.xaml.cs">
++      <SubType>Code</SubType>
++    </Compile>
++  </ItemGroup>
++  <ItemGroup>
+     <Page Update="MainWindow.xaml">
++      <SubType>Designer</SubType>
++    </Page>
++    <Page Update="vistaReserva\AdministrarReserva.xaml">
+       <SubType>Designer</SubType>
+     </Page>
+   </ItemGroup>
+Index: ../../Desktop/WPFIntermodular/WPFIntermodular.csproj
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><Project Sdk=\"Microsoft.NET.Sdk\">\r\n\r\n  <PropertyGroup>\r\n    <OutputType>WinExe</OutputType>\r\n    <TargetFramework>net8.0-windows</TargetFramework>\r\n    <Nullable>enable</Nullable>\r\n    <ImplicitUsings>enable</ImplicitUsings>\r\n    <UseWPF>true</UseWPF>\r\n  </PropertyGroup>\r\n\r\n</Project>\r\n
+===================================================================
+diff --git a/../../Desktop/WPFIntermodular/WPFIntermodular.csproj b/../../Desktop/WPFIntermodular/WPFIntermodular.csproj
+--- a/../../Desktop/WPFIntermodular/WPFIntermodular.csproj	
++++ b/../../Desktop/WPFIntermodular/WPFIntermodular.csproj	
+@@ -8,4 +8,10 @@
+     <UseWPF>true</UseWPF>
+   </PropertyGroup>
+ 
++  <ItemGroup>
++    <Page Update="vistaReserva\AdministrarReserva.xaml">
++      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
++    </Page>
++  </ItemGroup>
++
+ </Project>
+Index: ../../Desktop/WPFIntermodular/App.xaml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><Application x:Class=\"WPFIntermodular.App\"\r\n             xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"\r\n             xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"\r\n             xmlns:local=\"clr-namespace:WPFIntermodular\"\r\n             StartupUri=\"MainWindow.xaml\">\r\n    <Application.Resources>\r\n         \r\n    </Application.Resources>\r\n</Application>\r\n
+===================================================================
+diff --git a/../../Desktop/WPFIntermodular/App.xaml b/../../Desktop/WPFIntermodular/App.xaml
+--- a/../../Desktop/WPFIntermodular/App.xaml	
++++ b/../../Desktop/WPFIntermodular/App.xaml	
+@@ -2,7 +2,7 @@
+              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:local="clr-namespace:WPFIntermodular"
+-             StartupUri="MainWindow.xaml">
++             StartupUri="vistaReserva/AdministrarReserva.xaml">
+     <Application.Resources>
+          
+     </Application.Resources>
