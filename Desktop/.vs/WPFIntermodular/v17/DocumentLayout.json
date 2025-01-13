@@ -1,13 +1,25 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\WPFIntermodular\\",
+  "WorkspaceRootPath": "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|c:\\users\\masca\\documents\\github\\intermodular\\wpfintermodular\\wpfintermodular\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|c:\\users\\masca\\desktop\\intermodular\\desktop\\wpfintermodular\\buscadorhabitaciones.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|solutionrelative:wpfintermodular\\buscadorhabitaciones.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|c:\\users\\masca\\desktop\\intermodular\\desktop\\wpfintermodular\\addhabitaciones.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|solutionrelative:wpfintermodular\\addhabitaciones.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|c:\\users\\masca\\desktop\\intermodular\\desktop\\wpfintermodular\\addhabitaciones.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|solutionrelative:wpfintermodular\\addhabitaciones.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|c:\\users\\masca\\desktop\\intermodular\\desktop\\wpfintermodular\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|solutionrelative:wpfintermodular\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|c:\\users\\masca\\documents\\github\\intermodular\\wpfintermodular\\wpfintermodular\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|c:\\users\\masca\\desktop\\intermodular\\desktop\\wpfintermodular\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|solutionrelative:wpfintermodular\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -18,15 +30,56 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "buscadorHabitaciones.xaml",
+              "DocumentMoniker": "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\WPFIntermodular\\buscadorHabitaciones.xaml",
+              "RelativeDocumentMoniker": "WPFIntermodular\\buscadorHabitaciones.xaml",
+              "ToolTip": "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\WPFIntermodular\\buscadorHabitaciones.xaml",
+              "RelativeToolTip": "WPFIntermodular\\buscadorHabitaciones.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-01-13T10:38:02.76Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "addHabitaciones.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\WPFIntermodular\\addHabitaciones.xaml.cs",
+              "RelativeDocumentMoniker": "WPFIntermodular\\addHabitaciones.xaml.cs",
+              "ToolTip": "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\WPFIntermodular\\addHabitaciones.xaml.cs",
+              "RelativeToolTip": "WPFIntermodular\\addHabitaciones.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-13T10:31:53.511Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "addHabitaciones.xaml",
+              "DocumentMoniker": "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\WPFIntermodular\\addHabitaciones.xaml",
+              "RelativeDocumentMoniker": "WPFIntermodular\\addHabitaciones.xaml",
+              "ToolTip": "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\WPFIntermodular\\addHabitaciones.xaml",
+              "RelativeToolTip": "WPFIntermodular\\addHabitaciones.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-01-13T10:18:21.647Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "MainWindow.xaml",
-              "DocumentMoniker": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\WPFIntermodular\\WPFIntermodular\\MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\WPFIntermodular\\MainWindow.xaml",
               "RelativeDocumentMoniker": "WPFIntermodular\\MainWindow.xaml",
-              "ToolTip": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\WPFIntermodular\\WPFIntermodular\\MainWindow.xaml",
+              "ToolTip": "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\WPFIntermodular\\MainWindow.xaml",
               "RelativeToolTip": "WPFIntermodular\\MainWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-01-09T17:45:00.887Z",
@@ -34,11 +87,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\WPFIntermodular\\WPFIntermodular\\MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\WPFIntermodular\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "WPFIntermodular\\MainWindow.xaml.cs",
-              "ToolTip": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\WPFIntermodular\\WPFIntermodular\\MainWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\WPFIntermodular\\MainWindow.xaml.cs",
               "RelativeToolTip": "WPFIntermodular\\MainWindow.xaml.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
