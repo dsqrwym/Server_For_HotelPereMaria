@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WPFIntermodular.viewModel;
 
 namespace WPFIntermodular.vistaReserva
 {
@@ -21,6 +22,7 @@ namespace WPFIntermodular.vistaReserva
     {
         public AdministrarReserva()
         {
+            DataContext = new ReservaViewModel();
             InitializeComponent();
         }
 

@@ -19,23 +19,29 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <!--Hotel Pere Maria-->
         <StackPanel HorizontalAlignment="Center" Margin="10,10,10,10" Orientation="Horizontal">
             <Image Height="20" Source="/source/Logo.png"/>
             <TextBlock Margin="10" Text="Hotel Pere María" VerticalAlignment="Center" FontSize="20" FontWeight="Bold"/>
         </StackPanel>
-        <!--68EBEB9C-->
+        <!--Menu-->
         <StackPanel Margin="10,0" Orientation="Horizontal" Grid.Column="1">
-            <Button Margin="38 0" Content="Buscador" FontSize="12" FontWeight="Bold" Background="Transparent" BorderThickness="0"/>
-            <Button Margin="38 0" Content="Usuario" FontSize="12" FontWeight="Bold" Background="Transparent" BorderThickness="0"/>
-            <Button Margin="38 0" Content="Reservas" FontSize="12" FontWeight="Bold" Background="Transparent" BorderThickness="0"/>
-            <Button Margin="38 0" Content="Habitaciones" FontSize="12" FontWeight="Bold" Background="Transparent" BorderThickness="0"/>
+            <Button x:Name="botonBuscador" Margin="38 0" Content="Buscador" FontSize="12" FontWeight="Bold" Background="Transparent" BorderThickness="0"/>
+            <Button x:Name="botonUsuario" Margin="38 0" Content="Usuario" FontSize="12" FontWeight="Bold" Background="Transparent" BorderThickness="0"/>
+            <Button x:Name="botonReservas" Margin="38 0" Content="Reservas" FontSize="12" FontWeight="Bold" Background="Transparent" BorderThickness="0"/>
+            <Button x:Name="botonHabitacion" Margin="38 0" Content="Habitaciones" FontSize="12" FontWeight="Bold" Background="Transparent" BorderThickness="0"/>
         </StackPanel>
 
+        <!--Avisos-->
         <Canvas Grid.Column="2" Margin="0,0,0,54" Grid.RowSpan="1">
             <Image Source="/source/alarma.png" Width="10" Canvas.Right="8" Canvas.Top="8"/>
         </Canvas>
 
-        <DockPanel Margin="10 0" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" >
+        <!--Buscador-->
+        <TextBlock Grid.Row="1" Foreground="#68EB9C" FontSize="40" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Buscador" Height="46"/>
+
+        <!--Reservas_ListView-->
+        <DockPanel Margin="10 0" Grid.Column="1" Grid.Row="1" >
             <TextBlock DockPanel.Dock="Left" Text="Reservas" FontSize="36" FontWeight="Bold" VerticalAlignment="Center"/>
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
                 <Image Source="/source/3Rayas.png" Height="30"/>
@@ -43,464 +49,187 @@
             </StackPanel>
         </DockPanel>
 
-        <Grid Margin="25 58" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
+        <!--Lista de Buscador-->
+        <StackPanel HorizontalAlignment="Center" Margin="25 58" Grid.Row="2">
+            <StackPanel Margin="10 0">
+                <TextBlock Text="Rol"/>
+                <ComboBox x:Name="rol" Padding="12 0 0 0" Opacity="0.5">
+                    <ComboBoxItem Padding="10 0 0 0" Content="Cliente" Background="Transparent"/>
+                    <ComboBoxItem Padding="10 0 0 0" Content="Empleado" Background="Transparent"/>
+                    <ComboBoxItem Padding="10 0 0 0" Content="Administrador" Background="Transparent"/>
+                </ComboBox>
+            </StackPanel>
+
+            <!--Nombre del Cliente-->
+            <StackPanel Margin="0 10">
+                <TextBlock Margin="10 0" Text="Nombre de Cliente"/>
+                <TextBox x:Name="nombreClienteInput"  Margin="10 0"/>
+            </StackPanel>
+
+            <!--Nombre del Empleado-->
+            <StackPanel Margin="0 10">
+                <TextBlock Margin="10 0" Text="Nombre de Empleado"/>
+                <TextBox x:Name="nombreEmpleadoInput" Margin="10 0" />
+            </StackPanel>
+
+            <!--Fecha de Inicio-->
+            <StackPanel Margin="0 10">
+                <TextBlock Margin="10 0" Text="Fecha de inicio"/>
+                <DatePicker x:Name="fechaInicioInput" Margin="10 0" Background="Transparent"/>
+            </StackPanel>
+
+            <!--Nombre del Finalización-->
+            <StackPanel Margin="0 10">
+                <TextBlock Margin="10 0" Text="Fecha de finalización"/>
+                <DatePicker x:Name="fechaFinalInput" Margin="10 0" Background="Transparent"/>
+            </StackPanel>
+
+            <!--Buscar-->
+            <Border Margin="10 280" Background="#68EB9C" BorderThickness="1" Width="180" Height="50" Padding="1 5" CornerRadius="18">
+                <Button x:Name="botonBuscar" Content="Buscar" FontSize="20" Background="Transparent" BorderThickness="0"/>
+            </Border>
+        </StackPanel>
+
+        <!--Tablas de Reservas-->
+        <Grid Margin="0 58" Grid.Row="2" Grid.Column="1">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <!--Dinamico-->
             </Grid.RowDefinitions>
 
-            <Grid>
+            <!--Titulo-->
+            <Grid Grid.Row="0" Margin="10 10 27 10">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="43*"/>
-                    <ColumnDefinition Width="60*"/>
-                    <ColumnDefinition Width="102*"/>
-                    <ColumnDefinition Width="128*"/>
-                    <ColumnDefinition Width="68*"/>
-                    <ColumnDefinition Width="107*"/>
-                    <ColumnDefinition Width="106*"/>
+                    <ColumnDefinition Width="48*"/>
+                    <ColumnDefinition Width="80*"/>
+                    <ColumnDefinition Width="103*"/>
+                    <ColumnDefinition Width="210*"/>
+                    <ColumnDefinition Width="210*"/>
+                    <ColumnDefinition Width="183*"/>
+                    <ColumnDefinition Width="120*"/>
                 </Grid.ColumnDefinitions>
 
                 <Viewbox>
-                    <CheckBox/>
+                    <CheckBox IsChecked="{Binding IsAllSelected}"/>
                 </Viewbox>
 
-                <TextBlock Grid.Column="1" Text="ID" VerticalAlignment="Center" HorizontalAlignment="Center" Height="15" Width="13"/>
+                <TextBlock Text="ID" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="10 0 0 0"/>
 
-                <TextBlock Grid.Column="2" Text="Foto" VerticalAlignment="Center" HorizontalAlignment="Left" Height="15" Width="26"/>
+                <TextBlock Grid.Column="2" Text="Habitación" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
-                <TextBlock Grid.Column="3" Text="Nombre" VerticalAlignment="Center" HorizontalAlignment="Left" Height="15" Width="48"/>
+                <TextBlock Grid.Column="3" Text="Nombre del cliente" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
-                <TextBlock Grid.Column="4" Text="Rol" VerticalAlignment="Center" HorizontalAlignment="Left" Height="15" Width="19" Margin="6,0,0,0"/>
+                <TextBlock Grid.Column="4" Text="Empleado" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
-                <TextBlock Grid.Column="5" Text="VIP" VerticalAlignment="Center" HorizontalAlignment="Center" Height="15" Width="19"/>
+                <TextBlock Grid.Column="5" Text="Rol" VerticalAlignment="Center" HorizontalAlignment="Stretch" />
 
-                <TextBlock Grid.Column="6" Text="Acción" VerticalAlignment="Center" HorizontalAlignment="Left" Height="15" Width="38" Margin="9,0,0,0"/>
-            </Grid>
-
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="43*"/>
-                    <ColumnDefinition Width="60*"/>
-                    <ColumnDefinition Width="102*"/>
-                    <ColumnDefinition Width="128*"/>
-                    <ColumnDefinition Width="68*"/>
-                    <ColumnDefinition Width="107*"/>
-                    <ColumnDefinition Width="106*"/>
-                </Grid.ColumnDefinitions>
-
-                <Viewbox>
-                    <CheckBox/>
-                </Viewbox>
-
-                <TextBlock Grid.Column="1" Text="#115" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-                <Image Grid.Column="2" HorizontalAlignment="Left" Source="/source/usuario.png"/>
-
-                <TextBlock Grid.Column="3" Text="Iván Nieto" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-
-                <TextBlock Grid.Column="4" Text="Administrador" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-
-                <TextBlock Grid.Column="5" Text="VIP" Foreground="#68EB9C" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-                <StackPanel Grid.Column="6" Orientation="Horizontal" >
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x270F;" FontSize="12" Foreground="#68EB9C" />
-                        </StackPanel>
+                <StackPanel Grid.Column="6"  Orientation="Horizontal">
+                    <TextBlock Text="Acción" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                    <Button Margin="10 0 0 0" Background="Transparent" Content="&#x1F5D1;" FontSize="12" Foreground="Red" BorderThickness="0"
+        Command="{Binding DeleteSelectedCommand}">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ShowDeleteButton}" Value="True">
+                                        <DataTrigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                 To="1" Duration="0:0:0.3" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                        <DataTrigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                 To="0" Duration="0:0:0.3" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.ExitActions>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
                     </Button>
 
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x2139;" FontSize="12" Foreground="Black" />
-                        </StackPanel>
-                    </Button>
-
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x1F5D1;" FontSize="12" Foreground="Red" />
-                        </StackPanel>
-                    </Button>
                 </StackPanel>
             </Grid>
 
-            <Grid Grid.Row="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="43*"/>
-                    <ColumnDefinition Width="60*"/>
-                    <ColumnDefinition Width="102*"/>
-                    <ColumnDefinition Width="128*"/>
-                    <ColumnDefinition Width="68*"/>
-                    <ColumnDefinition Width="107*"/>
-                    <ColumnDefinition Width="106*"/>
-                </Grid.ColumnDefinitions>
 
-                <Viewbox>
-                    <CheckBox/>
-                </Viewbox>
-
-                <TextBlock Grid.Column="1" Text="#115" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-                <Image Grid.Column="2" HorizontalAlignment="Left" Source="/source/usuario.png"/>
-
-                <TextBlock Grid.Column="3" Text="Iván Nieto" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-
-                <TextBlock Grid.Column="4" Text="Administrador" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-
-
-
-                <StackPanel Grid.Column="6" Orientation="Horizontal" >
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x270F;" FontSize="12" Foreground="#68EB9C" />
-                        </StackPanel>
-                    </Button>
-
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x2139;" FontSize="12" Foreground="Black" />
-                        </StackPanel>
-                    </Button>
-
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x1F5D1;" FontSize="12" Foreground="Red" />
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-            </Grid>
-
-            <Grid Grid.Row="3">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="43*"/>
-                    <ColumnDefinition Width="60*"/>
-                    <ColumnDefinition Width="102*"/>
-                    <ColumnDefinition Width="128*"/>
-                    <ColumnDefinition Width="68*"/>
-                    <ColumnDefinition Width="107*"/>
-                    <ColumnDefinition Width="106*"/>
-                </Grid.ColumnDefinitions>
-
-                <Viewbox>
-                    <CheckBox/>
-                </Viewbox>
-
-                <TextBlock Grid.Column="1" Text="#115" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-                <Image Grid.Column="2" HorizontalAlignment="Left" Source="/source/usuario.png"/>
-
-                <TextBlock Grid.Column="3" Text="Iván Nieto" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-
-                <TextBlock Grid.Column="4" Text="Administrador" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-
-                <TextBlock Grid.Column="5" Text="VIP" Foreground="#68EB9C" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-                <StackPanel Grid.Column="6" Orientation="Horizontal" >
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x270F;" FontSize="12" Foreground="#68EB9C" />
-                        </StackPanel>
-                    </Button>
-
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x2139;" FontSize="12" Foreground="Black" />
-                        </StackPanel>
-                    </Button>
-
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x1F5D1;" FontSize="12" Foreground="Red" />
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-            </Grid>
-
-            <Grid Grid.Row="4">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="43*"/>
-                    <ColumnDefinition Width="60*"/>
-                    <ColumnDefinition Width="102*"/>
-                    <ColumnDefinition Width="128*"/>
-                    <ColumnDefinition Width="68*"/>
-                    <ColumnDefinition Width="107*"/>
-                    <ColumnDefinition Width="106*"/>
-                </Grid.ColumnDefinitions>
-
-                <Viewbox>
-                    <CheckBox/>
-                </Viewbox>
-
-                <TextBlock Grid.Column="1" Text="#115" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-                <Image Grid.Column="2" HorizontalAlignment="Left" Source="/source/usuario.png"/>
-
-                <TextBlock Grid.Column="3" Text="Iván Nieto" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-
-                <TextBlock Grid.Column="4" Text="Administrador" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-
-                <TextBlock Grid.Column="5" Text="VIP" Foreground="#68EB9C" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-                <StackPanel Grid.Column="6" Orientation="Horizontal" >
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x270F;" FontSize="12" Foreground="#68EB9C" />
-                        </StackPanel>
-                    </Button>
-
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x2139;" FontSize="12" Foreground="Black" />
-                        </StackPanel>
-                    </Button>
-
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x1F5D1;" FontSize="12" Foreground="Red" />
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-            </Grid>
-
-            <Grid Grid.Row="5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="43*"/>
-                    <ColumnDefinition Width="60*"/>
-                    <ColumnDefinition Width="102*"/>
-                    <ColumnDefinition Width="128*"/>
-                    <ColumnDefinition Width="68*"/>
-                    <ColumnDefinition Width="107*"/>
-                    <ColumnDefinition Width="106*"/>
-                </Grid.ColumnDefinitions>
-
-                <Viewbox>
-                    <CheckBox/>
-                </Viewbox>
-
-                <TextBlock Grid.Column="1" Text="#115" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-                <Image Grid.Column="2" HorizontalAlignment="Left" Source="/source/usuario.png"/>
-
-                <TextBlock Grid.Column="3" Text="Iván Nieto" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-
-                <TextBlock Grid.Column="4" Text="Administrador" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-
-                <TextBlock Grid.Column="5" Text="VIP" Foreground="#68EB9C" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-                <StackPanel Grid.Column="6" Orientation="Horizontal" >
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x270F;" FontSize="12" Foreground="#68EB9C" />
-                        </StackPanel>
-                    </Button>
-
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x2139;" FontSize="12" Foreground="Black" />
-                        </StackPanel>
-                    </Button>
-
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x1F5D1;" FontSize="12" Foreground="Red" />
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-            </Grid>
-
-            <Grid Grid.Row="6">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="43*"/>
-                    <ColumnDefinition Width="60*"/>
-                    <ColumnDefinition Width="102*"/>
-                    <ColumnDefinition Width="128*"/>
-                    <ColumnDefinition Width="68*"/>
-                    <ColumnDefinition Width="107*"/>
-                    <ColumnDefinition Width="106*"/>
-                </Grid.ColumnDefinitions>
-
-                <Viewbox>
-                    <CheckBox/>
-                </Viewbox>
-
-                <TextBlock Grid.Column="1" Text="#115" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-                <Image Grid.Column="2" HorizontalAlignment="Left" Source="/source/usuario.png"/>
-
-                <TextBlock Grid.Column="3" Text="Iván Nieto" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-
-                <TextBlock Grid.Column="4" Text="Administrador" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-
-                <TextBlock Grid.Column="5" Text="VIP" Foreground="#68EB9C" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-                <StackPanel Grid.Column="6" Orientation="Horizontal" >
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x270F;" FontSize="12" Foreground="#68EB9C" />
-                        </StackPanel>
-                    </Button>
-
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x2139;" FontSize="12" Foreground="Black" />
-                        </StackPanel>
-                    </Button>
-
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x1F5D1;" FontSize="12" Foreground="Red" />
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-            </Grid>
-
-            <Grid Grid.Row="7">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="43*"/>
-                    <ColumnDefinition Width="60*"/>
-                    <ColumnDefinition Width="102*"/>
-                    <ColumnDefinition Width="128*"/>
-                    <ColumnDefinition Width="68*"/>
-                    <ColumnDefinition Width="107*"/>
-                    <ColumnDefinition Width="106*"/>
-                </Grid.ColumnDefinitions>
-
-                <Viewbox>
-                    <CheckBox/>
-                </Viewbox>
-
-                <TextBlock Grid.Column="1" Text="#115" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-                <Image Grid.Column="2" HorizontalAlignment="Left" Source="/source/usuario.png"/>
-
-                <TextBlock Grid.Column="3" Text="Iván Nieto" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-
-                <TextBlock Grid.Column="4" Text="Administrador" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-
-                <TextBlock Grid.Column="5" Text="VIP" Foreground="#68EB9C" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-                <StackPanel Grid.Column="6" Orientation="Horizontal" >
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x270F;" FontSize="12" Foreground="#68EB9C" />
-                        </StackPanel>
-                    </Button>
-
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x2139;" FontSize="12" Foreground="Black" />
-                        </StackPanel>
-                    </Button>
-
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x1F5D1;" FontSize="12" Foreground="Red" />
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-            </Grid>
-
-            <Grid Grid.Row="8">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="43*"/>
-                    <ColumnDefinition Width="60*"/>
-                    <ColumnDefinition Width="102*"/>
-                    <ColumnDefinition Width="128*"/>
-                    <ColumnDefinition Width="68*"/>
-                    <ColumnDefinition Width="107*"/>
-                    <ColumnDefinition Width="106*"/>
-                </Grid.ColumnDefinitions>
-
-                <Viewbox>
-                    <CheckBox/>
-                </Viewbox>
-
-                <TextBlock Grid.Column="1" Text="#115" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-                <Image Grid.Column="2" HorizontalAlignment="Left" Source="/source/usuario.png"/>
-
-                <TextBlock Grid.Column="3" Text="Iván Nieto" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-
-                <TextBlock Grid.Column="4" Text="Administrador" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-
-                <TextBlock Grid.Column="5" Text="VIP" Foreground="#68EB9C" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-                <StackPanel Grid.Column="6" Orientation="Horizontal" >
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x270F;" FontSize="12" Foreground="#68EB9C" />
-                        </StackPanel>
-                    </Button>
-
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x2139;" FontSize="12" Foreground="Black" />
-                        </StackPanel>
-                    </Button>
-
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x1F5D1;" FontSize="12" Foreground="Red" />
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-            </Grid>
-
-            <Grid Grid.Row="9">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="43*"/>
-                    <ColumnDefinition Width="60*"/>
-                    <ColumnDefinition Width="102*"/>
-                    <ColumnDefinition Width="128*"/>
-                    <ColumnDefinition Width="68*"/>
-                    <ColumnDefinition Width="107*"/>
-                    <ColumnDefinition Width="106*"/>
-                </Grid.ColumnDefinitions>
-
-                <Viewbox>
-                    <CheckBox/>
-                </Viewbox>
-
-                <TextBlock Grid.Column="1" Text="#115" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-                <Image Grid.Column="2" HorizontalAlignment="Left" Source="/source/usuario.png"/>
-
-                <TextBlock Grid.Column="3" Text="Iván Nieto" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-
-                <TextBlock Grid.Column="4" Text="Administrador" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-
-                <TextBlock Grid.Column="5" Text="VIP" Foreground="#68EB9C" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-                <StackPanel Grid.Column="6" Orientation="Horizontal" >
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x270F;" FontSize="12" Foreground="#68EB9C" />
-                        </StackPanel>
-                    </Button>
-
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x2139;" FontSize="12" Foreground="Black" />
-                        </StackPanel>
-                    </Button>
-
-                    <Button Margin="10 0" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#x1F5D1;" FontSize="12" Foreground="Red" />
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-            </Grid>
+            <!--Dinamico-->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <ItemsControl ItemsSource="{Binding Reservas}">
+                    <ItemsControl.Template>
+                        <ControlTemplate TargetType="ItemsControl">
+                            <Grid>
+                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                    <ItemsPresenter />
+                                </ScrollViewer>
+                                <Grid Width="17" HorizontalAlignment="Right" Background="Transparent" />
+                            </Grid>
+                        </ControlTemplate>
+                    </ItemsControl.Template>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="48*"/>
+                                    <ColumnDefinition Width="80*"/>
+                                    <ColumnDefinition Width="103*"/>
+                                    <ColumnDefinition Width="210*"/>
+                                    <ColumnDefinition Width="210*"/>
+                                    <ColumnDefinition Width="183*"/>
+                                    <ColumnDefinition Width="120*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Viewbox>
+                                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}"/>
+                                </Viewbox>
+
+                                <TextBlock Grid.Column="1" Text="{Binding Id}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="10 0 0 0"/>
+
+                                <Image Grid.Column="2" Source="{Binding HabitacionImage}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+
+                                <TextBlock Grid.Column="3" Text="{Binding Id_usuario}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+
+                                <TextBlock Grid.Column="4" Text="{Binding Id_hab}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+
+                                <TextBlock Grid.Column="5" Text="{Binding Id_AltUser}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+
+                                <StackPanel Grid.Column="6" Orientation="Horizontal">
+                                    <Button Margin="10 0" Background="Transparent" BorderThickness="0" Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="&#x270F;" FontSize="12" Foreground="#68EB9C" />
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Button Margin="10 0" Background="Transparent" BorderThickness="0" Command="{Binding DataContext.DetailsCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="&#x2139;" FontSize="12" Foreground="Black" />
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Button Margin="10 0" Background="Transparent" BorderThickness="0" Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="&#x1F5D1;" FontSize="12" Foreground="Red" />
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
         </Grid>
 
+        <!--Añadir nuevo-->
         <Image Grid.Column="3" Grid.Row="3" Source="/source/añadir_usuario.png"/>
+
+        <Border Grid.Column="3" Grid.Row="3" Background="#68EB9C" BorderThickness="1" Padding="1 5" CornerRadius="100">
+            <Button VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="+" FontSize="100" FontWeight="Bold"  Background="Transparent" BorderThickness="0"/>
+        </Border>
 
     </Grid>
 </Window>
