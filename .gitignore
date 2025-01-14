@@ -7,6 +7,7 @@ Android/HotelPereMaria/.idea/modules.xml
 Android/HotelPereMaria/.idea/workspace.xml
 Android/HotelPereMaria/.idea/navEditor.xml
 Android/HotelPereMaria/.idea/assetWizardSettings.xml
+Android/HotelPereMaria/.idea/*
 Android/HotelPereMaria/.DS_Store
 Android/HotelPereMaria/build
 Android/HotelPereMaria/captures
@@ -15,7 +16,7 @@ Android/HotelPereMaria/.cxx
 Android/HotelPereMaria/local.properties
 Acceso de datos/*
 Android/.$diseniaDeReserva.drawio.bkp
-Android/.idea/
+Android/.idea/*
 Android/HotelPereMaria/.idea/vcs.xml
 Android/diseniaDeReserva.drawio
 diseniaDeReserva.png
