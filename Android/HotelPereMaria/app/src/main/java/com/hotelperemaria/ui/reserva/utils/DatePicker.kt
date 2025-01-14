@@ -3,6 +3,7 @@ package com.hotelperemaria.ui.reserva.utils
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,33 +29,52 @@ import java.util.Locale
 @Composable
 fun DatePicker() {
     var showDatePicker by remember { mutableStateOf(false) }
-    var startDate by remember { mutableStateOf("Fecha inicial") }
-    var endDate by remember { mutableStateOf("Fecha final") }
+    var startDate by remember { mutableStateOf("MM/dd/yyyy") }
+    var endDate by remember { mutableStateOf("MM/dd/yyyy") }
 
-    Column(modifier = Modifier.padding(16.dp)) {
+    Box(
+        modifier = Modifier
+            .padding(16.dp)
+            .background(
+                MaterialTheme.colorScheme.secondaryContainer,
+                MaterialTheme.shapes.medium
+            )
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(64.dp)
-                .background(MaterialTheme.colorScheme.surface, MaterialTheme.shapes.medium)
                 .clickable { showDatePicker = true }
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Fecha inicial
-            Text(
-                text = startDate,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
+            Column {
+                // Fecha inicial
+                Text(
+                    text = "Fecha Inicial",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Text(
+                    text = startDate,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
 
-            // Fecha final
-            Text(
-                text = endDate,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
+            Column {
+                // Fecha final
+                Text(
+                    text = "Fecha Final",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Text(
+                    text = endDate,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
         }
 
         // 弹出 DateRangePicker 对话框
@@ -62,8 +82,8 @@ fun DatePicker() {
             Popup(onDismissRequest = { showDatePicker = false }) {
                 DateRangePickerModal(
                     onDateRangeSelected = { range ->
-                        startDate = range.first?.let { convertMillisToDate(it) } ?: "Fecha inicial"
-                        endDate = range.second?.let { convertMillisToDate(it) } ?: "Fecha final"
+                        startDate = range.first?.let { convertMillisToDate(it) }.toString()
+                        endDate = range.second?.let { convertMillisToDate(it) }.toString()
                         showDatePicker = false
                     },
                     onDismiss = { showDatePicker = false }
