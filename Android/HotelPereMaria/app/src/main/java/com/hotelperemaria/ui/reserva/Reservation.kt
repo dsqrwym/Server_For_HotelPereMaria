@@ -30,7 +30,7 @@ fun ReservationScreen(){
         Spacer(Modifier.padding(16.dp))
         RoomInfoCard("Informacion de la habitacion")
         Spacer(Modifier.padding(6.dp))
-        DatePicker()
+        DatePicker(viewModel = ReservaViewModel())
         Spacer(Modifier.padding(16.dp))
     }
 }
