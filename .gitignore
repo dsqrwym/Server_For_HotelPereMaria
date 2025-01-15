@@ -3,10 +3,6 @@ Android/HotelPereMaria/.gradle
 Android/HotelPereMaria/local.properties
 Android/HotelPereMaria/.idea/caches
 Android/HotelPereMaria/.idea/libraries
-Android/HotelPereMaria/.idea/modules.xml
-Android/HotelPereMaria/.idea/workspace.xml
-Android/HotelPereMaria/.idea/navEditor.xml
-Android/HotelPereMaria/.idea/assetWizardSettings.xml
 Android/HotelPereMaria/.idea/*
 Android/HotelPereMaria/.DS_Store
 Android/HotelPereMaria/build
@@ -15,6 +11,7 @@ Android/HotelPereMaria/.externalNativeBuild
 Android/HotelPereMaria/.cxx
 Android/HotelPereMaria/local.properties
 Acceso de datos/*
+Desktop/*
 Android/.$diseniaDeReserva.drawio.bkp
 Android/.idea/*
 Android/HotelPereMaria/.idea/vcs.xml
@@ -25,5 +22,6 @@ diseniaDeReserva.png
 *.cache
 *.v2
 *.bin
+*.xml
 obj/
 .vs/
