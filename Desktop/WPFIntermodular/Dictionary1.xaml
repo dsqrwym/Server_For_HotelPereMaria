@@ -1,0 +1,28 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--Borders-->
+    <Style x:Key="Border" TargetType="Border">
+        <Setter Property="Background" Value="#4A6670"></Setter>
+    </Style>
+    <!--Titulos-->
+    <Style x:Key="Titulo" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="CONSOLAS"></Setter>
+        <Setter Property="FontSize" Value="24"></Setter>
+        <Setter Property="Foreground" Value="#0099DD"></Setter>
+    </Style>
+    
+    <!--Botones-->
+    <Style x:Key="BtnPrin" TargetType="Button">
+        <Setter Property="FontFamily" Value="CONSOLAS"></Setter>
+        <Setter Property="FontSize" Value="19"></Setter>
+        <Setter Property="Foreground" Value="#0099DD"></Setter>
+        <Setter Property="Background" Value="#FF9933"></Setter>
+    </Style>
+    <!--Subtituloes-->
+    <Style x:Key="SubTitle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="CONSOLAS"></Setter>
+        <Setter Property="FontSize" Value="19"></Setter>
+        <Setter Property="FontWeight" Value="Bold"></Setter>
+    </Style>
+</ResourceDictionary>

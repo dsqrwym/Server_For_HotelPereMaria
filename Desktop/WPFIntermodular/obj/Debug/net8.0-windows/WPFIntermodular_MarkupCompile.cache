@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\masca\Documents\GitHub\Intermodular\WPFIntermodular\WPFIntermodular\obj\Debug\net8.0-windows\
+C:\Users\masca\Documents\GitHub\Intermodular\Desktop\WPFIntermodular\obj\Debug\net8.0-windows\
 WPFIntermodular
 none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
-C:\Users\masca\Documents\GitHub\Intermodular\WPFIntermodular\WPFIntermodular\App.xaml
-11407045341
+C:\Users\masca\Documents\GitHub\Intermodular\Desktop\WPFIntermodular\App.xaml
+4-424282096
 
-4-2076756932
+6-2124763665
 1981451641563
-MainWindow.xaml;
+addHabitaciones.xaml;buscadorHabitaciones.xaml;Dictionary1.xaml;MainWindow.xaml;
 
-True
+False
 
