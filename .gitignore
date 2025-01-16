@@ -1,31 +1,33 @@
 # Android Studio / IntelliJ IDEA 文件
-.idea/                # 忽略整个 .idea 目录
-*.iml                 # 忽略所有 .iml 文件
-.gradle               # 忽略 Gradle 构建目录
-local.properties      # 忽略本地配置文件
-caches/               # 忽略缓存
-libraries/            # 忽略库文件
-.externalNativeBuild/ # 忽略外部构建文件
-.cxx/                 # 忽略 C++ 配置
-.vcs.xml              # 忽略版本控制相关文件
+.idea/
+*.iml
+.gradle
+local.properties
+caches/
+libraries/
+.externalNativeBuild/
+.cxx/
+.vcs.xml
 
 # Android 构建文件
-build/                # 忽略构建文件
-captures/             # 忽略屏幕截图
-diseniaDeReserva.drawio # 忽略特定的图形文件
-diseniaDeReserva.png  # 忽略特定的图片文件
-*.bin                 # 忽略所有二进制文件
-*.cache               # 忽略所有缓存文件
-*.v2                  # 忽略特定版本文件
-*.json                # 忽略 JSON 文件
-*.xml                 # 忽略 XML 文件
-obj/                  # 忽略 obj 文件
-*.suo                 # 忽略 Visual Studio 的配置文件
-.vs/                  # 忽略 Visual Studio 配置
+build/
+captures/
+diseniaDeReserva.drawio
+diseniaDeReserva.png
+*.bin
+*.cache
+*.v2
+*.json
+*.xml
+obj/
+*.suo
+.vs/                 
 
 # macOS 文件
-.DS_Store             # 忽略 macOS 系统文件
+.DS_Store
 
 # 其他不需要版本控制的文件
-Android/.$diseniaDeReserva.drawio.bkp # 忽略备份文件
-Android/HotelPereMaria/.idea/* # 忽略所有 .idea 子文件
+Android/.$diseniaDeReserva.drawio.bkp
+Android/HotelPereMaria/.idea/*
+Desktop/*
+Acceso de datos/*
