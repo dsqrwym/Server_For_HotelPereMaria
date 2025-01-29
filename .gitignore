@@ -44,3 +44,4 @@ Desktop/WPFIntermodular/obj/Debug/net8.0-windows/WPFIntermodular_MarkupCompile.c
 
 .DS_Store
 Acceso de datos/*
+*.env
