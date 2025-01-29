@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj": {}
+    "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj": {}
   },
   "projects": {
-    "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj": {
+    "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj",
+        "projectUniqueName": "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj",
         "projectName": "WPFIntermodular",
-        "projectPath": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj",
+        "projectPath": "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj",
         "packagesPath": "C:\\Users\\masca\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\obj\\",
+        "outputPath": "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\WPFIntermodular\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\masca\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -63,7 +63,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
