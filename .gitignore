@@ -1,13 +1,13 @@
 # Android Studio / IntelliJ IDEA 文件
-.idea/
+*.idea/
 *.iml
 .gradle
 local.properties
 caches/
 libraries/
-.externalNativeBuild/
-.cxx/
-.vcs.xml
+*.externalNativeBuild/
+*.cxx/
+*.vcs.xml
 
 # Android 构建文件
 build/
@@ -21,10 +21,10 @@ diseniaDeReserva.png
 *.xml
 obj/
 *.suo
-.vs/                 
+*.vs/                 
 
 # macOS 文件
-.DS_Store
+*.DS_Store
 
 # 其他不需要版本控制的文件
 Android/.$diseniaDeReserva.drawio.bkp
