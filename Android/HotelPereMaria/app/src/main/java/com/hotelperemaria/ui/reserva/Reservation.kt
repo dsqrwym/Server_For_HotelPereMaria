@@ -12,26 +12,30 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hotelperemaria.ui.reserva.utils.DatePicker
+import com.hotelperemaria.ui.reserva.utils.Slider
 import com.hotelperemaria.ui.reserva.utils.TopBar
 
 @Composable
-fun ReservationScreen(){
+fun ReservationScreen() {
+    val reservaViewModel = ReservaViewModel()
     Column(
-        Modifier.
-        fillMaxSize().
-        background(MaterialTheme.colorScheme.background)
+        Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
     ) {
-        TopBar("Reservacion"){
+        TopBar("Reservacion") {
             println("Back")
         }
-        Spacer(Modifier.padding(16.dp))
+        Spacer(Modifier.padding(18.dp))
         RoomInfoCard("Informacion de la habitacion")
-        Spacer(Modifier.padding(6.dp))
-        DatePicker(viewModel = ReservaViewModel())
-        Spacer(Modifier.padding(16.dp))
+        DatePicker(reservaViewModel)
+        Slider("Huésped", reservaViewModel.maxHuesped) {
+            reservaViewModel.huespedSelected = it
+        }
     }
 }
 
@@ -40,8 +44,16 @@ fun RoomInfoCard(info: String) {
     Box(
         Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .background(MaterialTheme.colorScheme.secondaryContainer, shape = RoundedCornerShape(38.dp))
+            .padding(18.dp)
+            .shadow(
+                elevation = 10.dp,
+                shape = RoundedCornerShape(38.dp),
+                clip = true
+            )
+            .background(
+                MaterialTheme.colorScheme.secondaryContainer,
+                shape = RoundedCornerShape(38.dp)
+            )
     ) {
         Text(
             modifier = Modifier.padding(80.dp),

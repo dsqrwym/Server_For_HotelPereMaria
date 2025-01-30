@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hotelperemaria.ui.reserva.ReservaViewModel
@@ -34,6 +35,10 @@ fun DatePicker(viewModel: ReservaViewModel) {
     Box(
         modifier = Modifier
             .padding(18.dp)
+            .shadow(
+                elevation = 10.dp,
+                shape = MaterialTheme.shapes.medium
+            )
             .background(
                 MaterialTheme.colorScheme.secondaryContainer,
                 MaterialTheme.shapes.medium
@@ -78,15 +83,15 @@ fun DatePicker(viewModel: ReservaViewModel) {
 
         // 弹出 DateRangePicker 对话框
         if (showDatePicker) {
-                DateRangePickerModal(
-                    onDateRangeSelected = { range ->
-                        viewModel.updateDateRange(range.first, range.second)
-                        viewModel.toggleDatePicker(false)
-                    },
-                    unselectableDates = unselectableDates.value
-                ) {
+            DateRangePickerModal(
+                onDateRangeSelected = { range ->
+                    viewModel.updateDateRange(range.first, range.second)
                     viewModel.toggleDatePicker(false)
-                }
+                },
+                unselectableDates = unselectableDates.value
+            ) {
+                viewModel.toggleDatePicker(false)
+            }
         }
     }
 }
@@ -104,7 +109,8 @@ fun DateRangePickerModal(
     val dateRangePickerState = androidx.compose.material3.rememberDateRangePickerState(
         selectableDates = object : SelectableDates {
             override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-               return unselectableDates?.none {utcTimeMillis < System.currentTimeMillis() || utcTimeMillis in it.first..it.second} ?: true
+                return unselectableDates?.none { utcTimeMillis < System.currentTimeMillis() || utcTimeMillis in it.first..it.second }
+                    ?: true
             }
         }
     )

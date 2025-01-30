@@ -1,6 +1,9 @@
 package com.hotelperemaria.ui.reserva
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -12,6 +15,8 @@ class ReservaViewModel : ViewModel() {
     var endDate = mutableStateOf("")
     var showDatePicker = mutableStateOf(false)
     var unselectableDates = mutableStateOf<Set<Pair<Long, Long>>?>(null)
+    var huespedSelected by mutableFloatStateOf(0f)
+    var maxHuesped by mutableFloatStateOf(10f)
 
     // 初始化不可选择的日期范围
     init {

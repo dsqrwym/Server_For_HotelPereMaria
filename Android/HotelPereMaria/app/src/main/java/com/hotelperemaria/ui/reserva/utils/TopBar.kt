@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,6 +32,9 @@ import com.hotelperemaria.ui.theme.HotelPereMariaTheme
 fun TopBar(title: String, onBack: (() -> Unit)? = null) {
     Box(
         Modifier
+            .shadow(
+                elevation = 16.dp
+            )
             .background(
                 MaterialTheme.colorScheme.primaryContainer
             )
@@ -51,14 +55,19 @@ fun TopBar(title: String, onBack: (() -> Unit)? = null) {
             }
             Spacer(Modifier.weight(1f))
         }
-        Text(title, Modifier.align(Alignment.Center), MaterialTheme.colorScheme.primary, style =  MaterialTheme.typography.titleMedium)
+        Text(
+            title,
+            Modifier.align(Alignment.Center),
+            MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleMedium
+        )
     }
 }
 
 @Preview
 @Composable
 fun TopBarPreview() {
-    TopBar("Reservacion"){
+    TopBar("Reservacion") {
         println("Back")
     }
 }
