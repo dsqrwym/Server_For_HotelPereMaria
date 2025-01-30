@@ -19,37 +19,34 @@ namespace WPFIntermodular
     /// </summary>
     public partial class addHabitaciones : Window
     {
-        public addHabitaciones(string nombre, int index, string descripccion, Boolean cama, Boolean cuna,Boolean editar)
+        public addHabitaciones(Habitacion h, Boolean editar)
         {
             InitializeComponent();
-            fillFields(nombre, index, descripccion, cama, cuna, editar);
-
-        }
-
-        private void fillFields(string nombre,int index, string descripccion,Boolean cama,Boolean cuna,Boolean editar)
-        {
             if (editar)
             {
-                index = index-1;
-                nombreText.Text = nombre;
-                huespedesCombo.SelectedIndex = index;
-                //imagen buscar como cargarla
-                descripccionText.Text = descripccion;
-                camaCheck.IsChecked = cama;
-                cunaCheck.IsChecked = cuna;
-                //precio por noche se calcula a parte
-                botonFinal.Content = "Editar";
+
+                fillFields(h);
             }
-            else
-            {
-                botonFinal.Content = "Crear";
-            }
+        }
+
+        private void fillFields(Habitacion h)
+        {
+
+            int index = h.Capacidad-1;
+            nombreText.Text = h.Nombre;
+            huespedesCombo.SelectedIndex = index;
+            //imagen buscar como cargarla
+            descripccionText.Text = h.Descripccion;
+            //precio por noche se calcula a parte
+            botonFinal.Content = "Editar";
+
+
 
 
 
         }
 
     }
-    
+
 
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFIntermodular"
         mc:Ignorable="d"
-        Title="Buscador" Height="1018" Width="1440">
+        Title="Buscador" Height="700" Width="1440">
     <Window.Resources>
         <Style TargetType="Label">
             <Setter Property="FontFamily" Value="Monserrat"></Setter>
@@ -18,99 +18,61 @@
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
 
-        <DockPanel Grid.ColumnSpan="2" Margin="0,0,0,446">
-            <Label FontSize="15" VerticalAlignment="Center">Hotel Pere María</Label>
-            <Label BorderThickness="0,0,10,0" BorderBrush="Black" Width="12" RenderTransformOrigin="0.5,0.5" >
-                <Label.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform ScaleX="-1"/>
-                        <SkewTransform/>
-                        <RotateTransform/>
-                        <TranslateTransform/>
-                    </TransformGroup>
-                </Label.RenderTransform>
-
-            </Label>
-            <StackPanel Height="34" Width="454">
-                <Label FontSize="15" Width="452" Margin="0,0,0,-15">Bienvenidos</Label>
-                <Label FontSize="15" Height="24" Margin="0,0,0,0" Foreground="Gray">Cerrar sesion</Label>
-            </StackPanel>
-
-            <Button Background="#68EB9C" Content="Añadir Reserva" FontSize="15" Width="215" Margin="560,0,0,0"></Button>
-        </DockPanel>
-        <StackPanel Margin="0,41,0,0" Grid.ColumnSpan="2" >
+        <StackPanel Grid.Column="0" Margin="20">
             <Label FontSize="40" Foreground="#68EB9C">Buscador:</Label>
-            <Border Background="LightGray" Height="202" CornerRadius="10">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
+            <Border Background="LightGray" Padding="10" CornerRadius="10" VerticalAlignment="Stretch">
+                <StackPanel>
+                    <Label FontSize="20">ID habitacion</Label>
+                    <TextBox Name ="idText" Height="24" Width="244" HorizontalAlignment="Left"></TextBox>
 
-                    </Grid.ColumnDefinitions>
-                    <StackPanel>
-                        <Label FontSize="20">Numero de huespedes:</Label>
-                        <ComboBox Width="168" HorizontalAlignment="Left" Margin="40,0,0,0" Text="2">
-                        </ComboBox>
-                        <Label FontSize="20" Width="801">Extras</Label>
-                        <DockPanel>
-                            <CheckBox Margin="0,0,10,0" FontSize="20" FontFamily="Montserrat">Cuna</CheckBox>
-                            <CheckBox FontSize="20" FontFamily="Montserrat">Cama extra</CheckBox>
-                        </DockPanel>
+                    <Label FontSize="20">Tipo</Label>
+                    <ComboBox Name="tiposCombo" Height="24" Width="244" HorizontalAlignment="Left">
+                        <ComboBoxItem>Individual</ComboBoxItem>
+                        <ComboBoxItem>Estandar</ComboBoxItem>
+                        <ComboBoxItem>Lujo</ComboBoxItem>
+                        <ComboBoxItem>Suite</ComboBoxItem>
+                        <ComboBoxItem>Duplex</ComboBoxItem>
+                    </ComboBox>
+
+
+
+
+                    <Label FontSize="20" Margin="10,10,0,0">¿Ocupada?</Label>
+                    <StackPanel Orientation="Horizontal" Margin="10,0">
+                        <RadioButton FontSize="20" GroupName="si/no" FontFamily="Montserrat" Margin="0,0,10,0" Name="ocupadaSi">Sí</RadioButton>
+                        <RadioButton FontSize="20" GroupName="si/no" FontFamily="Montserrat" Name="ocupadaNo">No</RadioButton>
                     </StackPanel>
-                    <StackPanel>
 
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10,0,0">
+                        <Button FontSize="15" Width="124" Height="37" Margin="0,0,10,0">Ofertas</Button>
+                        <Button  FontSize="15" Width="139" Background="#68EB9C" Click="Button_Click" >Buscar</Button>
                     </StackPanel>
-                    <StackPanel Grid.Column="1">
-                        <DockPanel>
-                            <Label FontSize="20">Fecha de entrada</Label>
-                            <Label FontSize="20" HorizontalAlignment="Center">Fecha de salida</Label>
-                        </DockPanel>
-                        <DockPanel>
-                            <DatePicker Width="182" Margin="0,0,0,0" Height="73" BorderThickness="0,0,0,0" FontFamily="Montserrat"></DatePicker>
-                            <DatePicker Width="193" Margin="30,0,0,0" Height="73" BorderThickness="0,0,0,0" FontFamily="Montserrat"/>
-                        </DockPanel>
-                        <Slider Height="30" ></Slider>
-                        <DockPanel>
-                            <Label FontSize="10">0</Label>
-                            <Label FontSize="10" HorizontalAlignment="Right">1000</Label>
-                        </DockPanel>
-                    </StackPanel>
-                    <StackPanel Grid.Column="2">
-                        <Label FontSize="20">¿Miembro VIP?</Label>
-                        <DockPanel>
-                            <RadioButton Margin="0,0,5,0" FontSize="20" GroupName="si/no" FontFamily="Montserrat">Si</RadioButton>
-                            <RadioButton FontSize="20" GroupName="si/no" FontFamily="Montserrat">No</RadioButton>
-                        </DockPanel>
-
-                        <DockPanel>
-                            <Button FontSize="15" Width="124" Height="37">Ofertas</Button>
-                            <Button FontSize="15" Width="139" Background="#68EB9C">Buscar</Button>
-                        </DockPanel>
-
-                    </StackPanel>
-                </Grid>
-
+                </StackPanel>
             </Border>
-
-
         </StackPanel>
-        <StackPanel Margin="0,342,0,0" Grid.RowSpan="2">
-            <Label FontWeight="Bold" FontSize="50" Width="657">Resultados:</Label>
-            <ListBox Height="432" Width="1436"></ListBox>
-            
-            <Button FontSize="15" Width="188" Background="#68EB9C" Margin="0,0,370,0" Height="49">Editar</Button>
+
+        <StackPanel Grid.Column="1" Margin="20">
+            <Label FontWeight="Bold" FontSize="50" Margin="0,0,0,10">Resultados:</Label>
+            <ListView Name="listaHab" Width="582" Margin="0,0,0,10" SelectionChanged="listaHab_SelectionChanged" >
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="80" />
+                        <GridViewColumn Header="Nombre" DisplayMemberBinding="{Binding Nombre}" Width="150" />
+                        <GridViewColumn Header="Tipo" DisplayMemberBinding="{Binding Tipo}" Width="150" />
+                        <GridViewColumn Header="Capacidad" DisplayMemberBinding="{Binding Capacidad}" Width="100" />
+                        <GridViewColumn Header="Ocupada" DisplayMemberBinding="{Binding Ocupada}" Width="100" />
 
 
 
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Button Name="buscarEditBtn" FontSize="15" Width="188" Background="#68EB9C" Height="49" Click="buscarEditBtn_Click"></Button>
         </StackPanel>
+
     </Grid>
 </Window>
