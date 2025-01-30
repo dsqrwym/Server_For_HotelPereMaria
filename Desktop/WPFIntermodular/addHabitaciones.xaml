@@ -3,17 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Add/Edit Room" Height="969" Width="1371" WindowStartupLocation="CenterScreen" >
 
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Dictionary1.xaml"></ResourceDictionary>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
+
     <Grid>
         <Border CornerRadius="10" Style="{StaticResource Border}" Width="1000" Height="600" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="30" BorderBrush="#E5E5E5" BorderThickness="1">
             <Grid>
-                <TextBlock Style="{StaticResource Titulo}" Text="Añadir habitación"   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
+                <Label Style="{StaticResource Titulo}" Content="Añadir habitación"   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
 
                 <Button Content="X" Width="30" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" Foreground="Black" FontSize="14" FontWeight="Bold" BorderBrush="Transparent"/>
 

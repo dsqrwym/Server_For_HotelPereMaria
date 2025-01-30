@@ -19,8 +19,9 @@ namespace WPFIntermodular
         public MainWindow()
         {
             InitializeComponent();
-            addHabitaciones a = new addHabitaciones("asd",1,"asd",true,true,true);
-            a.Show();
+            //addHabitaciones a = new addHabitaciones("asd",1,"asd",true,true,true);
+            buscadorHabitaciones b = new buscadorHabitaciones();
+            b.Show();
             this.Hide();
 
         }

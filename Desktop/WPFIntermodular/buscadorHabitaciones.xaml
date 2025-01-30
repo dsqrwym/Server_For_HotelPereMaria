@@ -6,25 +6,16 @@
         xmlns:local="clr-namespace:WPFIntermodular"
         mc:Ignorable="d"
         Title="Buscador" Height="700" Width="1440">
-    <Window.Resources>
-        <Style TargetType="Label">
-            <Setter Property="FontFamily" Value="Monserrat"></Setter>
-            <Setter Property="FontSize" Value="30"></Setter>
-        </Style>
-        <Style TargetType="Button">
-            <Setter Property="FontFamily" Value="Monserrat"></Setter>
-            <Setter Property="FontSize" Value="30"></Setter>
-        </Style>
-    </Window.Resources>
-    <Grid>
+
+    <Border Style="{StaticResource Fondo}">
+    <Grid  >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0" Margin="20">
-            <Label FontSize="40" Foreground="#68EB9C">Buscador:</Label>
-            <Border Background="LightGray" Padding="10" CornerRadius="10" VerticalAlignment="Stretch">
+            <Border Style="{StaticResource Border}" Padding="10" CornerRadius="15" VerticalAlignment="Stretch">
                 <StackPanel>
                     <Label FontSize="20">ID habitacion</Label>
                     <TextBox Name ="idText" Height="24" Width="244" HorizontalAlignment="Left"></TextBox>
@@ -48,15 +39,14 @@
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10,0,0">
-                        <Button FontSize="15" Width="124" Height="37" Margin="0,0,10,0">Ofertas</Button>
-                        <Button  FontSize="15" Width="139" Background="#68EB9C" Click="Button_Click" >Buscar</Button>
+                            <Button Style="{StaticResource BtnSec}" Width="124" Height="37" Margin="0,0,10,0">Ofertas</Button>
+                        <Button Style="{StaticResource BtnPrin}"  Width="139"  Click="Button_Click" >Buscar</Button>
                     </StackPanel>
                 </StackPanel>
             </Border>
         </StackPanel>
 
         <StackPanel Grid.Column="1" Margin="20">
-            <Label FontWeight="Bold" FontSize="50" Margin="0,0,0,10">Resultados:</Label>
             <ListView Name="listaHab" Width="582" Margin="0,0,0,10" SelectionChanged="listaHab_SelectionChanged" >
                 <ListView.View>
                     <GridView>
@@ -71,8 +61,9 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <Button Name="buscarEditBtn" FontSize="15" Width="188" Background="#68EB9C" Height="49" Click="buscarEditBtn_Click"></Button>
+                <Button Name="buscarEditBtn"  Style="{StaticResource BtnPrin}" Width="188" Height="49" Click="buscarEditBtn_Click"></Button>
         </StackPanel>
 
     </Grid>
+    </Border>
 </Window>

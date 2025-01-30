@@ -1,25 +1,35 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    
+    <!--Fondos-->
+    <Style x:Key="Fondo" TargetType="Border">
+        <Setter Property="Background" Value="#2C3E50"></Setter>
+    </Style>
     <!--Borders-->
     <Style x:Key="Border" TargetType="Border">
         <Setter Property="Background" Value="#4A6670"></Setter>
     </Style>
     <!--Titulos-->
-    <Style x:Key="Titulo" TargetType="TextBlock">
+    <Style x:Key="Titulo" TargetType="Label">
         <Setter Property="FontFamily" Value="CONSOLAS"></Setter>
         <Setter Property="FontSize" Value="24"></Setter>
         <Setter Property="Foreground" Value="#0099DD"></Setter>
     </Style>
     
-    <!--Botones-->
+    <!--Botones Principales-->
     <Style x:Key="BtnPrin" TargetType="Button">
         <Setter Property="FontFamily" Value="CONSOLAS"></Setter>
         <Setter Property="FontSize" Value="19"></Setter>
-        <Setter Property="Foreground" Value="#0099DD"></Setter>
         <Setter Property="Background" Value="#FF9933"></Setter>
     </Style>
-    <!--Subtituloes-->
+    <!--Botones Secundarios-->
+    <Style x:Key="BtnSec" TargetType="Button">
+        <Setter Property="FontFamily" Value="CONSOLAS"></Setter>
+        <Setter Property="FontSize" Value="19"></Setter>
+        <Setter Property="Background" Value="#0099DD"></Setter>
+    </Style>
+    <!--Subtitulos-->
     <Style x:Key="SubTitle" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="CONSOLAS"></Setter>
         <Setter Property="FontSize" Value="19"></Setter>

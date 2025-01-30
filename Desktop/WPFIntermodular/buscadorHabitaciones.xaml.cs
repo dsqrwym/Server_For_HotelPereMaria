@@ -86,58 +86,48 @@ namespace WPFIntermodular
         {
             bool valido = true;
             int id = -1;
-            bool ocupadao = false;
+            bool? ocupadao = null;
 
+            // Validar el ID
             if (!string.IsNullOrEmpty(idText.Text))
             {
                 valido = int.TryParse(idText.Text, out id);
             }
+
             if (ocupadaSi.IsChecked == true)
             {
-                ocupadao = true;
+                ocupadao = true;  
             }
-
-
-
-
-
-
-            if (tiposCombo.SelectedIndex != -1 || valido)
+            else if (ocupadaNo.IsChecked == true)
             {
-                filterHabitaciones(tiposCombo.Text, id, valido, ocupadao);
+                ocupadao = false;  
             }
 
-
-
-
-
+            filterHabitaciones(tiposCombo.Text, id, valido, ocupadao);
         }
 
-
-
-
-        public void filterHabitaciones(string tipo, int id, bool valido, bool ocupado)
+        public void filterHabitaciones(string tipo, int id, bool valido, bool? ocupado)
         {
+            if (habitaciones == null) return;
+
             ICollectionView habitacionesView = CollectionViewSource.GetDefaultView(habitaciones);
 
-            // Establecer un filtro combinado utilizando un predicado (función)
             habitacionesView.Filter = new Predicate<object>(obj =>
             {
-                Habitacion habitacion = obj as Habitacion;
-                if (habitacion != null)
+                if (obj is Habitacion habitacion)
                 {
+
                     bool tipoCoincide = string.IsNullOrEmpty(tipo) || habitacion.Tipo == tipo;
-                    bool idCoincide = !valido || habitacion.Id == id;
-                    bool ocupadaCoincide = ocupado || habitacion.Ocupada == ocupado;
 
+                    bool idCoincide = (valido && id != -1) ? habitacion.Id == id : true;
 
-                    // Devolver verdadero si ambas condiciones coinciden
+                    bool ocupadaCoincide = !ocupado.HasValue || habitacion.Ocupada == ocupado;
+
                     return tipoCoincide && idCoincide && ocupadaCoincide;
                 }
                 return false;
             });
 
-            // Aplicar el filtro a la vista y refrescarla
             habitacionesView.Refresh();
         }
     }
