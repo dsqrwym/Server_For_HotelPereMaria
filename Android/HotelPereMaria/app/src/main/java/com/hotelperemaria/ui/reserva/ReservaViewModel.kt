@@ -6,12 +6,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.hotelperemaria.data.model.ExtraService
+import com.hotelperemaria.utils.DateUtils.convertDateToMillis
+import com.hotelperemaria.utils.DateUtils.convertMillisToLocalDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.math.BigDecimal
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,7 +18,7 @@ class ReservaViewModel @Inject constructor() : ViewModel() {
     var startDate = mutableStateOf("")
     var endDate = mutableStateOf("")
     var showDatePicker = mutableStateOf(false)
-    var unselectableDates = mutableStateOf<Set<Pair<Long, Long>>?>(null)
+    var unselectableDates = mutableStateOf<Set<Pair<Long?, Long?>>?>(null)
     var huespedSelected by mutableFloatStateOf(1f)
     var maxHuesped by mutableFloatStateOf(10f)
 
@@ -43,8 +41,8 @@ class ReservaViewModel @Inject constructor() : ViewModel() {
     // 初始化示例数据（后续替换为 API 调用)
     init {
         // 初始化不可选择的日期范围
-        unselectableDates.value = setOf(
-            Pair(convertDateToMillis("02/02/2025"), convertDateToMillis("03/02/2025"))
+        unselectableDates.value = setOfNotNull(
+            convertDateToMillis("10/02/2025")?.let { Pair(it, convertDateToMillis("26/02/2025") ?: it) }
         )
         // 初始化示例额外服务（后续替换为 API 数据）
         extraServices = listOf(
@@ -68,10 +66,10 @@ class ReservaViewModel @Inject constructor() : ViewModel() {
 
     // 更新选中的日期范围
     fun updateDateRange(startMillis: Long?, endMillis: Long?) {
-        startDate.value = startMillis?.let { convertMillisToDate(it) } ?: ""
-        endDate.value = endMillis?.let { convertMillisToDate(it) } ?: ""
+        startDate.value = startMillis?.let { convertMillisToLocalDate(it) } ?: ""
+        endDate.value = endMillis?.let { convertMillisToLocalDate(it) } ?: ""
         selectedDays = if (startMillis != null && endMillis != null) {
-            BigDecimal.valueOf((endMillis - startMillis) / (1000 * 60 * 60 * 24))
+            BigDecimal.valueOf(((endMillis - startMillis) / (1000 * 60 * 60 * 24)).coerceAtLeast(1)) // 确保最小为 1 天
         } else {
             BigDecimal.ZERO
         }
@@ -84,9 +82,15 @@ class ReservaViewModel @Inject constructor() : ViewModel() {
 
     // 验证选中的日期范围是否有效
     fun isDateRangeValid(startMillis: Long?, endMillis: Long?): Boolean {
-        return startMillis == null || endMillis == null || unselectableDates.value?.none {
-            startMillis < it.first && endMillis > it.second
-        } ?: true
+        return if (startMillis == null || endMillis == null) {
+            true // 如果日期未选择，则默认有效
+        } else {
+            unselectableDates.value?.none {
+                val first = it.first ?: return@none true
+                val second = it.second ?: return@none true
+                startMillis < first && endMillis > second
+            } ?: true
+        }
     }
 
     private fun validateForm(): Boolean {
@@ -116,22 +120,5 @@ class ReservaViewModel @Inject constructor() : ViewModel() {
 
     private fun createReservation() {
         isLoading = true
-    }
-
-    // 将毫秒转换为日期字符串
-    private fun convertMillisToDate(millis: Long): String {
-        val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        return formatter.format(Date(millis))
-    }
-
-    // 将日期字符串转换为毫秒
-    private fun convertDateToMillis(dateString: String): Long {
-        val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        return try {
-            val date = formatter.parse(dateString)
-            date?.time ?: 0L
-        } catch (e: ParseException) {
-            0L
-        }
     }
 }

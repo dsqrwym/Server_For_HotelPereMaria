@@ -90,8 +90,11 @@ fun DatePicker(viewModel: ReservaViewModel) {
                     viewModel.updateDateRange(range.first, range.second)
                     viewModel.toggleDatePicker(false)
                 },
-                unselectableDates = unselectableDates.value
-            ) {
+                unselectableDates = unselectableDates.value?.mapNotNull { (first, second) ->
+                    if (first != null && second != null) Pair(first, second) else null
+                }?.toSet() ?: emptySet()
+            )
+            {
                 viewModel.toggleDatePicker(false)
             }
         }
@@ -149,7 +152,9 @@ fun DateRangePickerModal(
             state = dateRangePickerState,
             title = {
                 Text(
-                    text = if (!isInvalidSelection) stringResource(R.string.date_picker_dialog_title) else stringResource(R.string.date_picker_dialog_title_error),
+                    text = if (!isInvalidSelection) stringResource(R.string.date_picker_dialog_title) else stringResource(
+                        R.string.date_picker_dialog_title_error
+                    ),
                     color = if (!isInvalidSelection) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.error
                 )
             },

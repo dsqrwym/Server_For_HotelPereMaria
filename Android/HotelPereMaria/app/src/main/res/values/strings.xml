@@ -2,7 +2,7 @@
     <string name="app_name">Hotel Pere Maria</string>
 
     <string name="app_date_format">dd/MM/yyyy</string>
-    <string name="api_date_format">yyyy-MM-dd</string>
+    <string name="api_date_format">yyyy-MM-dd\'T\'HH:mm:ss.SSSXXX</string>
 
     <string name="loading_state_loading">Cargando</string>
 
