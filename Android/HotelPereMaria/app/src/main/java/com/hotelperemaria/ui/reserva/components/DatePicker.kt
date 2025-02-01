@@ -14,25 +14,31 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.hotelperemaria.R
 import com.hotelperemaria.ui.reserva.ReservaViewModel
+import java.util.Calendar
 
 @Composable
-fun DatePicker(viewModel: ReservaViewModel) {
-    val startDate by remember { viewModel.startDate }
-    val endDate by remember { viewModel.endDate }
-    val showDatePicker by remember { viewModel.showDatePicker }
-    val unselectableDates = remember { viewModel.unselectableDates }
+fun DatePicker(viewModel: ReservaViewModel = hiltViewModel()) {
+    // 使用 derivedStateOf 优化状态监听，只有关键状态变化时才重组
+    val showDatePicker by remember { derivedStateOf { viewModel.showDatePicker.value } }
+
+    // 使用 remember 缓存转换结果，避免每次重组都重新计算
+    val unselectableDates = remember(viewModel.unselectableDates.value) {
+        viewModel.unselectableDates.value?.mapNotNull { (first, second) ->
+            if (first != null && second != null) Pair(first, second) else null
+        }?.toSet() ?: emptySet()
+    }
 
     Box(
         modifier = Modifier
@@ -46,6 +52,10 @@ fun DatePicker(viewModel: ReservaViewModel) {
                 MaterialTheme.shapes.medium
             )
     ) {
+        // 使用 remember 缓存日期字符串，避免重复格式化
+        val startDate = remember(viewModel.startDate.value) { viewModel.startDate.value }
+        val endDate = remember(viewModel.endDate.value) { viewModel.endDate.value }
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -85,18 +95,15 @@ fun DatePicker(viewModel: ReservaViewModel) {
 
         // 弹出 DateRangePicker 对话框
         if (showDatePicker) {
+            // 将不可选日期预处理移到 ViewModel，使用 remember 缓存
             DateRangePickerModal(
                 onDateRangeSelected = { range ->
                     viewModel.updateDateRange(range.first, range.second)
                     viewModel.toggleDatePicker(false)
                 },
-                unselectableDates = unselectableDates.value?.mapNotNull { (first, second) ->
-                    if (first != null && second != null) Pair(first, second) else null
-                }?.toSet() ?: emptySet()
+                unselectableDates = unselectableDates,
+                onDismiss = { viewModel.toggleDatePicker(false) }
             )
-            {
-                viewModel.toggleDatePicker(false)
-            }
         }
     }
 }
@@ -105,25 +112,39 @@ fun DatePicker(viewModel: ReservaViewModel) {
 @Composable
 fun DateRangePickerModal(
     onDateRangeSelected: (Pair<Long?, Long?>) -> Unit,
-    unselectableDates: Set<Pair<Long, Long>>? = null,
+    unselectableDates: Set<Pair<Long, Long>>,
     onDismiss: () -> Unit
 ) {
-    val reservaViewModel = ReservaViewModel()
-    var isInvalidSelection by remember { mutableStateOf(true) }
-    // 从数据库获取不可选择的日期列表，若返回 null 则设置为空列表
-    val dateRangePickerState = androidx.compose.material3.rememberDateRangePickerState(
+    // 缓存日期区间预处理结果
+    val dateRanges = remember(unselectableDates) {
+        unselectableDates.map { it.first..it.second }.sortedBy { it.first }
+    }
+
+    val pickerState = androidx.compose.material3.rememberDateRangePickerState(
         selectableDates = object : SelectableDates {
             override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-                return unselectableDates?.none { utcTimeMillis < System.currentTimeMillis() || utcTimeMillis in it.first..it.second }
-                    ?: true
+                val isPast = utcTimeMillis < getStartOfToday()
+                val isInBlockedRange = dateRanges.any { range ->
+                    utcTimeMillis in range
+                }
+                return !isPast && !isInBlockedRange
             }
         }
     )
 
-    isInvalidSelection = !reservaViewModel.isDateRangeValid(
-        dateRangePickerState.selectedStartDateMillis,
-        dateRangePickerState.selectedEndDateMillis
-    )
+    // 验证逻辑优化：使用派生状态减少计算次数
+    val isInvalidSelection by remember(
+        pickerState.selectedStartDateMillis,
+        pickerState.selectedEndDateMillis
+    ) {
+        derivedStateOf {
+            !isDateRangeValid(
+                pickerState.selectedStartDateMillis,
+                pickerState.selectedEndDateMillis,
+                dateRanges
+            )
+        }
+    }
 
     androidx.compose.material3.DatePickerDialog(
         onDismissRequest = onDismiss,
@@ -132,8 +153,8 @@ fun DateRangePickerModal(
                 onClick = {
                     onDateRangeSelected(
                         Pair(
-                            dateRangePickerState.selectedStartDateMillis,
-                            dateRangePickerState.selectedEndDateMillis
+                            pickerState.selectedStartDateMillis,
+                            pickerState.selectedEndDateMillis
                         )
                     )
                 },
@@ -149,7 +170,7 @@ fun DateRangePickerModal(
         }
     ) {
         androidx.compose.material3.DateRangePicker(
-            state = dateRangePickerState,
+            state = pickerState,
             title = {
                 Text(
                     text = if (!isInvalidSelection) stringResource(R.string.date_picker_dialog_title) else stringResource(
@@ -165,6 +186,27 @@ fun DateRangePickerModal(
                 .padding(16.dp)
         )
     }
+}
+
+// 独立验证函数，便于测试和复用
+private fun isDateRangeValid(
+    start: Long?,
+    end: Long?,
+    dateRanges: List<ClosedRange<Long>>
+): Boolean {
+    if (start == null || end == null) return true
+    return dateRanges.none { range ->
+        start <= range.endInclusive && end >= range.start
+    }
+}
+
+fun getStartOfToday(): Long {
+    val calendar = Calendar.getInstance()
+    calendar.set(Calendar.HOUR_OF_DAY, 0)
+    calendar.set(Calendar.MINUTE, 0)
+    calendar.set(Calendar.SECOND, 0)
+    calendar.set(Calendar.MILLISECOND, 0)
+    return calendar.timeInMillis
 }
 
 @Preview

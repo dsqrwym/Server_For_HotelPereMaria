@@ -42,7 +42,8 @@ class ReservaViewModel @Inject constructor() : ViewModel() {
     init {
         // 初始化不可选择的日期范围
         unselectableDates.value = setOfNotNull(
-            convertDateToMillis("10/02/2025")?.let { Pair(it, convertDateToMillis("26/02/2025") ?: it) }
+            convertDateToMillis("10/02/2025")?.let { Pair(it, convertDateToMillis("16/02/2025") ?: it) },
+            convertDateToMillis("20/02/2025")?.let { Pair(it, convertDateToMillis("26/02/2025") ?: it) }
         )
         // 初始化示例额外服务（后续替换为 API 数据）
         extraServices = listOf(
@@ -78,19 +79,6 @@ class ReservaViewModel @Inject constructor() : ViewModel() {
     // 切换日期选择器的显示状态
     fun toggleDatePicker(show: Boolean) {
         showDatePicker.value = show
-    }
-
-    // 验证选中的日期范围是否有效
-    fun isDateRangeValid(startMillis: Long?, endMillis: Long?): Boolean {
-        return if (startMillis == null || endMillis == null) {
-            true // 如果日期未选择，则默认有效
-        } else {
-            unselectableDates.value?.none {
-                val first = it.first ?: return@none true
-                val second = it.second ?: return@none true
-                startMillis < first && endMillis > second
-            } ?: true
-        }
     }
 
     private fun validateForm(): Boolean {
