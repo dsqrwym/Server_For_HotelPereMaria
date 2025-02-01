@@ -15,13 +15,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hotelperemaria.ui.reserva.utils.DatePicker
+import com.hotelperemaria.ui.reserva.utils.ServicesList
 import com.hotelperemaria.ui.reserva.utils.Slider
 import com.hotelperemaria.ui.reserva.utils.TopBar
 
 @Composable
-fun ReservationScreen() {
-    val reservaViewModel = ReservaViewModel()
+fun ReservationScreen(reservaViewModel : ReservaViewModel = hiltViewModel()) {
     Column(
         Modifier
             .fillMaxSize()
@@ -36,6 +38,7 @@ fun ReservationScreen() {
         Slider("Huésped", reservaViewModel.maxHuesped) {
             reservaViewModel.huespedSelected = it
         }
+        ServicesList(reservaViewModel)
     }
 }
 
@@ -67,5 +70,6 @@ fun RoomInfoCard(info: String) {
 @Preview
 @Composable
 fun ReservationScreenPreview() {
-    ReservationScreen()
+    val reservaViewModel: ReservaViewModel = viewModel()
+    ReservationScreen(reservaViewModel)
 }
