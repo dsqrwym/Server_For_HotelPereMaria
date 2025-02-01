@@ -1,4 +1,4 @@
-package com.hotelperemaria.ui.reserva.utils
+package com.hotelperemaria.ui.reserva.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,8 +21,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.hotelperemaria.R
 import com.hotelperemaria.ui.reserva.ReservaViewModel
 
 @Composable
@@ -55,7 +57,7 @@ fun DatePicker(viewModel: ReservaViewModel) {
             Column {
                 // Fecha inicial
                 Text(
-                    text = "Fecha Inicial",
+                    text = stringResource(R.string.reservation_field_start_date),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -69,7 +71,7 @@ fun DatePicker(viewModel: ReservaViewModel) {
             Column {
                 // Fecha final
                 Text(
-                    text = "Fecha Final",
+                    text = stringResource(R.string.reservation_field_end_date),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -134,12 +136,12 @@ fun DateRangePickerModal(
                 },
                 enabled = !isInvalidSelection
             ) {
-                Text("OK")
+                Text(stringResource(R.string.dialog_confirm))
             }
         },
         dismissButton = {
             androidx.compose.material3.TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.dialog_cancel))
             }
         }
     ) {
@@ -147,7 +149,7 @@ fun DateRangePickerModal(
             state = dateRangePickerState,
             title = {
                 Text(
-                    text = if (!isInvalidSelection) "Seleccione rango de fechas" else "Rango de fechas inválido",
+                    text = if (!isInvalidSelection) stringResource(R.string.date_picker_dialog_title) else stringResource(R.string.date_picker_dialog_title_error),
                     color = if (!isInvalidSelection) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.error
                 )
             },

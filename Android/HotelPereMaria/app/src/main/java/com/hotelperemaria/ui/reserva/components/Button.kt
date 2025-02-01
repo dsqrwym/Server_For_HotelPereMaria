@@ -1,4 +1,4 @@
-package com.hotelperemaria.ui.reserva.utils
+package com.hotelperemaria.ui.reserva.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

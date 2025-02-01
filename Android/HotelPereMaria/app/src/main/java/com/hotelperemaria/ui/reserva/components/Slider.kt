@@ -1,4 +1,4 @@
-package com.hotelperemaria.ui.reserva.utils
+package com.hotelperemaria.ui.reserva.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -42,12 +42,14 @@ fun Slider(field: String, maxim: Float, onValueChange: (Float) -> Unit) {
             Text(
                 text = "$field: ",
                 style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1.2f),
+                maxLines = 1
             )
             Text(
                 text = state.toInt().toString(),
                 style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                maxLines = 1
             )
 
             androidx.compose.material3.Slider(
@@ -57,8 +59,8 @@ fun Slider(field: String, maxim: Float, onValueChange: (Float) -> Unit) {
                     state = it
                 },
                 valueRange = 1f..maxim,
-                steps = maxim.toInt() - 1,
-                modifier = Modifier.weight(3f)
+                steps = maxim.toInt() - 2,
+                modifier = Modifier.weight(3.3f)
             )
         }
     }

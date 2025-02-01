@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">Hotel Pere Maria</string>
+
+    <string name="app_date_format">dd/MM/yyyy</string>
+    <string name="api_date_format">yyyy-MM-dd</string>
+
+    <string name="loading_state_loading">Cargando</string>
+
+    <string name="top_bar_reservation">Reservación</string>
+
+    <string name="alert_dialog_error_title_missing_data">Datos incompletos</string>
+    <string name="alert_dialog_error_message_missing_data">Por favor, complete todos los campos requeridos.</string>
+
+    <string name="date_picker_dialog_title">Seleccione un rango de fechas</string>
+    <string name="date_picker_dialog_title_error">Rango inválido</string>
+
+    <string name="dialog_confirm">Aceptar</string>
+    <string name="dialog_cancel">Cancelar</string>
+
+    <string name="reservation_field_guest">Número de huéspedes</string>
+    <string name="reservation_field_start_date">Fecha de entrada</string>
+    <string name="reservation_field_end_date">Fecha de salida</string>
+    <string name="reservation_field_price">Precio por noche</string>
+    <string name="reservation_field_total_price">Total a pagar</string>
+    <string name="reservation_field_additional_services">Servicios adicionales</string>
+    <string name="reservation_field_additional_services_checked">Seleccionado</string>
+    <string name="reservation_field_additional_services_unchecked">No seleccionado</string>
+    <string name="reservation_button_confirm">Confirmar</string>
 </resources>

@@ -21,7 +21,7 @@ class ReservaViewModel @Inject constructor() : ViewModel() {
     var endDate = mutableStateOf("")
     var showDatePicker = mutableStateOf(false)
     var unselectableDates = mutableStateOf<Set<Pair<Long, Long>>?>(null)
-    var huespedSelected by mutableFloatStateOf(0f)
+    var huespedSelected by mutableFloatStateOf(1f)
     var maxHuesped by mutableFloatStateOf(10f)
 
     //额外服务相关状态
@@ -30,6 +30,16 @@ class ReservaViewModel @Inject constructor() : ViewModel() {
     val nightlyPrice: BigDecimal? = BigDecimal.valueOf(50) // 后续可从 API 获取
     private var selectedDays: BigDecimal? by mutableStateOf(BigDecimal.ZERO) // 根据日期选择计算
 
+    // 弹窗状态
+    var showErrorDialog by mutableStateOf(false)
+    var errorMessage by mutableStateOf("")
+
+    // 计算总价格
+    val totalPrice: BigDecimal
+        get() = selectedServices.sumOf { it.precio } + (nightlyPrice!!.multiply(selectedDays))
+
+    //加载动画
+    var isLoading by mutableStateOf(false)
     // 初始化示例数据（后续替换为 API 调用)
     init {
         // 初始化不可选择的日期范围
@@ -56,10 +66,6 @@ class ReservaViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    // 计算总价格
-    val totalPrice: BigDecimal
-        get() = selectedServices.sumOf { it.precio } + (nightlyPrice!!.multiply(selectedDays))
-
     // 更新选中的日期范围
     fun updateDateRange(startMillis: Long?, endMillis: Long?) {
         startDate.value = startMillis?.let { convertMillisToDate(it) } ?: ""
@@ -81,6 +87,35 @@ class ReservaViewModel @Inject constructor() : ViewModel() {
         return startMillis == null || endMillis == null || unselectableDates.value?.none {
             startMillis < it.first && endMillis > it.second
         } ?: true
+    }
+
+    private fun validateForm(): Boolean {
+        val errors = mutableListOf<String>()
+
+        if (startDate.value.isEmpty() || endDate.value.isEmpty()) {
+            errors.add("Por favor, introduce fecha valido")
+        }
+
+        if (huespedSelected < 1) {
+            errors.add("Por favor, selecciona un numero valido de huespedes")
+        }
+
+        if (errors.isNotEmpty()) {
+            errorMessage = errors.joinToString("\n")
+            showErrorDialog = true
+            return false
+        }
+        return true
+    }
+
+    fun confirmReservation() {
+        if (validateForm()) {
+            createReservation()
+        }
+    }
+
+    private fun createReservation() {
+        isLoading = true
     }
 
     // 将毫秒转换为日期字符串

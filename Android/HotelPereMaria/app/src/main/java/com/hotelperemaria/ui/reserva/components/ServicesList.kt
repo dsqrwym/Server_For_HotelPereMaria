@@ -1,4 +1,4 @@
-package com.hotelperemaria.ui.reserva.utils
+package com.hotelperemaria.ui.reserva.components
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.EaseIn
@@ -41,11 +41,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.hotelperemaria.R
 import com.hotelperemaria.data.model.ExtraService
 import com.hotelperemaria.ui.reserva.ReservaViewModel
 import java.math.BigDecimal
@@ -70,7 +72,7 @@ fun ServicesList(reservaViewModel: ReservaViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Precio por Noche: ${reservaViewModel.nightlyPrice}€",
+            text = "${stringResource(R.string.reservation_field_price)}: ${reservaViewModel.nightlyPrice}€",
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.secondary
@@ -118,7 +120,7 @@ fun ServicesList(reservaViewModel: ReservaViewModel) {
         )
         // 最后一行：总价格
         Text(
-            text = "Precio total: ${reservaViewModel.totalPrice}€",
+            text = "${stringResource(R.string.reservation_field_total_price)}: ${reservaViewModel.totalPrice}€",
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary
@@ -181,7 +183,7 @@ fun ServiceItem(
             ) { checked ->
                 Icon(
                     if (checked) Icons.Default.Check else Icons.Default.Close,
-                    contentDescription = null,
+                    contentDescription = if (checked) stringResource(R.string.reservation_field_additional_services_checked) else stringResource(R.string.reservation_field_additional_services_unchecked),
                     modifier = Modifier
                         .size(16.dp)
                         .align(Alignment.Center),
