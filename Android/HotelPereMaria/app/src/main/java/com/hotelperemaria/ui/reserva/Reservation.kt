@@ -1,6 +1,7 @@
 package com.hotelperemaria.ui.reserva
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.tooling.preview.Preview
@@ -18,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hotelperemaria.ui.reserva.utils.DatePicker
+import com.hotelperemaria.ui.reserva.utils.ReservationButton
 import com.hotelperemaria.ui.reserva.utils.ServicesList
 import com.hotelperemaria.ui.reserva.utils.Slider
 import com.hotelperemaria.ui.reserva.utils.TopBar
@@ -27,18 +30,22 @@ fun ReservationScreen(reservaViewModel : ReservaViewModel = hiltViewModel()) {
     Column(
         Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.background),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
         TopBar("Reservacion") {
             println("Back")
         }
-        Spacer(Modifier.padding(18.dp))
         RoomInfoCard("Informacion de la habitacion")
         DatePicker(reservaViewModel)
         Slider("Huésped", reservaViewModel.maxHuesped) {
             reservaViewModel.huespedSelected = it
         }
         ServicesList(reservaViewModel)
+        ReservationButton("Confirmar") {
+
+        }
     }
 }
 

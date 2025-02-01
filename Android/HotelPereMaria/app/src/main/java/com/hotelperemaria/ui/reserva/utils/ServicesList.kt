@@ -53,8 +53,10 @@ import java.math.BigDecimal
 
 @Composable
 fun ServicesList(reservaViewModel: ReservaViewModel) {
-    val sortedServices =
-        reservaViewModel.extraServices.sortedBy { !reservaViewModel.selectedServices.contains(it) }
+    val sortedServices = reservaViewModel.extraServices.sortedWith(
+        compareByDescending<ExtraService> { reservaViewModel.selectedServices.contains(it) } // 先按是否选中排序（已选在前）
+            .thenBy { it.nombre } // 然后按名字排序（升序）
+    )
     Column(
         Modifier
             .fillMaxWidth()
@@ -73,16 +75,22 @@ fun ServicesList(reservaViewModel: ReservaViewModel) {
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.secondary
         )
-
+        HorizontalDivider(
+            Modifier.padding(top = 18.dp),
+            color = Color.LightGray,
+            thickness = 1.dp
+        )
         // 额外服务列表（可滑动）
         if (sortedServices.isNotEmpty()) {
             LazyColumn(
                 modifier = Modifier
-                    .padding(vertical = 18.dp)
                     .fillMaxWidth()
                     .heightIn(max = 200.dp) // 限制最大高度
             ) {
                 itemsIndexed(sortedServices) { index, service ->
+                    if (index == 0){
+                        Spacer(modifier = Modifier.height(15.dp))
+                    }
                     val isChecked = reservaViewModel.selectedServices.contains(service)
                     ServiceItem(
                         extraService = service,
@@ -103,6 +111,11 @@ fun ServicesList(reservaViewModel: ReservaViewModel) {
                 }
             }
         }
+        HorizontalDivider(
+            Modifier.padding(bottom = 18.dp),
+            color = Color.LightGray,
+            thickness = 1.dp
+        )
         // 最后一行：总价格
         Text(
             text = "Precio total: ${reservaViewModel.totalPrice}€",
