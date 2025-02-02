@@ -38,7 +38,7 @@ fun loginScreen(viewModel: loginViewModel, navRegistro: () -> Unit, navPrincipal
     Box(
         Modifier
             .fillMaxSize()
-            .background(color = colorResource(id = color.white))
+            .background(color = colorResource(id = color.fondo))
     ) {
         Login(
             Modifier.align(Alignment.Center),
@@ -86,7 +86,7 @@ private  fun Login(
             CircularProgressIndicator(Modifier.align(Alignment.Center))
         }
     }else{
-        Column(modifier) {
+        Column(modifier = modifier.padding(horizontal = 16.dp)) {
             HeaderImage()
             Spacer(modifier = Modifier.padding(16.dp))
             EmailField(email) { viewModel.onLoginChanged(it, pas) }
@@ -110,12 +110,12 @@ private  fun Login(
 private fun LogBotn(loginEnb: Boolean, onLoginSelected: () -> Unit) {
     Button(onClick = {onLoginSelected()}, modifier = Modifier
         .fillMaxWidth()
-        .height(48.dp),
+        .height(40.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = colorResource(id = color.teal_200),
-            disabledContainerColor = colorResource(id= color.teal_700),
-            contentColor = colorResource(id = color.black),
-            disabledContentColor = colorResource(id = color.purple_500)
+            containerColor = colorResource(id = color.btnPrin),
+            disabledContainerColor = colorResource(id= color.borde),
+            contentColor = colorResource(id = color.negro),
+            disabledContentColor = colorResource(id = color.blanco)
         ), enabled = loginEnb
     ) {
         Text(text = "Iniciar sesion")
@@ -125,11 +125,11 @@ private fun LogBotn(loginEnb: Boolean, onLoginSelected: () -> Unit) {
 @Composable
 private fun resgistrarse(align: Modifier, registro: () -> Unit) {
     Text(
-        text = "Quieres registarte??",
+        text = "¿Quieres registarte?",
         modifier = align.clickable {registro()},
         fontSize = 12.sp,
         fontWeight = FontWeight.Bold,
-        color = Color(0xFFFB9600)
+        color = Color(0xFFFF9933)
 
     )
 }
@@ -141,8 +141,7 @@ private fun PaswordField(pas: String, onTextFieldChanged: (String) -> Unit) {
         value = pas,
         onValueChange = {onTextFieldChanged(it)},
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+            .fillMaxWidth(),
         placeholder = {
             Text(text = "Contraseña")
         },
@@ -150,8 +149,8 @@ private fun PaswordField(pas: String, onTextFieldChanged: (String) -> Unit) {
         singleLine = true,
         maxLines = 1,
         colors = TextFieldDefaults.textFieldColors(
-            containerColor = colorResource(color.black),  // Color de fondo del TextField
-            focusedIndicatorColor = colorResource(color.purple_500), // Color del borde cuando está enfocado
+            containerColor = colorResource(color.textbox_focused),  // Color de fondo del TextField
+            focusedIndicatorColor = colorResource(color.negro), // Color del borde cuando está enfocado
             unfocusedIndicatorColor = Color.Gray // Color del borde cuando no está enfocado
         )
 
@@ -167,15 +166,15 @@ private fun EmailField(email: String, onTextFieldChanged:(String) ->Unit) {
         onValueChange = {onTextFieldChanged(it)},
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            ,
         placeholder = {
-            Text(text = "Email")
+            Text(text = "Email/Username")
         }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         maxLines = 1,
         colors = TextFieldDefaults.textFieldColors(
-            containerColor = colorResource(color.black),  // Color de fondo del TextField
-            focusedIndicatorColor = colorResource(color.purple_500), // Color del borde cuando está enfocado
+            containerColor = colorResource(color.textbox_focused),  // Color de fondo del TextField
+            focusedIndicatorColor = colorResource(color.negro), // Color del borde cuando está enfocado
             unfocusedIndicatorColor = Color.Gray // Color del borde cuando no está enfocado
         )
 
