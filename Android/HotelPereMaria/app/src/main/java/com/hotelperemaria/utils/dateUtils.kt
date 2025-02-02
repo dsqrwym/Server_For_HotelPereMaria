@@ -4,6 +4,7 @@ import android.content.Context
 import com.hotelperemaria.R
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
@@ -65,5 +66,10 @@ object DateUtils {
             this.timeZone = timeZone
             iso8601Format.set(this)
         }
+    }
+
+    fun isDateTodayOrAfter(date: Instant): Boolean {
+        val today = Instant.now()
+        return date >= today
     }
 }

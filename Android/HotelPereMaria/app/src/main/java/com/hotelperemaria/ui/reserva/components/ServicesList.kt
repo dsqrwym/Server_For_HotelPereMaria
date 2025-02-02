@@ -72,7 +72,7 @@ fun ServicesList(reservaViewModel: ReservaViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "${stringResource(R.string.reservation_field_price)}: ${reservaViewModel.nightlyPrice}€",
+            text = "${stringResource(R.string.reservation_field_nightly_price)}: ${reservaViewModel.nightlyPrice}€",
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.secondary

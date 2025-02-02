@@ -9,7 +9,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -18,10 +21,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil3.util.Logger
 import com.hotelperemaria.R
 import com.hotelperemaria.ui.reserva.components.DatePicker
 import com.hotelperemaria.ui.reserva.components.ReservationButton
@@ -50,7 +55,7 @@ fun ReservationScreen(reservaViewModel : ReservaViewModel = hiltViewModel()) {
         }
         RoomInfoCard("Informacion de la habitacion")
         DatePicker(reservaViewModel)
-        Slider(stringResource(R.string.reservation_field_guest), reservaViewModel.maxHuesped) {
+        Slider(stringResource(R.string.reservation_field_guests), reservaViewModel.maxHuesped) {
             reservaViewModel.huespedSelected = it
         }
         ServicesList(reservaViewModel)
@@ -94,8 +99,9 @@ fun ErrorDialog(
 ){
     AlertDialog(
         onDismissRequest = onDismiss,
+        icon = { Icon(Icons.Default.Warning, "Error", tint = MaterialTheme.colorScheme.error) },
         title = { Text(stringResource(R.string.alert_dialog_error_title_missing_data), color = MaterialTheme.colorScheme.error) },
-        text = { Text(message, color = MaterialTheme.colorScheme.onSurface) },
+        text = { Text(message, Modifier.fillMaxWidth() ,color = MaterialTheme.colorScheme.onSurface, textAlign = TextAlign.Center) },
         confirmButton = {
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.dialog_confirm), color = MaterialTheme.colorScheme.primary)
