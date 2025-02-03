@@ -65,6 +65,9 @@ namespace WPFIntermodular
             else
             {
                 buscarEditBtn.Content = "Crear";
+                addHabitaciones a = new addHabitaciones(null, false);
+                this.Hide();
+                a.Show();
 
             }
         }

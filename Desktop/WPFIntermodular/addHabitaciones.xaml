@@ -5,6 +5,8 @@
 
 
     <Grid>
+        <Image x:Name="imageDisplay"></Image>
+
         <Border CornerRadius="10" Style="{StaticResource Border}" Width="1000" Height="600" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="30" BorderBrush="#E5E5E5" BorderThickness="1">
             <Grid>
                 <Label Style="{StaticResource Titulo}" Content="Añadir habitación"   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
@@ -46,7 +48,7 @@
                     </StackPanel>
 
                     <Grid Grid.Row="2">
-                        
+
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
@@ -55,7 +57,7 @@
 
                         <StackPanel>
                             <TextBlock Text="Seleccionar imagen principal" Style="{StaticResource SubTitle}"  FontWeight="Bold" Margin="0,0,0,5" Width="299" />
-                            <Button x:Name="imagen" Content="Seleccionar archivo" HorizontalContentAlignment="Left" Width="302"     />
+                            <Button x:Name="imagen" Content="Seleccionar archivo" HorizontalContentAlignment="Left" Width="302" Click="imagen_Click"     />
                         </StackPanel>
                         <StackPanel Grid.Column="1">
                             <TextBlock Text="Opciones" Style="{StaticResource SubTitle}"  Margin="0,0,0,5" Width="91"/>
@@ -71,7 +73,7 @@
                     </Grid>
                 </Grid>
 
-                <Button  Style="{StaticResource BtnPrin}"   x:Name="botonFinal" Width="150" Height="50" HorizontalAlignment="Right" VerticalAlignment="Bottom"  FontWeight="Bold" Margin="0,20,0,0" Content="asidhoas"/>
+                <Button  Style="{StaticResource BtnPrin}"   x:Name="botonFinal" Width="150" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top"  FontWeight="Bold" Margin="0,488,0,0" Content="Crear" Click="botonFinal_Click"/>
             </Grid>
         </Border>
     </Grid>
