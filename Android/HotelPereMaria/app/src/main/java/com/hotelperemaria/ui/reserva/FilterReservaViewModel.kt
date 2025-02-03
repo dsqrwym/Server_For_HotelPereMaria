@@ -1,7 +1,5 @@
 package com.hotelperemaria.ui.reserva
 
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import com.hotelperemaria.data.model.ExtraService
@@ -17,13 +15,12 @@ import java.time.Instant
 import javax.inject.Inject
 
 
-// 更新 SortingOption 定义
 enum class SortingOption(val field: String, val ascending: Boolean) {
     PRICE_ASC("price", true),
     PRICE_DESC("price", false),
     DATE_ASC("date", true),
     DATE_DESC("date", false),
-    ROOM_TYPE_ASC("roomType", true),  // 注意这里的命名
+    ROOM_TYPE_ASC("roomType", true),
     ROOM_TYPE_DESC("roomType", false),
     EXTRAS_ASC("extras", true),
     EXTRAS_DESC("extras", false);
@@ -38,25 +35,76 @@ enum class SortingOption(val field: String, val ascending: Boolean) {
     }
 }
 
-data class FilterReservaUiState(
+// 状态分层架构
+sealed interface FilterState {
+    // 基础状态接口
+    val availableServices: List<String>
+    val availableRoomTypes: List<String>
+}
+
+data class DateFilterState(
     val startDate: String = "",
     val endDate: String = "",
     val selectedDateRange: Pair<Long?, Long?>? = null,
-    val showDatePicker: Boolean = false,
+    val showPicker: Boolean = false
+) : FilterState {
+    override val availableServices: List<String> = emptyList()
+    override val availableRoomTypes: List<String> = emptyList()
+}
+
+data class PriceFilterState(
     val priceRange: ClosedFloatingPointRange<Float> = 0f..5000f,
-    var selectedPriceRange: ClosedFloatingPointRange<Float> = 0f..5000f,
-    val activeSorts: List<SortingOption> = emptyList(),
-    val selectedServices: List<String> = emptyList(),
-    val selectedRoomType: String? = null,
-    val availableServices: List<String> = emptyList(),
-    val availableRoomTypes: List<String> = emptyList(),
-)
+    var selectedPrice: ClosedFloatingPointRange<Float> = 0f..5000f
+) : FilterState {
+    override val availableServices: List<String> = emptyList()
+    override val availableRoomTypes: List<String> = emptyList()
+}
+
+data class ServiceFilterState(
+    val selectedServices: List<String> = emptyList()
+) : FilterState {
+    override val availableServices: List<String> = emptyList()
+    override val availableRoomTypes: List<String> = emptyList()
+}
+
+data class RoomTypeFilterState(
+    val selectedRoomType: String? = null
+) : FilterState {
+    override val availableServices: List<String> = emptyList()
+    override val availableRoomTypes: List<String> = emptyList()
+}
+
+data class SortState(
+    val activeSorts: List<SortingOption> = emptyList()
+) : FilterState {
+    override val availableServices: List<String> = emptyList()
+    override val availableRoomTypes: List<String> = emptyList()
+}
+
+data class CompositeFilterState(
+    override val availableServices: List<String>,
+    override val availableRoomTypes: List<String>,
+    val dateState: DateFilterState = DateFilterState(),
+    val priceState: PriceFilterState = PriceFilterState(),
+    val serviceState: ServiceFilterState = ServiceFilterState(),
+    val roomTypeState: RoomTypeFilterState = RoomTypeFilterState(),
+    val sortState: SortState = SortState()
+) : FilterState
 
 
 @HiltViewModel
 class FilterReservaViewModel @Inject constructor() : ViewModel() {
-    private val _uiState = MutableStateFlow(FilterReservaUiState())
-    val uiState: StateFlow<FilterReservaUiState> = _uiState.asStateFlow()
+    private val _state = MutableStateFlow<FilterState>(
+        CompositeFilterState(
+            availableServices = emptyList(),
+            availableRoomTypes = emptyList()
+        )
+    )
+    val state: StateFlow<FilterState> = _state.asStateFlow()
+
+    // 添加过滤排序后的结果状态
+    private val _filteredReservas = MutableStateFlow<List<Reserva>>(emptyList())
+    val filteredReservas: StateFlow<List<Reserva>> = _filteredReservas.asStateFlow()
 
     // 模拟数据
     private val _mockReservas = mutableStateListOf(
@@ -77,67 +125,145 @@ class FilterReservaViewModel @Inject constructor() : ViewModel() {
         // 添加更多模拟数据...
     )
 
+    private fun loadInitialData() {
+        _state.update {
+            (it as CompositeFilterState).copy(
+                availableServices = _mockReservas.flatMap { r ->
+                    r.extrasSeleccionados.map { e -> e.nombre }
+                }.distinct(),
+                availableRoomTypes = _mockReservas.map { data -> data.tipo_habitacion }
+                    .distinct()
+            )
+        }
+    }
+
     init {
-        _uiState.value = _uiState.value.copy(
-            availableServices = _mockReservas.flatMap { it.extrasSeleccionados.map { e -> e.nombre } }
-                .distinct(),
-            availableRoomTypes = _mockReservas.map { it.tipo_habitacion }.distinct()
-        )
+        loadInitialData()
     }
-    fun updateSorts(newSort: SortingOption) {
-        /*_activeSorts.update { currentSorts ->
-            currentSorts
-                .filterNot { it.field == newSort.field }
-                .plus(newSort)
-        }*/
-        _uiState.update {
-            it.copy(activeSorts = it.activeSorts.filterNot { s -> s.field == newSort.field }.plus(newSort))
+
+    private fun applyFilters() {
+        val currentState = _state.value as CompositeFilterState
+        val allReservas = _mockReservas.toList()
+
+        // 应用日期过滤
+        val dateFiltered = applyDateFilter(allReservas, currentState.dateState)
+
+        // 应用价格过滤
+        val priceFiltered = applyPriceFilter(dateFiltered, currentState.priceState)
+
+        // 应用服务过滤
+        val serviceFiltered = applyServiceFilter(priceFiltered, currentState.serviceState)
+
+        // 应用房间类型过滤
+        val roomTypeFiltered = applyRoomTypeFilter(serviceFiltered, currentState.roomTypeState)
+
+        // 应用排序
+        val sortedReservas = applySorting(roomTypeFiltered, currentState.sortState)
+
+        _filteredReservas.value = sortedReservas
+    }
+
+    // 各个过滤条件的具体实现
+    private fun applyDateFilter(
+        reservas: List<Reserva>,
+        dateState: DateFilterState
+    ): List<Reserva> {
+        val (startMillis, endMillis) = dateState.selectedDateRange ?: return reservas
+
+        return reservas.filter { reserva ->
+            val startDate = startMillis?.let { Instant.ofEpochMilli(it) }
+            val endDate = endMillis?.let { Instant.ofEpochMilli(it) }
+
+            // 检查预定时间段是否与筛选范围有重叠
+            reserva.fecha_entrada < endDate && reserva.fecha_salida > startDate
         }
     }
 
-    fun removeSort(sort: SortingOption) {
-        _uiState.update {
-            it.copy(activeSorts = it.activeSorts.filterNot { s -> s == sort })
+    private fun applyPriceFilter(
+        reservas: List<Reserva>,
+        priceState: PriceFilterState
+    ): List<Reserva> {
+        return reservas.filter { reserva ->
+            reserva.precio_total in BigDecimal.valueOf(priceState.selectedPrice.start.toDouble())..BigDecimal.valueOf(
+                priceState.selectedPrice.endInclusive.toDouble()
+            )
         }
     }
 
-    fun removeSortsByField(field: String) {
-        _uiState.update {
-            it.copy(activeSorts = it.activeSorts.filterNot { s -> s.field == field })
-        }
-    }
+    private fun applyServiceFilter(
+        reservas: List<Reserva>,
+        serviceState: ServiceFilterState
+    ): List<Reserva> {
+        val selectedServices = serviceState.selectedServices
+        if (selectedServices.isEmpty()) return reservas
 
-    fun updateSelectedServices(services: List<String>) {
-        _uiState.update { it.copy(selectedServices = services) }
-    }
-
-    fun clearSelectedServices() {
-        _uiState.update { it.copy(selectedServices = emptyList()) }
-    }
-
-
-    // 筛选后的数据
-    val filteredReservas by derivedStateOf {
-        _mockReservas
-            .filter { reserva ->
-                // 日期筛选
-                (uiState.value.selectedDateRange?.let { (start, end) ->
-                    (start == null || reserva.fecha_entrada.toEpochMilli() >= start) &&
-                            (end == null || reserva.fecha_salida.toEpochMilli() <= end)
-                } ?: true) &&
-
-                        // 服务筛选
-                        (uiState.value.selectedServices.isEmpty() || uiState.value.selectedServices.all { service ->
-                            reserva.extrasSeleccionados.any { it.nombre == service }
-                        }) &&
-
-                        // 房型筛选
-                        (uiState.value.selectedRoomType == null || reserva.tipo_habitacion == uiState.value.selectedRoomType) &&
-
-                        // 价格筛选
-                        (reserva.precio_total.toFloat() in uiState.value.selectedPriceRange)
+        return reservas.filter { reserva ->
+            selectedServices.all { serviceName ->
+                reserva.extrasSeleccionados.any { it.nombre == serviceName }
             }
-            .sortedWith(compareByMultiple(uiState.value.activeSorts))
+        }
+    }
+
+    private fun applyRoomTypeFilter(
+        reservas: List<Reserva>,
+        roomTypeState: RoomTypeFilterState
+    ): List<Reserva> {
+        return roomTypeState.selectedRoomType?.let { selectedType ->
+            reservas.filter { it.tipo_habitacion == selectedType }
+        } ?: reservas
+    }
+
+    // 排序实现
+    private fun applySorting(reservas: List<Reserva>, sortState: SortState): List<Reserva> {
+        val sorts = sortState.activeSorts
+        if (sorts.isEmpty()) return reservas
+
+        return reservas.sortedWith(compareByMultiple(sorts))
+    }
+
+    private fun updateDateState(updater: (DateFilterState) -> DateFilterState) {
+        _state.update { current ->
+            (current as CompositeFilterState).copy(
+                dateState = updater(current.dateState)
+            )
+        }
+        applyFilters()
+    }
+
+    private fun updatePriceState(updater: (PriceFilterState) -> PriceFilterState) {
+        _state.update { current ->
+            (current as CompositeFilterState).copy(
+                priceState = updater(current.priceState)
+            )
+        }
+        applyFilters()
+    }
+
+    private fun updateServiceState(updater: (ServiceFilterState) -> ServiceFilterState) {
+        _state.update { current ->
+            (current as CompositeFilterState).copy(
+                serviceState = updater(current.serviceState)
+            )
+        }
+        applyFilters()
+    }
+
+    private fun updateRoomTypeState(updater: (RoomTypeFilterState) -> RoomTypeFilterState) {
+        _state.update { current ->
+            (current as CompositeFilterState).copy(
+                roomTypeState = updater(current.roomTypeState)
+            )
+        }
+        applyFilters()
+    }
+
+    private fun updateSortState(updater: (SortState) -> SortState) {
+        _state.update { current ->
+            (current as CompositeFilterState).copy(
+                sortState = updater(current.sortState)
+            )
+        }
+        applyFilters()
     }
 
     private fun compareByMultiple(sorts: List<SortingOption>): Comparator<Reserva> {
@@ -157,30 +283,15 @@ class FilterReservaViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun updateSelectedRoomType(roomType: String?) {
-        _uiState.update { it.copy(selectedRoomType = roomType) }
-    }
-
-    fun updateSelectedPrice(priceRange: ClosedFloatingPointRange<Float>) {
-        _uiState.update { it.copy(selectedPriceRange = priceRange) }
-    }
-
-    fun clearSlectedPrice() {
-        _uiState.update { it.copy(selectedPriceRange = it.priceRange) }
-    }
-
-    fun clearDates() {
-        _uiState.update { it.copy(startDate = "", endDate = "", selectedDateRange = null) }
-        /*startDate.value = ""
-        endDate.value = ""
-        selectedDateRange.value = null*/
+    fun toggleDatePicker(show: Boolean) {
+        updateDateState { it.copy(showPicker = show) }
     }
 
     fun updateDateRange(startMillis: Long?, endMillis: Long?) {
-       /* startDate.value = startMillis?.let { convertMillisToLocalDate(it) } ?: ""
-        endDate.value = endMillis?.let { convertMillisToLocalDate(it) } ?: ""*/
-        _uiState.update {uiState ->
-            uiState.copy(
+        /* startDate.value = startMillis?.let { convertMillisToLocalDate(it) } ?: ""
+         endDate.value = endMillis?.let { convertMillisToLocalDate(it) } ?: ""*/
+        updateDateState { dateState ->
+            dateState.copy(
                 startDate = startMillis?.let { convertMillisToLocalDate(it) } ?: "",
                 endDate = endMillis?.let { convertMillisToLocalDate(it) } ?: "",
                 selectedDateRange = Pair(startMillis, endMillis)
@@ -188,7 +299,55 @@ class FilterReservaViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun toggleDatePicker(show: Boolean) {
-        _uiState.update { it.copy(showDatePicker = show) }
+    fun clearDates() {
+        updateDateState { it.copy(startDate = "", endDate = "", selectedDateRange = null) }
+        /*startDate.value = ""
+        endDate.value = ""
+        selectedDateRange.value = null*/
     }
+
+    fun updateSorts(newSort: SortingOption) {
+        /*_activeSorts.update { currentSorts ->
+            currentSorts
+                .filterNot { it.field == newSort.field }
+                .plus(newSort)
+        }*/
+        updateSortState {
+            it.copy(activeSorts = it.activeSorts.filterNot { s -> s.field == newSort.field }
+                .plus(newSort))
+        }
+    }
+
+    fun removeSort(sort: SortingOption) {
+        updateSortState { it.copy(activeSorts = it.activeSorts.filterNot { s -> s == sort }) }
+    }
+
+    fun removeSortsByField(field: String) {
+        updateSortState { it.copy(activeSorts = it.activeSorts.filterNot { s -> s.field == field }) }
+    }
+
+
+    fun updateSelectedServices(services: List<String>) {
+        updateServiceState { it.copy(selectedServices = services) }
+    }
+
+    fun clearSelectedServices() {
+        updateServiceState { it.copy(selectedServices = emptyList()) }
+    }
+
+
+    fun updateSelectedRoomType(roomType: String?) {
+        updateRoomTypeState { it.copy(selectedRoomType = roomType) }
+    }
+
+
+    fun updateSelectedPrice(priceRange: ClosedFloatingPointRange<Float>) {
+        updatePriceState { it.copy(selectedPrice = priceRange) }
+    }
+
+    fun clearSlectedPrice() {
+        updatePriceState { it.copy(selectedPrice = it.priceRange) }
+    }
+
+
 }
