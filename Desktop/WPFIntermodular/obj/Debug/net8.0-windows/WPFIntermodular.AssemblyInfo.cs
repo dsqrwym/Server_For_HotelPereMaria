@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WPFIntermodular")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5fc584074752eb8e0a5b1842b95491bb9f596aea")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+092024f738ad574dd6b003d072eb883ac2595eba")]
 [assembly: System.Reflection.AssemblyProductAttribute("WPFIntermodular")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WPFIntermodular")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

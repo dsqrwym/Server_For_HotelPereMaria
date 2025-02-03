@@ -1,19 +1,14 @@
 ﻿<Window x:Class="WPFIntermodular.addHabitaciones"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Add/Edit Room" Height="969" Width="1371" WindowStartupLocation="CenterScreen" >
+        Title="Add/Edit Room" Width="1000" Height="600" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize">
 
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Dictionary1.xaml"></ResourceDictionary>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
-    <Grid>
-        <Border CornerRadius="10" Style="{StaticResource Border}" Width="1000" Height="600" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="30" BorderBrush="#E5E5E5" BorderThickness="1">
+    <Border CornerRadius="10" Style="{StaticResource Border}" Width="1000" Height="600" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="30" BorderBrush="#E5E5E5" BorderThickness="1">
+
+        <Grid Margin="10,10,0,0">
+     
             <Grid>
-                <TextBlock Style="{StaticResource Titulo}" Text="Añadir habitación"   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
+                <Label Style="{StaticResource Titulo}" Content="Añadir habitación"   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
 
                 <Button Content="X" Width="30" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" Foreground="Black" FontSize="14" FontWeight="Bold" BorderBrush="Transparent"/>
 
@@ -36,12 +31,13 @@
                         </StackPanel>
 
                         <StackPanel Grid.Column="1">
-                            <TextBlock Style="{StaticResource SubTitle}" Text="Huéspedes"  Margin="0,0,0,5"/>
-                            <ComboBox x:Name="huespedesCombo" Height="40">
-                                <ComboBoxItem Content="1"/>
-                                <ComboBoxItem Content="2"/>
-                                <ComboBoxItem Content="3"/>
-                                <ComboBoxItem Content="4"/>
+                            <TextBlock Style="{StaticResource SubTitle}" Text="Tipos"  Margin="0,0,0,5"/>
+                            <ComboBox x:Name="tipoCombo" Height="40">
+                                <ComboBoxItem>Individual</ComboBoxItem>
+                                <ComboBoxItem>Estandar</ComboBoxItem>
+                                <ComboBoxItem>Lujo</ComboBoxItem>
+                                <ComboBoxItem>Suite</ComboBoxItem>
+                                <ComboBoxItem>Duplex</ComboBoxItem>
                             </ComboBox>
                         </StackPanel>
                     </Grid>
@@ -52,7 +48,7 @@
                     </StackPanel>
 
                     <Grid Grid.Row="2">
-                        
+
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
@@ -61,7 +57,7 @@
 
                         <StackPanel>
                             <TextBlock Text="Seleccionar imagen principal" Style="{StaticResource SubTitle}"  FontWeight="Bold" Margin="0,0,0,5" Width="299" />
-                            <Button x:Name="imagen" Content="Seleccionar archivo" HorizontalContentAlignment="Left" Width="302"     />
+                            <Button x:Name="imagen" Content="Seleccionar archivo" HorizontalContentAlignment="Left" Width="302" Click="imagen_Click"     />
                         </StackPanel>
                         <StackPanel Grid.Column="1">
                             <TextBlock Text="Opciones" Style="{StaticResource SubTitle}"  Margin="0,0,0,5" Width="91"/>
@@ -77,8 +73,9 @@
                     </Grid>
                 </Grid>
 
-                <Button  Style="{StaticResource BtnPrin}"   x:Name="botonFinal" Width="150" Height="50" HorizontalAlignment="Right" VerticalAlignment="Bottom"  FontWeight="Bold" Margin="0,20,0,0" Content="asidhoas"/>
+                <Button  Style="{StaticResource BtnPrin}"   x:Name="botonFinal" Width="150" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top"  FontWeight="Bold" Margin="0,488,0,0" Content="Crear" Click="botonFinal_Click"/>
             </Grid>
-        </Border>
     </Grid>
+    </Border>
+
 </Window>
