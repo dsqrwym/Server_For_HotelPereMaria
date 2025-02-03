@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -36,6 +37,7 @@ import com.hotelperemaria.ui.reserva.components.DateRangePickerModal
 
 @Composable
 fun FilterBar(
+    modifier: Modifier = Modifier,
     viewModel: FilterReservaViewModel
 ) {
     val state by viewModel.state.collectAsState()
@@ -43,19 +45,15 @@ fun FilterBar(
 
     var expanded by remember { mutableStateOf(false) }
     Column(
-        modifier = Modifier
-            .padding(18.dp)
+        modifier = modifier
             .background(Color.Transparent)
     ) {
         Column(
             modifier = Modifier
-                .shadow(
-                    elevation = 10.dp,
-                    shape = MaterialTheme.shapes.medium
-                )
+                .shadow(elevation = 8.dp, shape = RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp))
                 .background(
                     MaterialTheme.colorScheme.secondaryContainer,
-                    MaterialTheme.shapes.medium
+                    RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp)
                 ),
             horizontalAlignment = Alignment.End
         ) {

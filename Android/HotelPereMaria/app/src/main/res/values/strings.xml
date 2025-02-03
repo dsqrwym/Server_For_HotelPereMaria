@@ -8,6 +8,7 @@
     <string name="loading_state_loading">Cargando</string>
 
     <string name="top_bar_reservation">Reservación</string>
+    <string name="top_bar_reservation_list">Lista de Reservaciones</string>
 
     <string name="alert_dialog_error_title_missing_data">Datos incompletos</string>
     <string name="alert_dialog_error_message_missing_data">Por favor, complete todos los campos requeridos.</string>

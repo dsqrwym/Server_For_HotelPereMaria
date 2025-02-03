@@ -80,7 +80,7 @@ fun ActiveFiltersDisplay(
     if (items.isNotEmpty()) {
         FlowRow(
             modifier = Modifier
-                .padding(top = 5.dp)
+                .padding(top = 0.dp)
                 .fillMaxWidth()
                 .background(Color.Transparent),
             horizontalArrangement = Arrangement.Start,

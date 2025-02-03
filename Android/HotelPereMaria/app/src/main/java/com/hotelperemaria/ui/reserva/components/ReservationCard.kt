@@ -47,7 +47,6 @@ import com.hotelperemaria.data.model.Reserva
 import com.hotelperemaria.data.model.ReservaEstado
 import com.hotelperemaria.ui.reserva.ReservationDetail
 import com.hotelperemaria.utils.DateUtils
-import com.hotelperemaria.utils.DateUtils.isDateTodayOrAfter
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.time.Instant
@@ -59,8 +58,7 @@ fun ReservaCard(
     onEdit: (Reserva) -> Unit,
     onCancel: (Reserva) -> Unit
 ) {
-    val isCancelable = isDateTodayOrAfter(reserva.fecha_entrada)
-    val maxOffset = if (isCancelable) -390f else -250f // 允许滑动的最大偏移量（负数，向左滑）
+    val maxOffset = -390f // 允许滑动的最大偏移量（负数，向左滑）
     val coroutineScope = rememberCoroutineScope()
     val offsetX = remember { Animatable(0f) } // 记录当前卡片偏移量
     var isDragging by remember { mutableStateOf(false) } // 记录是否在滑动
@@ -195,24 +193,23 @@ fun ReservaCard(
                 ) {
                     Icon(Icons.Filled.Edit, "Edit", tint = MaterialTheme.colorScheme.primary)
                 }
-                if (isCancelable) {
-                    Spacer(Modifier.width(8.dp))
-                    IconButton(
-                        onClick = { onCancel(reserva) }
-                    ) {
-                        Icon(Icons.Filled.Clear, "Cancel", tint = MaterialTheme.colorScheme.error)
-                    }
+
+                Spacer(Modifier.width(8.dp))
+                IconButton(
+                    onClick = { onCancel(reserva) }
+                ) {
+                    Icon(Icons.Filled.Clear, "Cancel", tint = MaterialTheme.colorScheme.error)
                 }
+
             }
         }
     }
     if (showDialog) {
-        ReservationDetail(reserva){
+        ReservationDetail(reserva) {
             showDialog = false
         }
     }
 }
-
 
 
 // 时间格式化方法

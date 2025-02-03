@@ -1,6 +1,9 @@
 package com.hotelperemaria.ui.reserva
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.hotelperemaria.data.model.ExtraService
 import com.hotelperemaria.data.model.Reserva
@@ -101,6 +104,7 @@ class FilterReservaViewModel @Inject constructor() : ViewModel() {
         )
     )
     val state: StateFlow<FilterState> = _state.asStateFlow()
+    var isLoading by mutableStateOf(false)
 
     // 添加过滤排序后的结果状态
     private val _filteredReservas = MutableStateFlow<List<Reserva>>(emptyList())
@@ -119,10 +123,149 @@ class FilterReservaViewModel @Inject constructor() : ViewModel() {
                 ExtraService("WiFi", BigDecimal(50)),
                 ExtraService("Desayuno", BigDecimal(100))
             )
-        ).apply {
-            tipo_habitacion = "Deluxe"
-        },
-        // 添加更多模拟数据...
+        ).apply { tipo_habitacion = "Deluxe" },
+
+        Reserva(
+            id = "2",
+            id_habitacion = "202",
+            fecha_entrada = Instant.parse("2024-06-10T15:00:00Z"),
+            fecha_salida = Instant.parse("2024-06-15T11:00:00Z"),
+            huespedes = 1,
+            precio_total = BigDecimal(800),
+            extrasSeleccionados = listOf(
+                ExtraService("Gimnasio", BigDecimal(30))
+            )
+        ).apply { tipo_habitacion = "Single" },
+
+        Reserva(
+            id = "3",
+            id_habitacion = "303",
+            fecha_entrada = Instant.parse("2024-07-01T14:00:00Z"),
+            fecha_salida = Instant.parse("2024-07-07T12:00:00Z"),
+            huespedes = 3,
+            precio_total = BigDecimal(1800),
+            extrasSeleccionados = listOf(
+                ExtraService("WiFi", BigDecimal(50)),
+                ExtraService("Desayuno", BigDecimal(100)),
+                ExtraService("Spa", BigDecimal(200))
+            )
+        ).apply { tipo_habitacion = "Suite" },
+
+        Reserva(
+            id = "4",
+            id_habitacion = "404",
+            fecha_entrada = Instant.parse("2024-05-20T10:00:00Z"),
+            fecha_salida = Instant.parse("2024-05-22T12:00:00Z"),
+            huespedes = 2,
+            precio_total = BigDecimal(500),
+            extrasSeleccionados = emptyList()
+        ).apply { tipo_habitacion = "Standard" },
+
+        Reserva(
+            id = "5",
+            id_habitacion = "505",
+            fecha_entrada = Instant.parse("2024-08-15T12:00:00Z"),
+            fecha_salida = Instant.parse("2024-08-20T12:00:00Z"),
+            huespedes = 4,
+            precio_total = BigDecimal(2500),
+            extrasSeleccionados = listOf(
+                ExtraService("Desayuno", BigDecimal(100)),
+                ExtraService("Piscina", BigDecimal(150))
+            )
+        ).apply { tipo_habitacion = "Family" },
+        Reserva(
+            id = "6",
+            id_habitacion = "606",
+            fecha_entrada = Instant.parse("2024-09-10T14:00:00Z"),
+            fecha_salida = Instant.parse("2024-09-15T12:00:00Z"),
+            huespedes = 1,
+            precio_total = BigDecimal(700),
+            extrasSeleccionados = listOf(
+                ExtraService("WiFi", BigDecimal(50)),
+                ExtraService("Desayuno", BigDecimal(100))
+            )
+        ).apply { tipo_habitacion = "Business" },
+
+        Reserva(
+            id = "7",
+            id_habitacion = "707",
+            fecha_entrada = Instant.parse("2024-10-01T13:00:00Z"),
+            fecha_salida = Instant.parse("2024-10-05T11:00:00Z"),
+            huespedes = 2,
+            precio_total = BigDecimal(1100),
+            extrasSeleccionados = listOf(
+                ExtraService("Spa", BigDecimal(200)),
+                ExtraService("Cena romántica", BigDecimal(150))
+            )
+        ).apply { tipo_habitacion = "Honeymoon Suite" },
+
+        Reserva(
+            id = "8",
+            id_habitacion = "808",
+            fecha_entrada = Instant.parse("2024-11-15T12:00:00Z"),
+            fecha_salida = Instant.parse("2024-11-20T12:00:00Z"),
+            huespedes = 5,
+            precio_total = BigDecimal(3000),
+            extrasSeleccionados = listOf(
+                ExtraService("Transporte al aeropuerto", BigDecimal(80)),
+                ExtraService("Desayuno", BigDecimal(150)),
+                ExtraService("Tour por la ciudad", BigDecimal(300))
+            )
+        ).apply { tipo_habitacion = "Penthouse" },
+
+        Reserva(
+            id = "9",
+            id_habitacion = "909",
+            fecha_entrada = Instant.parse("2024-12-24T16:00:00Z"),
+            fecha_salida = Instant.parse("2024-12-26T10:00:00Z"),
+            huespedes = 3,
+            precio_total = BigDecimal(1200),
+            extrasSeleccionados = listOf(
+                ExtraService("Cena de Navidad", BigDecimal(200)),
+                ExtraService("WiFi", BigDecimal(50))
+            )
+        ).apply { tipo_habitacion = "Suite Navideña" },
+
+        Reserva(
+            id = "10",
+            id_habitacion = "1010",
+            fecha_entrada = Instant.parse("2025-01-05T15:00:00Z"),
+            fecha_salida = Instant.parse("2025-01-20T12:00:00Z"),
+            huespedes = 1,
+            precio_total = BigDecimal(5000),
+            extrasSeleccionados = listOf(
+                ExtraService("Acceso VIP a spa", BigDecimal(500)),
+                ExtraService("Servicio de mayordomo", BigDecimal(700)),
+                ExtraService("Cata de vinos", BigDecimal(300))
+            )
+        ).apply { tipo_habitacion = "Ultra Luxury" },
+
+        Reserva(
+            id = "11",
+            id_habitacion = "1111",
+            fecha_entrada = Instant.parse("2025-02-10T12:00:00Z"),
+            fecha_salida = Instant.parse("2025-02-14T12:00:00Z"),
+            huespedes = 2,
+            precio_total = BigDecimal(2000),
+            extrasSeleccionados = listOf(
+                ExtraService("Cena en la playa", BigDecimal(250)),
+                ExtraService("Paseo en barco", BigDecimal(400))
+            )
+        ).apply { tipo_habitacion = "Romantic Getaway" },
+
+        Reserva(
+            id = "12",
+            id_habitacion = "1212",
+            fecha_entrada = Instant.parse("2025-03-05T14:00:00Z"),
+            fecha_salida = Instant.parse("2025-03-10T11:00:00Z"),
+            huespedes = 6,
+            precio_total = BigDecimal(3500),
+            extrasSeleccionados = listOf(
+                ExtraService("Clase de cocina local", BigDecimal(200)),
+                ExtraService("WiFi", BigDecimal(50)),
+                ExtraService("Transporte al aeropuerto", BigDecimal(80))
+            )
+        ).apply { tipo_habitacion = "Villa Familiar" }
     )
 
     private fun loadInitialData() {
@@ -139,6 +282,7 @@ class FilterReservaViewModel @Inject constructor() : ViewModel() {
 
     init {
         loadInitialData()
+        applyFilters()
     }
 
     private fun applyFilters() {
