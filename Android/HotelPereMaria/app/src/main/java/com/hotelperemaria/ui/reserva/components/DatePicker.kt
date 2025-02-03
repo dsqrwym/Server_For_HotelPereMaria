@@ -102,8 +102,7 @@ fun DatePicker(viewModel: ReservaViewModel = hiltViewModel()) {
                     viewModel.toggleDatePicker(false)
                 },
                 unselectableDates = unselectableDates,
-                onDismiss = { viewModel.toggleDatePicker(false) }
-            )
+            ){ viewModel.toggleDatePicker(false) }
         }
     }
 }
@@ -113,6 +112,8 @@ fun DatePicker(viewModel: ReservaViewModel = hiltViewModel()) {
 fun DateRangePickerModal(
     onDateRangeSelected: (Pair<Long?, Long?>) -> Unit,
     unselectableDates: Set<Pair<Long, Long>>,
+    noDateBeforeTaday: Boolean = true,
+    dateInput: Boolean = false,
     onDismiss: () -> Unit
 ) {
     // 缓存日期区间预处理结果
@@ -123,7 +124,10 @@ fun DateRangePickerModal(
     val pickerState = androidx.compose.material3.rememberDateRangePickerState(
         selectableDates = object : SelectableDates {
             override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-                val isPast = utcTimeMillis < getStartOfToday()
+                var isPast = false
+                if (noDateBeforeTaday) {
+                    isPast = utcTimeMillis < getStartOfToday()
+                }
                 val isInBlockedRange = dateRanges.any { range ->
                     utcTimeMillis in range
                 }
@@ -179,7 +183,7 @@ fun DateRangePickerModal(
                     color = if (!isInvalidSelection) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.error
                 )
             },
-            showModeToggle = false,
+            showModeToggle = dateInput,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(500.dp)
