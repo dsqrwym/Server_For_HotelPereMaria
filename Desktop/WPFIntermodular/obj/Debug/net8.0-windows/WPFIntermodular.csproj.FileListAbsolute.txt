@@ -51,3 +51,4 @@ C:\Users\masca\Desktop\Intermodular\Desktop\WPFIntermodular\obj\Debug\net8.0-win
 C:\Users\masca\Desktop\Intermodular\Desktop\WPFIntermodular\obj\Debug\net8.0-windows\WPFIntermodular.sourcelink.json
 C:\Users\masca\Desktop\Intermodular\Desktop\WPFIntermodular\obj\Debug\net8.0-windows\WPFIntermodular.genruntimeconfig.cache
 C:\Users\masca\Desktop\Intermodular\Desktop\WPFIntermodular\obj\Debug\net8.0-windows\ref\WPFIntermodular.dll
+C:\Users\masca\Documents\GitHub\Intermodular\Desktop\WPFIntermodular\obj\Debug\net8.0-windows\App.baml

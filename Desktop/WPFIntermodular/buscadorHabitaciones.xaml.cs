@@ -28,14 +28,15 @@ namespace WPFIntermodular
     {
 
         private ObservableCollection<Habitacion> habitaciones = new ObservableCollection<Habitacion>();
-
+        Habitacion h = new Habitacion(1, "Suitopia", "Suite", 1, "Pisito en la playa", true);
+        Habitacion h2 = new Habitacion(2, "Cap negret", "Individual", 1, "En Altea", false);
+        Habitacion h3 = new Habitacion(3, "Cactus", "Duplex", 1, "En algun sitio magico", true);
+        
         public buscadorHabitaciones()
         {
 
             InitializeComponent();
-            Habitacion h = new Habitacion(1, "Suitopia", "Suite", 1, "Pisito en la playa", true);
-            Habitacion h2 = new Habitacion(2, "Cap negret", "Individual", 1, "En Altea", false);
-            Habitacion h3 = new Habitacion(3, "Cactus", "Duplex", 1, "En algun sitio magico", true);
+          
             buscarEditBtn.Content = "Crear";
 
 
@@ -50,6 +51,16 @@ namespace WPFIntermodular
 
 
 
+
+        }
+        public void addHab(Habitacion h)
+        {
+            habitaciones.Add(h);
+            listaHab.ItemsSource = habitaciones;
+        }
+        public void actLista()
+        {
+            listaHab.ItemsSource = habitaciones;
 
         }
 

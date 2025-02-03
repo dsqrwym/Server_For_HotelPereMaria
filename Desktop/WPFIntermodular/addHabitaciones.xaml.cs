@@ -24,12 +24,16 @@ namespace WPFIntermodular
     public partial class addHabitaciones : Window
     {
         private byte[] imageBytes;
+        private bool Editar = false;
+        private Habitacion H;
         public addHabitaciones(Habitacion h, Boolean editar)
         {
             InitializeComponent();
-            if (editar)
+            Editar = editar;
+            H= h;
+            if (Editar)
             {
-
+                
                 fillFields(h);
             }
         }
@@ -37,9 +41,8 @@ namespace WPFIntermodular
         private void fillFields(Habitacion h)
         {
 
-            int index = h.Capacidad-1;
             nombreText.Text = h.Nombre;
-            huespedesCombo.SelectedIndex = index;
+            tipoCombo.Text = h.Tipo;
             //imagen buscar como cargarla
             descripccionText.Text = h.Descripccion;
             //precio por noche se calcula a parte
@@ -91,7 +94,7 @@ namespace WPFIntermodular
                         bitmap.EndInit();
 
                         // Mostramos la imagen en el control Image
-                        imageDisplay.Source = bitmap;
+                        //imageDisplay.Source = bitmap;
                     }
                 }
                 catch (Exception e) { }
@@ -119,7 +122,7 @@ namespace WPFIntermodular
                         bitmap.EndInit();
 
                         // Mostramos la imagen en el control Image de la UI
-                        imageDisplay.Source = bitmap;
+                        //imageDisplay.Source = bitmap;
                     }
 
                 }
@@ -136,7 +139,24 @@ namespace WPFIntermodular
 
         private void botonFinal_Click(object sender, RoutedEventArgs e)
         {
-
+            if (Editar)
+            {
+                H.Descripccion = descripccionText.Text;
+                H.Tipo = tipoCombo.Text;
+                H.Nombre = nombreText.Text;
+                buscadorHabitaciones b = new buscadorHabitaciones();
+                this.Hide();
+                b.actLista();
+                b.Show();
+            }
+            else
+            {
+                Habitacion h = new Habitacion(4,nombreText.Text,tipoCombo.Text,2,descripccionText.Text,false);
+                buscadorHabitaciones b = new buscadorHabitaciones();
+                b.addHab(h);
+                this.Hide();
+                b.Show();
+            }
         }
     }
 
