@@ -1,0 +1,177 @@
+﻿<Window x:Class="WPFIntermodular.vistaReserva.BuscarReserva"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFIntermodular.vistaReserva"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="BuscarReserva" Height="1018" Width="1440" Background="{StaticResource azulBackground}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="6.5*"/>
+            <ColumnDefinition Width="1.5*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="5.3*"/>
+        </Grid.RowDefinitions>
+
+        <!--Hotel Pere Maria-->
+        <Viewbox>
+            <StackPanel HorizontalAlignment="Center" Margin="10,10,10,10" Orientation="Horizontal">
+                <Image Height="20" Source="/source/Logo.png"/>
+                <TextBlock Margin="10" Text="Hotel Pere María" VerticalAlignment="Center" FontSize="20" FontWeight="Bold"/>
+            </StackPanel>
+        </Viewbox>
+        
+        <!--Nombre Usuario-->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1 0 0 0" Padding="10 0 0 0">
+                <TextBlock VerticalAlignment="Center" FontSize="26" FontWeight="Bold">
+                    <Run Text="Bienvenido "/>
+                    <Run x:Name="nombreUsuario"/>
+                </TextBlock>
+            </Border>
+        </Grid>
+        
+        <!--Cerrar Session-->
+        <Canvas Grid.Column="2" >
+            <Button Canvas.Top="10" Canvas.Right="20" 
+                    Content="Cerrar Sesión" 
+                     FontSize="18" Height="50" Width="150"
+                    Style="{StaticResource RoundButtonStyle}" Click="Button_Click"/>
+        </Canvas>
+
+        <!--Buscador-->
+        <TextBlock Grid.Row="1" Foreground="{StaticResource azulNormal}" FontSize="40" 
+                   FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                   Text="Buscador: " Height="46"/>
+
+        <!--Body Buscador-->
+        <Grid Grid.Row="2" Grid.ColumnSpan="3" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <!--Tipo de habitacion influye capacidad-->
+            <StackPanel Margin="10 0" VerticalAlignment="Center">
+                <Label Content="_Tipo de habitación" Style="{StaticResource LabelStyle}" Target="{Binding ElementName=tipoHab}"/>
+                <ComboBox x:Name="tipoHab" 
+                             Style="{StaticResource ComboBoxStyle}" 
+                            ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                            IsEditable="True" IsTextSearchCaseSensitive="False" 
+                            KeyUp="tipoHab_KeyUp"
+                        />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <!--Fecha de Entrada-->
+                <StackPanel Margin="50 0">
+                    <Label Content="_Fecha de entrada" Style="{StaticResource LabelStyle}" Target="{Binding ElementName=fechaEntradaInput}"/>
+                    <DatePicker x:Name="fechaEntradaInput" SelectedDateChanged="fechaEntradaInput_SelectedDateChanged"/>
+                </StackPanel>
+
+                <!--Fecha de salida-->
+                <StackPanel Margin="50 0">
+                    <Label Content="_Fecha de salida" Style="{StaticResource LabelStyle}" Target="{Binding ElementName=fechaSalidaInput}"/>
+                    <DatePicker x:Name="fechaSalidaInput" SelectedDateChanged="fechaSalidaInput_SelectedDateChanged"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!--Servicios Adicionales-->
+            <StackPanel Margin="10 0 0 0" Grid.Row="1" VerticalAlignment="Center">
+                <Label Content="_Extra servicios" Style="{StaticResource LabelStyle}" Target="{Binding ElementName=serviciosAdcionales}"/>
+                <StackPanel x:Name="serviciosAdcionales" Orientation="Horizontal">
+                    <CheckBox x:Name="checkBox_Comidas" Margin="5" Content="Comidas"/>
+                    <CheckBox x:Name="checkBox_Parking" Margin="5" Content="Parking"/>
+                    <CheckBox x:Name="checkBox_GM" Margin="5" Content="GM"/>
+                </StackPanel>
+            </StackPanel>
+            
+            <!--Precio por noche-->
+            <DockPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                    <!--Precio desde-->
+                    <StackPanel Margin="50 0" Orientation="Horizontal">
+                        <Label Style="{StaticResource LabelStyle}" Content="_Precio Noche desde: " 
+                               Target="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=Children[1]}"/>
+                        <TextBox VerticalAlignment="Center" Text="{Binding ElementName=precio, Path=LowerValue, UpdateSourceTrigger=PropertyChanged}" 
+                                 TextChanged="TextBox_TextChanged_Valid" LostFocus="TextBox_LostFocus"/>
+                        <TextBlock VerticalAlignment="Center" Text="€" />
+                    </StackPanel>
+
+                    <!--Precio hasta-->
+                    <StackPanel Margin="50 0" Orientation="Horizontal">
+                        <Label Content="_hasta: " Style="{StaticResource LabelStyle}" 
+                               Target="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=Children[1]}"/>
+                        <TextBox VerticalAlignment="Center" Text="{Binding ElementName=precio, Path=HigherValue, UpdateSourceTrigger=PropertyChanged}" 
+                                 TextChanged="TextBox_TextChanged_Valid" LostFocus="TextBox_LostFocus"/>
+                        <TextBlock VerticalAlignment="Center" Text="€" />
+                    </StackPanel>
+                </StackPanel>
+
+                <!--Slider-->
+                <xctk:RangeSlider x:Name="precio" Minimum="0" Maximum="1000"  DockPanel.Dock="Bottom"
+                                  LowerValue="0" HigherValue="1000" IsSnapToTickEnabled="True" 
+                                  Margin="50 0"
+                          />
+            </DockPanel>
+
+            <!--Boton Buscar-->
+            <!--Buscar-->
+            <StackPanel Grid.Column="2" Grid.RowSpan="2" VerticalAlignment="Center"  HorizontalAlignment="Stretch">
+                <Button Content="🔁" FontSize="20" Width="40" Margin="20" Style="{StaticResource cicleButton}" Click="ButtonRestaura_Click"/>
+                <Button Content="Buscar" FontSize="20" Height="50" Width="150" Click="ButtonBuscar_Click" Style="{StaticResource RoundButtonStyle}"/>
+            </StackPanel>
+        </Grid>
+
+        <!--Resultados: -->
+        <Viewbox Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="50 0">
+            <TextBlock Foreground="Black" FontSize="60" 
+                       FontWeight="Bold" VerticalAlignment="Center" 
+                       HorizontalAlignment="Center" Text="Resultados: "/>
+        </Viewbox>
+
+        <ScrollViewer Grid.Row="4" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" 
+                      VerticalContentAlignment="Center" HorizontalScrollBarVisibility="Visible"
+                      VerticalScrollBarVisibility="Disabled" Margin="50 0 50 5">
+            <ItemsControl x:Name="resultadoHabitacion" >
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="20" HorizontalAlignment="Left">
+                            <Image Source="{Binding PrimerImagen}" MaxHeight="186"/>
+                            <TextBlock TextAlignment="Center" Margin="10">
+                                    <Run x:Name="nombreHab" Text="{Binding Tipo}" FontSize="18" FontWeight="Bold"/>
+                                    <LineBreak/>
+                                    <Run x:Name="precioHab" Text="{Binding Precio}" FontSize="12" FontWeight="Bold"/>
+                                    <Run Text=" €/noche" FontSize="12" FontWeight="Bold"/>
+                            </TextBlock>
+                            <Button Content="Reservar habitación" Height="39" Width="158" Style="{StaticResource RoundButtonStyle}" Margin="10" Click="ButtonReserva_Click"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</Window>

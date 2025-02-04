@@ -19,7 +19,7 @@ fun principalScreen() {
     Box(
         Modifier
             .fillMaxSize()
-            .background(color = colorResource(R.color.white))
+            .background(color = colorResource(R.color.blanco))
     ) {
 
     }

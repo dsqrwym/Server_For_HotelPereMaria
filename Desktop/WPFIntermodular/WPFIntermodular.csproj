@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="source\3Rayas.png" />
+    <None Remove="source\alarma.png" />
+    <None Remove="source\habitacion.png" />
+    <None Remove="source\Logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="source\alarma.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="source\3Rayas.png" />
+    <Resource Include="source\habitacion.png" />
+    <Resource Include="source\Logo.png" />
+  </ItemGroup>
+
+</Project>

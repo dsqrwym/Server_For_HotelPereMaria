@@ -1,5 +1,6 @@
 package com.hotelperemaria.ui.login
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -26,10 +28,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hotelperemaria.R
 import kotlinx.coroutines.launch
 import com.hotelperemaria.R.color
 
@@ -38,7 +42,7 @@ fun loginScreen(viewModel: loginViewModel, navRegistro: () -> Unit, navPrincipal
     Box(
         Modifier
             .fillMaxSize()
-            .background(color = colorResource(id = color.white))
+            .background(color = colorResource(id = color.fondo))
     ) {
         Login(
             Modifier.align(Alignment.Center),
@@ -86,8 +90,8 @@ private  fun Login(
             CircularProgressIndicator(Modifier.align(Alignment.Center))
         }
     }else{
-        Column(modifier) {
-            HeaderImage()
+        Column(modifier = modifier.padding(horizontal = 16.dp)) {
+            HeaderImage(modifier)
             Spacer(modifier = Modifier.padding(16.dp))
             EmailField(email) { viewModel.onLoginChanged(it, pas) }
             Spacer(modifier = Modifier.padding(16.dp))
@@ -110,12 +114,12 @@ private  fun Login(
 private fun LogBotn(loginEnb: Boolean, onLoginSelected: () -> Unit) {
     Button(onClick = {onLoginSelected()}, modifier = Modifier
         .fillMaxWidth()
-        .height(48.dp),
+        .height(40.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = colorResource(id = color.teal_200),
-            disabledContainerColor = colorResource(id= color.teal_700),
-            contentColor = colorResource(id = color.black),
-            disabledContentColor = colorResource(id = color.purple_500)
+            containerColor = colorResource(id = color.btnPrin),
+            disabledContainerColor = colorResource(id= color.borde),
+            contentColor = colorResource(id = color.negro),
+            disabledContentColor = colorResource(id = color.blanco)
         ), enabled = loginEnb
     ) {
         Text(text = "Iniciar sesion")
@@ -125,11 +129,11 @@ private fun LogBotn(loginEnb: Boolean, onLoginSelected: () -> Unit) {
 @Composable
 private fun resgistrarse(align: Modifier, registro: () -> Unit) {
     Text(
-        text = "Quieres registarte??",
+        text = "¿Quieres registarte?",
         modifier = align.clickable {registro()},
         fontSize = 12.sp,
         fontWeight = FontWeight.Bold,
-        color = Color(0xFFFB9600)
+        color = Color(0xFFFF9933)
 
     )
 }
@@ -141,8 +145,7 @@ private fun PaswordField(pas: String, onTextFieldChanged: (String) -> Unit) {
         value = pas,
         onValueChange = {onTextFieldChanged(it)},
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+            .fillMaxWidth(),
         placeholder = {
             Text(text = "Contraseña")
         },
@@ -150,8 +153,8 @@ private fun PaswordField(pas: String, onTextFieldChanged: (String) -> Unit) {
         singleLine = true,
         maxLines = 1,
         colors = TextFieldDefaults.textFieldColors(
-            containerColor = colorResource(color.black),  // Color de fondo del TextField
-            focusedIndicatorColor = colorResource(color.purple_500), // Color del borde cuando está enfocado
+            containerColor = colorResource(color.textbox_focused),  // Color de fondo del TextField
+            focusedIndicatorColor = colorResource(color.negro), // Color del borde cuando está enfocado
             unfocusedIndicatorColor = Color.Gray // Color del borde cuando no está enfocado
         )
 
@@ -167,15 +170,15 @@ private fun EmailField(email: String, onTextFieldChanged:(String) ->Unit) {
         onValueChange = {onTextFieldChanged(it)},
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            ,
         placeholder = {
-            Text(text = "Email")
+            Text(text = "Email/Username")
         }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         maxLines = 1,
         colors = TextFieldDefaults.textFieldColors(
-            containerColor = colorResource(color.black),  // Color de fondo del TextField
-            focusedIndicatorColor = colorResource(color.purple_500), // Color del borde cuando está enfocado
+            containerColor = colorResource(color.textbox_focused),  // Color de fondo del TextField
+            focusedIndicatorColor = colorResource(color.negro), // Color del borde cuando está enfocado
             unfocusedIndicatorColor = Color.Gray // Color del borde cuando no está enfocado
         )
 
@@ -183,7 +186,16 @@ private fun EmailField(email: String, onTextFieldChanged:(String) ->Unit) {
 }
 
 @Composable
-private fun HeaderImage(){
+private fun HeaderImage(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.icono),
+            contentDescription = "Logo",
+            modifier = Modifier.size(300.dp)
+        )
+    }
 }
-
 

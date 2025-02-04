@@ -1,0 +1,225 @@
+﻿<Window x:Class="WPFIntermodular.vistaReserva.AdministrarReserva"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFIntermodular.vistaReserva"
+        mc:Ignorable="d"
+        Title="AdministrarReserva" Height="1018" Width="1440" Background="{StaticResource azulBackground}">
+    <Window.Resources>
+        <!-- TextBlock Style -->
+        <Style x:Key="TextBlockStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="266*"/>
+            <ColumnDefinition Width="663*"/>
+            <ColumnDefinition Width="71*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--Hotel Pere Maria-->
+        <Viewbox>
+            <StackPanel HorizontalAlignment="Center" Margin="10,10,10,10" Orientation="Horizontal">
+                <Image Height="20" Source="/source/Logo.png"/>
+                <TextBlock Margin="10" Text="Hotel Pere María" VerticalAlignment="Center" FontSize="20" FontWeight="Bold"/>
+            </StackPanel>
+        </Viewbox>
+        <!--Menu-->
+        <StackPanel Margin="10,0" Orientation="Horizontal" Grid.Column="1">
+            <Button Margin="38 0" Content="Buscador" Style="{StaticResource FlatButtonStyle}" Click="botonBuscador_Click"/>
+            <Button Margin="38 0" Content="Usuario" Style="{StaticResource FlatButtonStyle}"/>
+            <Button Margin="38 0" Content="Reservas" Style="{StaticResource FlatButtonStyle}"/>
+            <Button Margin="38 0" Content="Habitaciones" Style="{StaticResource FlatButtonStyle}"/>
+        </StackPanel>
+
+        <!--Avisos-->
+        <Canvas Grid.Column="2" Margin="0,0,0,54" Grid.RowSpan="1">
+            <Image Source="/source/alarma.png" Width="10" Canvas.Right="18" Canvas.Top="18"/>
+        </Canvas>
+
+        <!--Buscador-->
+        <TextBlock Grid.Row="1" Foreground="{StaticResource azulNormal}" FontSize="40" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Buscador:" Height="46"/>
+
+        <!--Reservas_ListView-->
+        <DockPanel Margin="10 0" Grid.Column="1" Grid.Row="1" >
+            <TextBlock DockPanel.Dock="Left" Text="Reservas" FontSize="36" FontWeight="Bold" VerticalAlignment="Center"/>
+            <StackPanel DockPanel.Dock="Right" Margin="0 0 10 0" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Image Source="/source/3Rayas.png" Height="30"/>
+                <TextBlock VerticalAlignment="Center" Text="ListView" FontSize="25" FontWeight="Bold"/>
+            </StackPanel>
+        </DockPanel>
+
+        <!--Lista de Buscador-->
+        <DockPanel HorizontalAlignment="Center" Margin="25 58" Grid.Row="2">
+            <StackPanel DockPanel.Dock="Top">
+                <!--Rol selec-->
+                <StackPanel Margin="10 0">
+                    <Label Content="_Rol" Margin="-3" Target="{Binding ElementName=rol}"/>
+                    <ComboBox x:Name="rol" Style="{StaticResource ComboBoxStyle}">
+                        <ComboBoxItem Content="Cliente" Style="{StaticResource ComboBoxItemStyle}"/>
+                        <ComboBoxItem Content="Empleado" Style="{StaticResource ComboBoxItemStyle}"/>
+                        <ComboBoxItem Content="Administrador" Style="{StaticResource ComboBoxItemStyle}"/>
+                    </ComboBox>
+                </StackPanel>
+
+                <!--Nombre del Cliente-->
+                <StackPanel Margin="10 10">
+                    <Label Margin="-3" Content="_Nombre de Cliente" Target="{Binding ElementName=nombreClienteSelect}"/>
+                    <ComboBox x:Name="nombreClienteSelect" 
+                              IsEditable="True" IsTextSearchEnabled="False" 
+                              KeyUp="comboBox_KeyUp" Style="{StaticResource ComboBoxStyle}"/>
+                </StackPanel>
+
+                <!--Nombre del Empleado-->
+                <StackPanel Margin="10">
+                    <Label Margin="-3" Content="_Nombre de Empleado" Target="{Binding ElementName=nombreEmpleadoSelect}"/>
+                    <ComboBox x:Name="nombreEmpleadoSelect"  Style="{StaticResource ComboBoxStyle}"
+                              IsEditable="True" IsTextSearchEnabled="False" KeyUp="comboBox_KeyUp"/>
+                </StackPanel>
+
+                <!--Fecha de Inicio-->
+                <StackPanel Margin="0 10">
+                    <Label Margin="7 -3" Content="_Fecha de entrada" Target="{Binding ElementName=fechaInicioInput}"/>
+                    <DatePicker x:Name="fechaInicioInput" Style="{StaticResource DatePickerStyle}"/>
+                </StackPanel>
+
+                <!--Nombre del Finalización-->
+                <StackPanel Margin="0 10">
+                    <Label Margin="7 -3" Content="_Fecha de salida" Target="{Binding ElementName=fechaFinalInput}"/>
+                    <DatePicker x:Name="fechaFinalInput" Style="{StaticResource DatePickerStyle}"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!--Buscar-->
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+                <Button x:Name="botonRestablecer" DockPanel.Dock="Bottom" Content="🔁" FontSize="20" Width="40" Margin="3 0" Style="{StaticResource cicleButton}" Click="botonRestablecer_Click"/>
+                <Button x:Name="botonBuscar" DockPanel.Dock="Bottom" Content="Buscar" FontSize="20" Height="50" Width="150" Click="botonBuscar_Click" Style="{StaticResource RoundButtonStyle}"/>
+            </StackPanel>
+        </DockPanel>
+
+        <!--Tablas de Reservas-->
+        <Grid Margin="0 58" Grid.Row="2" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <!--Dinamico-->
+            </Grid.RowDefinitions>
+
+            <!--Titulo-->
+            <Grid Grid.Row="0" Margin="10 10 27 10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="48*"/>
+                    <ColumnDefinition Width="80*"/>
+                    <ColumnDefinition Width="103*"/>
+                    <ColumnDefinition Width="210*"/>
+                    <ColumnDefinition Width="210*"/>
+                    <ColumnDefinition Width="183*"/>
+                    <ColumnDefinition Width="120*"/>
+                </Grid.ColumnDefinitions>
+
+                <Viewbox MaxHeight="20">
+                    <CheckBox x:Name="allCheckd" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                </Viewbox>
+
+                <TextBlock Text="ID" Grid.Column="1" Margin="10 0 0 0" Style="{StaticResource TextBlockStyle}"/>
+
+                <TextBlock Grid.Column="2" Text="Habitación" Style="{StaticResource TextBlockStyle}"/>
+
+                <TextBlock Grid.Column="3" Text="Nombre del cliente" Style="{StaticResource TextBlockStyle}"/>
+
+                <TextBlock Grid.Column="4" Text="Empleado" Style="{StaticResource TextBlockStyle}"/>
+
+                <TextBlock Grid.Column="5" Text="Rol" Style="{StaticResource TextBlockStyle}"/>
+
+                <StackPanel Grid.Column="6"  Orientation="Horizontal">
+                    <TextBlock Text="Acción" Margin="20 0 0 0" Style="{StaticResource TextBlockStyle}"/>
+                    <Button x:Name="deleteAllSelectedButton" Visibility="Collapsed" Margin="20 0 0 0" Background="Transparent" Content="&#x1F5D1;" FontSize="12" Foreground="Red" BorderThickness="0" Click="DeleteSelected_Click"/>
+
+                </StackPanel>
+            </Grid>
+
+
+            <!--Dinamico-->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <ItemsControl x:Name="listReservas" ItemsSource="{Binding Reservas}">
+                    <ItemsControl.Template>
+                        <ControlTemplate TargetType="ItemsControl">
+                            <Grid>
+                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                    <ItemsPresenter />
+                                </ScrollViewer>
+                                <Grid Width="17" HorizontalAlignment="Right" Background="Transparent" />
+                            </Grid>
+                        </ControlTemplate>
+                    </ItemsControl.Template>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="48*"/>
+                                    <ColumnDefinition Width="80*"/>
+                                    <ColumnDefinition Width="103*"/>
+                                    <ColumnDefinition Width="210*"/>
+                                    <ColumnDefinition Width="210*"/>
+                                    <ColumnDefinition Width="183*"/>
+                                    <ColumnDefinition Width="120*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Viewbox MaxHeight="20">
+                                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" Checked="CheckBox_UpdateChecked" Unchecked="CheckBox_UpdateChecked"/>
+                                </Viewbox>
+
+                                <TextBlock Grid.Column="1" Text="{Binding Id}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="10 0 0 0"/>
+
+                                <Image Grid.Column="2" MaxHeight="20" Stretch="Uniform" Source="{Binding HabitacionImage}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+
+                                <TextBlock Grid.Column="3" Text="{Binding Id_usuario}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+
+                                <TextBlock Grid.Column="4" Text="{Binding Id_hab}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+
+                                <TextBlock Grid.Column="5" Text="{Binding Id_AltUser}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+
+                                <StackPanel Grid.Column="6" Orientation="Horizontal">
+                                    <Button Margin="10 0" Background="Transparent" BorderThickness="0" Click="EditButton_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="&#x270F;" FontSize="12" Foreground="#68EB9C" />
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Button Margin="10 0" Background="Transparent" BorderThickness="0" Click="ViewDetailsButton_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="&#x2139;" FontSize="12" Foreground="Black" />
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Button Margin="10 0" Background="Transparent" BorderThickness="0" Click="DeleteRow_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="&#x1F5D1;" FontSize="12" Foreground="Red" />
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+
+        <!--Añadir nuevo-->
+        <Canvas Grid.Column="3" Grid.Row="3">
+            <Button Canvas.Bottom="50" Canvas.Right="50" Style="{StaticResource cicleButton}" Click="ButtonCrear_Click">
+                <TextBlock Text="➕" FontSize="38" Foreground="White" />
+            </Button>
+        </Canvas>
+    </Grid>
+</Window>
