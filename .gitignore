@@ -1,5 +1,6 @@
 build/
 obj/
+bin/
 *.bin
 *.cache
 *.v2
@@ -14,6 +15,11 @@ obj/
 .vs/
 *.suo
 *.user
+*.vcxproj.user
+*.csproj.user
+*.vbproj.user
+*.g.cs
+*.g.i.cs
 
 .idea/
 *.iml
@@ -36,6 +42,8 @@ Desktop/WPFIntermodular/obj/Debug/net8.0-windows/*.AssemblyInfo.cs
 Desktop/WPFIntermodular/obj/Debug/net8.0-windows/*.GeneratedMSBuildEditorConfig.editorconfig
 Desktop/WPFIntermodular/obj/Debug/net8.0-windows/*.assets.cache
 Desktop/WPFIntermodular/obj/Debug/net8.0-windows/*.cache
+Desktop/WPFIntermodular/bin/
+Desktop/WPFIntermodular/obj
 
 diseniaDeReserva.drawio
 diseniaDeReserva.png
