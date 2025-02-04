@@ -494,4 +494,7 @@ class FilterReservaViewModel @Inject constructor() : ViewModel() {
     }
 
 
+    fun cancelReserva(reserva: Reserva) {
+        _mockReservas.remove(reserva)
+    }
 }

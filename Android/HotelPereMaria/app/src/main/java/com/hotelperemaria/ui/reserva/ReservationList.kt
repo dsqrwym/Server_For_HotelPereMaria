@@ -64,7 +64,7 @@ fun ReservationCardList(viewModel: FilterReservaViewModel) {
             ReservaCard(
                 reserva = reserva,
                 onEdit = { },
-                onCancel = { }
+                onCancel = { viewModel.cancelReserva(it) }
             )
             if (index < results.lastIndex) {
                 HorizontalDivider(

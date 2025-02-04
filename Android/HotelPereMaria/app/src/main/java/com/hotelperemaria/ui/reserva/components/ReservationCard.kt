@@ -196,7 +196,10 @@ fun ReservaCard(
 
                 Spacer(Modifier.width(8.dp))
                 IconButton(
-                    onClick = { onCancel(reserva) }
+                    onClick = {
+
+                        onCancel(reserva)
+                    }
                 ) {
                     Icon(Icons.Filled.Clear, "Cancel", tint = MaterialTheme.colorScheme.error)
                 }
