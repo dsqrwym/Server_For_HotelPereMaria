@@ -11,9 +11,6 @@ build/
 *.bak
 *.swp
 
-# ❌ Ignorar archivos de configuración temporal JSON/XML
-*.json
-*.xml
 
 # ❌ Ignorar archivos relacionados con Visual Studio
 .vs/
@@ -40,6 +37,10 @@ Android/HotelPereMaria/.externalNativeBuild/
 Android/HotelPereMaria/.cxx/
 Android/.$diseniaDeReserva.drawio.bkp
 Android/HotelPereMaria/.idea/vcs.xml
+build/
+captures/
+*.externalNativeBuild/
+*.cxx/
 
 # ❌ Ignorar archivos generados por proyectos WPF
 Desktop/WPFIntermodular/bin/
@@ -60,5 +61,6 @@ Desktop/WPFIntermodular/obj/Debug/net8.0-windows/WPFIntermodular_MarkupCompile.c
 captures/
 diseniaDeReserva.drawio
 diseniaDeReserva.png
+
 Acceso de datos/*
 *.env
