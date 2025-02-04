@@ -1,17 +1,21 @@
-build/
-obj/
+# ❌ Ignorar archivos generados por la compilación
 bin/
+obj/
+build/
+
+# ❌ Ignorar archivos de caché, logs y archivos de respaldo
 *.bin
 *.cache
 *.v2
-*.json
-*.xml
-*.suo
-
 *.log
 *.bak
 *.swp
 
+# ❌ Ignorar archivos de configuración temporal JSON/XML
+*.json
+*.xml
+
+# ❌ Ignorar archivos relacionados con Visual Studio
 .vs/
 *.suo
 *.user
@@ -21,11 +25,13 @@ bin/
 *.g.cs
 *.g.i.cs
 
+# ❌ Ignorar archivos relacionados con JetBrains IDE (Android Studio / IntelliJ IDEA)
 .idea/
 *.iml
 .gradle/
 local.properties
 
+# ❌ Ignorar archivos específicos de Android Studio
 Android/HotelPereMaria/.idea/
 Android/HotelPereMaria/.gradle/
 Android/HotelPereMaria/build/
@@ -35,6 +41,9 @@ Android/HotelPereMaria/.cxx/
 Android/.$diseniaDeReserva.drawio.bkp
 Android/HotelPereMaria/.idea/vcs.xml
 
+# ❌ Ignorar archivos generados por proyectos WPF
+Desktop/WPFIntermodular/bin/
+Desktop/WPFIntermodular/obj/
 Desktop/WPFIntermodular/obj/Debug/net8.0-windows/
 Desktop/WPFIntermodular/obj/WPFIntermodular.csproj.nuget.g.props
 Desktop/WPFIntermodular/obj/Debug/net8.0-windows/*.g.i.cs
@@ -42,14 +51,14 @@ Desktop/WPFIntermodular/obj/Debug/net8.0-windows/*.AssemblyInfo.cs
 Desktop/WPFIntermodular/obj/Debug/net8.0-windows/*.GeneratedMSBuildEditorConfig.editorconfig
 Desktop/WPFIntermodular/obj/Debug/net8.0-windows/*.assets.cache
 Desktop/WPFIntermodular/obj/Debug/net8.0-windows/*.cache
-Desktop/WPFIntermodular/bin/
-Desktop/WPFIntermodular/obj
-
-diseniaDeReserva.drawio
-diseniaDeReserva.png
-captures/
 Desktop/WPFIntermodular/obj/Debug/net8.0-windows/WPFIntermodular_MarkupCompile.cache
 
+# ❌ Ignorar archivos relacionados con macOS
 .DS_Store
+
+# ❌ Ignorar otros archivos no necesarios para el control de versiones
+captures/
+diseniaDeReserva.drawio
+diseniaDeReserva.png
 Acceso de datos/*
 *.env
