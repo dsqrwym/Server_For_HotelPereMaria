@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,14 +35,14 @@ fun ReservationListScreen(viewModel: FilterReservaViewModel = hiltViewModel()) {
         Modifier
             .fillMaxSize()
             .shadow(elevation = 10.dp, shape = MaterialTheme.shapes.medium)
-            .background(MaterialTheme.colorScheme.background)
+            .background(colorResource(R.color.fondo))
     ) {
         TopBar(stringResource(R.string.top_bar_reservation_list)) {
             println("Back")
         }
         Box {
             ReservationCardList(viewModel)
-            FilterBar(modifier = Modifier.padding(1.dp), viewModel)
+            FilterBar(modifier = Modifier.padding(horizontal = 1.dp), viewModel)
         }
     }
 
@@ -55,7 +56,7 @@ fun ReservationCardList(viewModel: FilterReservaViewModel) {
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 130.dp)
-            .background(MaterialTheme.colorScheme.tertiaryContainer)
+            .background(colorResource(R.color.fondo))
     ) {
         itemsIndexed(results) { index, reserva ->
             if (index == 0) {

@@ -19,7 +19,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
+import com.hotelperemaria.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,7 +34,7 @@ fun MultiSelectFilter(
 ) {
     var expanded by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf("") }
-    var localState by remember(selectedOptions) {
+    val localState by remember(selectedOptions) {
         mutableStateOf(selectedOptions.toList())
     }
     ExposedDropdownMenuBox(
@@ -48,8 +50,7 @@ fun MultiSelectFilter(
         TextField(
             modifier = Modifier
                 .menuAnchor()
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.secondaryContainer),
+                .fillMaxWidth(),
             readOnly = true,
             value = selectedOptions.takeIf { it.isNotEmpty() }?.joinToString() ?: title,
             onValueChange = {},

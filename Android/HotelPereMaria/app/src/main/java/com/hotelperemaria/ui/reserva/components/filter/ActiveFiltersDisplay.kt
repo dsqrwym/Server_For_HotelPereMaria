@@ -113,7 +113,8 @@ fun ActiveFiltersDisplay(
                             Icon(
                                 imageVector = Icons.Default.Close,
                                 contentDescription = "Remove",
-                                modifier = Modifier.size(18.dp)
+                                modifier = Modifier.size(18.dp),
+                                tint = MaterialTheme.colorScheme.error
                             )
                         }
                     },

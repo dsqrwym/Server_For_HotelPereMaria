@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RangeSlider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.hotelperemaria.R
@@ -21,7 +23,7 @@ fun PriceFilter(
     onValueChange: (ClosedFloatingPointRange<Float>) -> Unit
 ) {
 
-    val stepSize = 0.1f
+    val stepSize = 0.5f
     val totalSteps = ((fullRange.endInclusive - fullRange.start) / stepSize).toInt() - 1
 
     Column(
@@ -47,7 +49,8 @@ fun PriceFilter(
             onValueChange = onValueChange,
             valueRange = fullRange,
             steps = totalSteps,
-            modifier = Modifier.padding(vertical = 5.dp)
+            modifier = Modifier.padding(vertical = 5.dp),
+            colors = SliderDefaults.colors().copy(thumbColor = colorResource(R.color.btnPrin), activeTrackColor = colorResource(R.color.fondo))
         )
     }
 }

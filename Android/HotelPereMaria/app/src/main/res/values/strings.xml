@@ -25,7 +25,7 @@
     <string name="reservation_field_state">Estado</string>
     <string name="reservation_field_state_activated">Activado</string>
     <string name="reservation_field_state_completed">Completado</string>
-    <string name="reservation_field_guests">Número de huéspedes</string>
+    <string name="reservation_field_guests">Huéspedes</string>
     <string name="reservation_field_date">Fecha</string>
     <string name="reservation_field_start_date">Fecha de entrada</string>
     <string name="reservation_field_end_date">Fecha de salida</string>

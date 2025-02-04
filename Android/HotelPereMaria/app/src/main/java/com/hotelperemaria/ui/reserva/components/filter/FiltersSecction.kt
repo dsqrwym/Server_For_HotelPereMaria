@@ -45,7 +45,7 @@ fun FilterBar(
 
     var expanded by remember { mutableStateOf(false) }
     Column(
-        modifier = modifier
+        modifier = Modifier
             .background(Color.Transparent)
     ) {
         Column(

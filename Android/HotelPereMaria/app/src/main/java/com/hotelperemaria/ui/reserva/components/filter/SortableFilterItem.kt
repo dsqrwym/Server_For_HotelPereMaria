@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.hotelperemaria.R
@@ -73,7 +74,7 @@ private fun SortControl(
             Icon(
                 imageVector = Icons.Default.KeyboardArrowUp,
                 contentDescription = stringResource(R.string.sort_ascending),
-                tint = if (currentSort?.ascending == true) MaterialTheme.colorScheme.primary
+                tint = if (currentSort?.ascending == true) colorResource(R.color.btnSec)
                 else MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
@@ -94,7 +95,7 @@ private fun SortControl(
             Icon(
                 imageVector = Icons.Default.KeyboardArrowDown,
                 contentDescription = stringResource(R.string.sort_descending),
-                tint = if (currentSort?.ascending == false) MaterialTheme.colorScheme.primary
+                tint = if (currentSort?.ascending == false) colorResource(R.color.btnSec)
                 else MaterialTheme.colorScheme.onSurfaceVariant
             )
         }

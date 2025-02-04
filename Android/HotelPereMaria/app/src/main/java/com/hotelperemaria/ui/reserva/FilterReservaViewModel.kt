@@ -78,7 +78,7 @@ data class RoomTypeFilterState(
 }
 
 data class SortState(
-    val activeSorts: List<SortingOption> = emptyList()
+    val activeSorts: List<SortingOption> = listOf(SortingOption.DATE_DESC)
 ) : FilterState {
     override val availableServices: List<String> = emptyList()
     override val availableRoomTypes: List<String> = emptyList()

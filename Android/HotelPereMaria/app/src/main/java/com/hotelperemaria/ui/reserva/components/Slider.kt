@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -15,7 +16,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
+import com.hotelperemaria.R
 
 @Composable
 fun Slider(field: String, maxim: Float, onValueChange: (Float) -> Unit) {
@@ -42,7 +45,7 @@ fun Slider(field: String, maxim: Float, onValueChange: (Float) -> Unit) {
             Text(
                 text = "$field: ",
                 style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.weight(1.2f),
+                modifier = Modifier.weight(1.3f),
                 maxLines = 1
             )
             Text(
@@ -60,7 +63,8 @@ fun Slider(field: String, maxim: Float, onValueChange: (Float) -> Unit) {
                 },
                 valueRange = 1f..maxim,
                 steps = maxim.toInt() - 2,
-                modifier = Modifier.weight(3.3f)
+                modifier = Modifier.weight(3.2f),
+                colors = SliderDefaults.colors().copy(thumbColor = colorResource(R.color.btnPrin), activeTrackColor = colorResource(R.color.fondo))
             )
         }
     }
