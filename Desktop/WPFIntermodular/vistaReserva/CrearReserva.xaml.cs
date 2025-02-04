@@ -116,7 +116,7 @@ namespace WPFIntermodular.vistaReserva
 
         }
 
-        public CrearReserva(Window parent, Habitacion habitacion, DateTime? fechaEntrada, DateTime? fechaSalida)
+        public CrearReserva(Window parent, model.Habitacion habitacion, DateTime? fechaEntrada, DateTime? fechaSalida)
         {
             InitializeComponent();
 

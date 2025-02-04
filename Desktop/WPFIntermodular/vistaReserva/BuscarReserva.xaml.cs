@@ -30,8 +30,8 @@ namespace WPFIntermodular.vistaReserva
     {
         private Window parent;
 
-        private ObservableCollection<Habitacion> habitaciones;
-        private ObservableCollection<Habitacion> habitacionesOriginal;
+        private ObservableCollection<model.Habitacion> habitaciones;
+        private ObservableCollection<model.Habitacion> habitacionesOriginal;
         public BuscarReserva(Window parent)
         {
             InitializeComponent();
@@ -40,15 +40,15 @@ namespace WPFIntermodular.vistaReserva
 
             //Seleccionar tipo de habitacion
 
-            habitaciones = new ObservableCollection<Habitacion>
+            habitaciones = new ObservableCollection<model.Habitacion>
             {
-                new Habitacion(1, "Individual", 1, 20m, new Dictionary<string, decimal>() { { "Wifi", 5m } }, new List<string>(){"/source/habitacion.png"}),
-                new Habitacion(2, "Suite", 3, 66m, new Dictionary<string, decimal>() { { "GM", 10m }, { "Parking", 10m}, { "Wifi", 5m}}, new List<string>(){"/source/habitacion.png"}),
-                new Habitacion(3, "Estándar", 2, 36m, new Dictionary<string, decimal>() { { "Parking", 10m } }, new List<string>(){"/source/habitacion.png"}),
+                new model.Habitacion(1, "Individual", 1, 20m, new Dictionary<string, decimal>() { { "Wifi", 5m } }, new List<string>(){"/source/habitacion.png"}),
+                new model.Habitacion(2, "Suite", 3, 66m, new Dictionary<string, decimal>() { { "GM", 10m }, { "Parking", 10m}, { "Wifi", 5m}}, new List<string>(){"/source/habitacion.png"}),
+                new model.Habitacion(3, "Estándar", 2, 36m, new Dictionary<string, decimal>() { { "Parking", 10m } }, new List<string>(){"/source/habitacion.png"}),
             };
             resultadoHabitacion.ItemsSource = habitaciones;
 
-            habitacionesOriginal = new ObservableCollection<Habitacion>(habitaciones);
+            habitacionesOriginal = new ObservableCollection<model.Habitacion>(habitaciones);
 
             List<TipoHab> tiposHab = new List<TipoHab>{
                 new TipoHab("Individual", 1),
@@ -282,7 +282,7 @@ namespace WPFIntermodular.vistaReserva
         private void ButtonReserva_Click(object sender, RoutedEventArgs e)
         {
             Button buttonReserva = sender as Button;
-            Habitacion habitacion = buttonReserva.DataContext as Habitacion;
+            model.Habitacion habitacion = buttonReserva.DataContext as model.Habitacion;
             DateTime? fechaEntrada = fechaEntradaInput.SelectedDate;
             DateTime? fechaSalida = fechaSalidaInput.SelectedDate;
 

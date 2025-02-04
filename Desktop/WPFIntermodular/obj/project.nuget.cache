@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "xojP/m/d416Pdkcarjia5HDoheJXA/kBkgxoNLWlC06te0q1+5TYEEgAkbZ7Ks6j6Dk/3VnxjhwuQ4BGxtGLIA==",
+  "dgSpecHash": "Pu9kufGXi6A=",
   "success": true,
-  "projectFilePath": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\yuzha\\.nuget\\packages\\extended.wpf.toolkit\\4.6.1\\extended.wpf.toolkit.4.6.1.nupkg.sha512"
+  ],
   "logs": []
 }
