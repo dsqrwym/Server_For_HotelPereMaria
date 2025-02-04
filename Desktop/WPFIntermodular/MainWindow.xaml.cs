@@ -19,8 +19,6 @@ namespace WPFIntermodular
         public MainWindow()
         {
             InitializeComponent();
-           
-
         }
     }
 }

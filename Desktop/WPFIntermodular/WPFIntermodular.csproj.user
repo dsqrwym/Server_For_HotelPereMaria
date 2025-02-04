@@ -7,24 +7,24 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="addHabitaciones.xaml.cs">
+    <Compile Update="vistaReserva\BuscarReserva.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="buscadorHabitaciones.xaml.cs">
+    <Compile Update="vistaReserva\CrearReserva.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="addHabitaciones.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="buscadorHabitaciones.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Dictionary1.xaml">
+    <Page Update="dictionary\DictionaryReservas.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="vistaReserva\BuscarReserva.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="vistaReserva\CrearReserva.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
