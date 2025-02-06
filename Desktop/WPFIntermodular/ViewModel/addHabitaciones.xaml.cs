@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.IO;
 using System.Diagnostics;
+using WPFIntermodular.model;
 
 
 namespace WPFIntermodular
@@ -23,6 +24,7 @@ namespace WPFIntermodular
     /// </summary>
     public partial class addHabitaciones : Window
     {
+        
         private byte[] imageBytes;
         private bool Editar = false;
         private Habitacion H;
@@ -41,10 +43,10 @@ namespace WPFIntermodular
         private void fillFields(Habitacion h)
         {
 
-            nombreText.Text = h.Nombre;
+            //nombreText.Text = h.Nombre;
             tipoCombo.Text = h.Tipo;
             //imagen buscar como cargarla
-            descripccionText.Text = h.Descripccion;
+            //descripccionText.Text = h.Descripccion;
             //precio por noche se calcula a parte
             botonFinal.Content = "Editar";
 
@@ -141,9 +143,9 @@ namespace WPFIntermodular
         {
             if (Editar)
             {
-                H.Descripccion = descripccionText.Text;
+                //H.Descripccion = descripccionText.Text;
                 H.Tipo = tipoCombo.Text;
-                H.Nombre = nombreText.Text;
+               // H.Nombre = nombreText.Text;
                 buscadorHabitaciones b = new buscadorHabitaciones();
                 this.Hide();
                 b.actLista();
@@ -151,12 +153,21 @@ namespace WPFIntermodular
             }
             else
             {
-                Habitacion h = new Habitacion(4,nombreText.Text,tipoCombo.Text,2,descripccionText.Text,false);
+
+
+                Habitacion h = new Habitacion(4, tipoCombo.Text, 3, 4, [],null);
                 buscadorHabitaciones b = new buscadorHabitaciones();
                 b.addHab(h);
                 this.Hide();
                 b.Show();
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow m = new MainWindow();
+            Window w = m.buscarVentana("Buscador");
+            this.Hide();
         }
     }
 

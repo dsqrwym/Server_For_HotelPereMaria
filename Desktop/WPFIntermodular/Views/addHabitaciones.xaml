@@ -10,7 +10,7 @@
             <Grid>
                 <Label Style="{StaticResource Titulo}" Content="Añadir habitación"   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
 
-                <Button Content="X" Width="30" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" Foreground="Black" FontSize="14" FontWeight="Bold" BorderBrush="Transparent"/>
+                <Button Content="X" Width="30" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" Foreground="Black" FontSize="14" FontWeight="Bold" BorderBrush="Transparent" Click="Button_Click"/>
 
                 <Grid Margin="0,60,0,0">
                     <Grid.RowDefinitions>

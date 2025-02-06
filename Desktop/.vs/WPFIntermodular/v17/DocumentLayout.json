@@ -1,42 +1,18 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\",
+  "WorkspaceRootPath": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|d:\\yuzha\\documents\\2dam\\intermodular\\desktop\\wpfintermodular\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|solutionrelative:wpfintermodular\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|c:\\users\\masca\\documents\\github\\intermodular\\desktop\\wpfintermodular\\viewmodel\\addhabitaciones.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|solutionrelative:wpfintermodular\\viewmodel\\addhabitaciones.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|d:\\yuzha\\documents\\2dam\\intermodular\\desktop\\wpfintermodular\\vistareserva\\buscarreserva.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|solutionrelative:wpfintermodular\\vistareserva\\buscarreserva.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|c:\\users\\masca\\documents\\github\\intermodular\\desktop\\wpfintermodular\\views\\addhabitaciones.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|solutionrelative:wpfintermodular\\views\\addhabitaciones.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|d:\\yuzha\\documents\\2dam\\intermodular\\desktop\\wpfintermodular\\vistareserva\\crearreserva.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|solutionrelative:wpfintermodular\\vistareserva\\crearreserva.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|d:\\yuzha\\documents\\2dam\\intermodular\\desktop\\wpfintermodular\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|solutionrelative:wpfintermodular\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|d:\\yuzha\\documents\\2dam\\intermodular\\desktop\\wpfintermodular\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|c:\\users\\masca\\documents\\github\\intermodular\\desktop\\wpfintermodular\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|solutionrelative:wpfintermodular\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|d:\\yuzha\\documents\\2dam\\intermodular\\desktop\\wpfintermodular\\buscadorhabitaciones.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|solutionrelative:wpfintermodular\\buscadorhabitaciones.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|d:\\yuzha\\documents\\2dam\\intermodular\\desktop\\wpfintermodular\\buscadorhabitaciones.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|solutionrelative:wpfintermodular\\buscadorhabitaciones.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|d:\\yuzha\\documents\\2dam\\intermodular\\desktop\\wpfintermodular\\addhabitaciones.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|solutionrelative:wpfintermodular\\addhabitaciones.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|d:\\yuzha\\documents\\2dam\\intermodular\\desktop\\wpfintermodular\\addhabitaciones.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|solutionrelative:wpfintermodular\\addhabitaciones.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     }
   ],
   "DocumentGroupContainers": [
@@ -46,127 +22,44 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "App.xaml",
-              "DocumentMoniker": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\App.xaml",
-              "RelativeDocumentMoniker": "WPFIntermodular\\App.xaml",
-              "ToolTip": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\App.xaml",
-              "RelativeToolTip": "WPFIntermodular\\App.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-02-04T11:28:10.069Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "CrearReserva.xaml.cs",
-              "DocumentMoniker": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\vistaReserva\\CrearReserva.xaml.cs",
-              "RelativeDocumentMoniker": "WPFIntermodular\\vistaReserva\\CrearReserva.xaml.cs",
-              "ToolTip": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\vistaReserva\\CrearReserva.xaml.cs",
-              "RelativeToolTip": "WPFIntermodular\\vistaReserva\\CrearReserva.xaml.cs",
-              "ViewState": "AgIAAGwAAAAAAAAAAAAIwHYAAAAxAAAAAAAAAA==",
+              "Title": "addHabitaciones.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\ViewModel\\addHabitaciones.xaml.cs",
+              "RelativeDocumentMoniker": "WPFIntermodular\\ViewModel\\addHabitaciones.xaml.cs",
+              "ToolTip": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\ViewModel\\addHabitaciones.xaml.cs",
+              "RelativeToolTip": "WPFIntermodular\\ViewModel\\addHabitaciones.xaml.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-04T11:24:06.957Z",
+              "WhenOpened": "2025-02-06T17:40:24.28Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "BuscarReserva.xaml.cs",
-              "DocumentMoniker": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\vistaReserva\\BuscarReserva.xaml.cs",
-              "RelativeDocumentMoniker": "WPFIntermodular\\vistaReserva\\BuscarReserva.xaml.cs",
-              "ToolTip": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\vistaReserva\\BuscarReserva.xaml.cs",
-              "RelativeToolTip": "WPFIntermodular\\vistaReserva\\BuscarReserva.xaml.cs",
-              "ViewState": "AgIAABoAAAAAAAAAAADwvzIAAABCAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-04T11:23:04.449Z",
+              "Title": "addHabitaciones.xaml",
+              "DocumentMoniker": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\Views\\addHabitaciones.xaml",
+              "RelativeDocumentMoniker": "WPFIntermodular\\Views\\addHabitaciones.xaml",
+              "ToolTip": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\Views\\addHabitaciones.xaml",
+              "RelativeToolTip": "WPFIntermodular\\Views\\addHabitaciones.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-02-06T17:40:21.274Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\MainWindow.xaml.cs",
-              "RelativeDocumentMoniker": "WPFIntermodular\\MainWindow.xaml.cs",
-              "ToolTip": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\MainWindow.xaml.cs",
-              "RelativeToolTip": "WPFIntermodular\\MainWindow.xaml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-03T16:37:58.665Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
               "Title": "MainWindow.xaml",
-              "DocumentMoniker": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\MainWindow.xaml",
               "RelativeDocumentMoniker": "WPFIntermodular\\MainWindow.xaml",
-              "ToolTip": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\MainWindow.xaml",
+              "ToolTip": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\MainWindow.xaml",
               "RelativeToolTip": "WPFIntermodular\\MainWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-02-03T16:37:55.912Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "buscadorHabitaciones.xaml.cs",
-              "DocumentMoniker": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\buscadorHabitaciones.xaml.cs",
-              "RelativeDocumentMoniker": "WPFIntermodular\\buscadorHabitaciones.xaml.cs",
-              "ToolTip": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\buscadorHabitaciones.xaml.cs",
-              "RelativeToolTip": "WPFIntermodular\\buscadorHabitaciones.xaml.cs",
-              "ViewState": "AQIAAAwAAAAAAAAAAAAAACEAAAAIAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-03T15:55:54.919Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "addHabitaciones.xaml.cs",
-              "DocumentMoniker": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\addHabitaciones.xaml.cs",
-              "RelativeDocumentMoniker": "WPFIntermodular\\addHabitaciones.xaml.cs",
-              "ToolTip": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\addHabitaciones.xaml.cs",
-              "RelativeToolTip": "WPFIntermodular\\addHabitaciones.xaml.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAJQAAAAdAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-03T14:50:40.904Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "buscadorHabitaciones.xaml",
-              "DocumentMoniker": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\buscadorHabitaciones.xaml",
-              "RelativeDocumentMoniker": "WPFIntermodular\\buscadorHabitaciones.xaml",
-              "ToolTip": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\buscadorHabitaciones.xaml",
-              "RelativeToolTip": "WPFIntermodular\\buscadorHabitaciones.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-02-03T14:47:48.619Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "addHabitaciones.xaml",
-              "DocumentMoniker": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\addHabitaciones.xaml",
-              "RelativeDocumentMoniker": "WPFIntermodular\\addHabitaciones.xaml",
-              "ToolTip": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\addHabitaciones.xaml",
-              "RelativeToolTip": "WPFIntermodular\\addHabitaciones.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-01-30T23:11:21.253Z"
+              "WhenOpened": "2025-02-06T17:40:17.756Z",
+              "EditorCaption": ""
             }
           ]
         }

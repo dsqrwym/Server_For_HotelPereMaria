@@ -50,6 +50,7 @@
                     Content="Cerrar Sesión" 
                      FontSize="18" Height="50" Width="150"
                     Style="{StaticResource RoundButtonStyle}" Click="Button_Click"/>
+            <Button Click="Button_Click_1" > ASUDHAUHDW</Button>
         </Canvas>
 
         <!--Buscador-->

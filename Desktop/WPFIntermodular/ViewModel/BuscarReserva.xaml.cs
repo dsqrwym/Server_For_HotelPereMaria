@@ -318,7 +318,18 @@ namespace WPFIntermodular.vistaReserva
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            MainWindow m = new MainWindow();
+            Window w = m.buscarVentana("loginScreen");
+            this.Close();
+        }
 
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            buscadorHabitaciones b = new buscadorHabitaciones();
+            MainWindow m = new MainWindow();
+            m.addVentana(b);
+            this.Hide();
+            b.Show();
         }
     }
 }

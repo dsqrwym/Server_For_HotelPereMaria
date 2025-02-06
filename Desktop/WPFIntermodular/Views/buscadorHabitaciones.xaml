@@ -41,6 +41,7 @@
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10,0,0">
                             <Button Style="{DynamicResource BtnSec}" Width="124" Height="37" Margin="0,0,10,0">Ofertas</Button>
                         <Button Style="{StaticResource BtnPrin}"  Width="139"  Click="Button_Click" >Buscar</Button>
+                            <Button Click="Button_Click_1"> ausdhowudhaoidh</Button>
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -51,14 +52,11 @@
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="80" />
-                        <GridViewColumn Header="Nombre" DisplayMemberBinding="{Binding Nombre}" Width="150" />
                         <GridViewColumn Header="Tipo" DisplayMemberBinding="{Binding Tipo}" Width="150" />
                         <GridViewColumn Header="Capacidad" DisplayMemberBinding="{Binding Capacidad}" Width="100" />
-                        <GridViewColumn Header="Ocupada" DisplayMemberBinding="{Binding Ocupada}" Width="100" />
 
 
-
-                    </GridView>
+                        </GridView>
                 </ListView.View>
             </ListView>
                 <Button Name="buscarEditBtn"  Style="{StaticResource BtnPrin}" Width="188" Height="49" Click="buscarEditBtn_Click"></Button>

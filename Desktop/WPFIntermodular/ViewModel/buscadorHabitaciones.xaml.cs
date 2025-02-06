@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml.Linq;
+using WPFIntermodular.model;
 using static System.Net.Mime.MediaTypeNames;
 
 
@@ -28,23 +29,23 @@ namespace WPFIntermodular
     {
 
         private ObservableCollection<Habitacion> habitaciones = new ObservableCollection<Habitacion>();
-        Habitacion h = new Habitacion(1, "Suitopia", "Suite", 1, "Pisito en la playa", true);
-        Habitacion h2 = new Habitacion(2, "Cap negret", "Individual", 1, "En Altea", false);
-        Habitacion h3 = new Habitacion(3, "Cactus", "Duplex", 1, "En algun sitio magico", true);
+        Habitacion h = new Habitacion(1, "Suite", 3, 25, [],null);
+       
         
         public buscadorHabitaciones()
         {
 
+
             InitializeComponent();
-          
+            
+
             buscarEditBtn.Content = "Crear";
 
 
 
 
             habitaciones.Add(h);
-            habitaciones.Add(h2);
-            habitaciones.Add(h3);
+            
 
             listaHab.ItemsSource = habitaciones;
 
@@ -53,6 +54,7 @@ namespace WPFIntermodular
 
 
         }
+       
         public void addHab(Habitacion h)
         {
             habitaciones.Add(h);
@@ -135,14 +137,21 @@ namespace WPFIntermodular
 
                     bool idCoincide = (valido && id != -1) ? habitacion.Id == id : true;
 
-                    bool ocupadaCoincide = !ocupado.HasValue || habitacion.Ocupada == ocupado;
+                    //bool ocupadaCoincide = !ocupado.HasValue || habitacion.Ocupada == ocupado;
 
-                    return tipoCoincide && idCoincide && ocupadaCoincide;
+                    return tipoCoincide && idCoincide;
                 }
                 return false;
             });
 
             habitacionesView.Refresh();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            MainWindow m = new MainWindow();
+            Window w = m.buscarVentana("BuscarReserva");
+            this.Hide();
         }
     }
 }

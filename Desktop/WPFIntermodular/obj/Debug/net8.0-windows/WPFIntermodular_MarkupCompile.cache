@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-D:\yuzha\Documents\2DAM\INTERMODULAR\Desktop\WPFIntermodular\obj\Debug\net8.0-windows\
+C:\Users\masca\Documents\GitHub\Intermodular\Desktop\WPFIntermodular\obj\Debug\net8.0-windows\
 WPFIntermodular
 none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
-D:\yuzha\Documents\2DAM\INTERMODULAR\Desktop\WPFIntermodular\App.xaml
-8-483166453
+C:\Users\masca\Documents\GitHub\Intermodular\Desktop\WPFIntermodular\App.xaml
+12-1908442492
 
-12-1660324624
-203-849028239
-addHabitaciones.xaml;buscadorHabitaciones.xaml;Dictionary1.xaml;dictionary\DictionaryReservas.xaml;MainWindow.xaml;vistaReserva\AdministrarReserva.xaml;vistaReserva\BuscarReserva.xaml;vistaReserva\CrearReserva.xaml;
+16-1217825211
+203-671195039
+dictionary\Dictionary1.xaml;dictionary\DictionaryReservas.xaml;MainWindow.xaml;vistaHabitaciones\addHabitaciones.xaml;vistaHabitaciones\buscadorHabitaciones.xaml;vistaReserva\AdministrarReserva.xaml;vistaReserva\BuscarReserva.xaml;vistaReserva\CrearReserva.xaml;vistaUsuario\addUser.xaml;vistaUsuario\loginScreen.xaml;vistaUsuario\updateUser.xaml;vistaUsuario\userList.xaml;
 
 False
 

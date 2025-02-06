@@ -222,7 +222,7 @@ namespace WPFIntermodular.vistaReserva
 
         private void ButtonCrear_Click(object sender, RoutedEventArgs e)
         {
-            new BuscarReserva(this).Show();
+            //new BuscarReserva(this).Show();
             cerrarView();
         }
 
@@ -249,7 +249,7 @@ namespace WPFIntermodular.vistaReserva
 
         private void botonBuscador_Click(object sender, RoutedEventArgs e)
         {
-            new BuscarReserva(this).Show();
+            //new BuscarReserva(this).Show();
             cerrarView();
         }
 
