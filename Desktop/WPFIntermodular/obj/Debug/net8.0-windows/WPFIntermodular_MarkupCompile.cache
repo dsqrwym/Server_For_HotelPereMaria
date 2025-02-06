@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
 C:\Users\masca\Documents\GitHub\Intermodular\Desktop\WPFIntermodular\App.xaml
-12-1908442492
+122138841430
 
-16-1217825211
-203-671195039
-dictionary\Dictionary1.xaml;dictionary\DictionaryReservas.xaml;MainWindow.xaml;vistaHabitaciones\addHabitaciones.xaml;vistaHabitaciones\buscadorHabitaciones.xaml;vistaReserva\AdministrarReserva.xaml;vistaReserva\BuscarReserva.xaml;vistaReserva\CrearReserva.xaml;vistaUsuario\addUser.xaml;vistaUsuario\loginScreen.xaml;vistaUsuario\updateUser.xaml;vistaUsuario\userList.xaml;
+1713247062
+208-1036255648
+dictionary\Dictionary1.xaml;dictionary\DictionaryReservas.xaml;MainWindow.xaml;Views\addHabitaciones.xaml;Views\addUser.xaml;Views\AdministrarReserva.xaml;Views\buscadorHabitaciones.xaml;Views\BuscarReserva.xaml;Views\CrearReserva.xaml;Views\loginScreen.xaml;Views\updateUser.xaml;Views\userList.xaml;
 
 False
 

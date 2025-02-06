@@ -48,6 +48,10 @@
             "Extended.Wpf.Toolkit": {
               "target": "Package",
               "version": "[4.6.1, )"
+            },
+            "MvvmLightLibs": {
+              "target": "Package",
+              "version": "[5.4.1.1, )"
             }
           },
           "imports": [

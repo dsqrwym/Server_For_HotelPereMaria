@@ -1,12 +1,12 @@
 ﻿
 FC:\Users\masca\Documents\GitHub\Intermodular\Desktop\WPFIntermodular\App.xaml;;
 FC:\Users\masca\Documents\GitHub\Intermodular\Desktop\WPFIntermodular\MainWindow.xaml;;
-FC:\Users\masca\Documents\GitHub\Intermodular\Desktop\WPFIntermodular\vistaHabitaciones\buscadorHabitaciones.xaml;;
-FC:\Users\masca\Documents\GitHub\Intermodular\Desktop\WPFIntermodular\vistaReserva\AdministrarReserva.xaml;;
-FC:\Users\masca\Documents\GitHub\Intermodular\Desktop\WPFIntermodular\vistaReserva\BuscarReserva.xaml;;
-FC:\Users\masca\Documents\GitHub\Intermodular\Desktop\WPFIntermodular\vistaReserva\CrearReserva.xaml;;
-FC:\Users\masca\Documents\GitHub\Intermodular\Desktop\WPFIntermodular\vistaUsuario\addUser.xaml;;
-FC:\Users\masca\Documents\GitHub\Intermodular\Desktop\WPFIntermodular\vistaUsuario\loginScreen.xaml;;
-FC:\Users\masca\Documents\GitHub\Intermodular\Desktop\WPFIntermodular\vistaUsuario\updateUser.xaml;;
-FC:\Users\masca\Documents\GitHub\Intermodular\Desktop\WPFIntermodular\vistaUsuario\userList.xaml;;
+FC:\Users\masca\Documents\GitHub\Intermodular\Desktop\WPFIntermodular\Views\addUser.xaml;;
+FC:\Users\masca\Documents\GitHub\Intermodular\Desktop\WPFIntermodular\Views\AdministrarReserva.xaml;;
+FC:\Users\masca\Documents\GitHub\Intermodular\Desktop\WPFIntermodular\Views\buscadorHabitaciones.xaml;;
+FC:\Users\masca\Documents\GitHub\Intermodular\Desktop\WPFIntermodular\Views\BuscarReserva.xaml;;
+FC:\Users\masca\Documents\GitHub\Intermodular\Desktop\WPFIntermodular\Views\CrearReserva.xaml;;
+FC:\Users\masca\Documents\GitHub\Intermodular\Desktop\WPFIntermodular\Views\loginScreen.xaml;;
+FC:\Users\masca\Documents\GitHub\Intermodular\Desktop\WPFIntermodular\Views\updateUser.xaml;;
+FC:\Users\masca\Documents\GitHub\Intermodular\Desktop\WPFIntermodular\Views\userList.xaml;;
 

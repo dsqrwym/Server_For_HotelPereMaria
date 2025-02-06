@@ -1,5 +1,7 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Command;
+using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,19 +22,27 @@ namespace WPFIntermodular.vistaUsuario
     /// </summary>
     public partial class loginScreen : Window
     {
+        private NavigationService _navigationService;
+
+
+        public RelayCommand NavigateToSecondWindowCommand { get; private set; }
+
         public loginScreen()
         {
             InitializeComponent();
-            MainWindow m = new MainWindow();
-            m.addVentana(this);
+            _navigationService = new NavigationService();  // Crear una instancia del servicio
+            NavigateToSecondWindowCommand = new RelayCommand(nav);
         }
+
+       
 
         private void loginBtn_Click(object sender, RoutedEventArgs e)
         {
-            BuscarReserva b = new BuscarReserva(this);
-            MainWindow m = new MainWindow();
-            this.Hide();
-            b.Show();
+            nav();
+        }
+        private void nav()
+        {
+            _navigationService.NavigateTo("SecondWindow");
         }
     }
 }

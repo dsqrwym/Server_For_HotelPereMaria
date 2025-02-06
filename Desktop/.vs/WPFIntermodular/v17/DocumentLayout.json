@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|c:\\users\\masca\\documents\\github\\intermodular\\desktop\\wpfintermodular\\viewmodel\\addhabitaciones.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|solutionrelative:wpfintermodular\\viewmodel\\addhabitaciones.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|c:\\users\\masca\\documents\\github\\intermodular\\desktop\\wpfintermodular\\navigationbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|solutionrelative:wpfintermodular\\navigationbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|c:\\users\\masca\\documents\\github\\intermodular\\desktop\\wpfintermodular\\views\\addhabitaciones.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|solutionrelative:wpfintermodular\\views\\addhabitaciones.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|c:\\users\\masca\\documents\\github\\intermodular\\desktop\\wpfintermodular\\viewmodel\\loginscreen.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|solutionrelative:wpfintermodular\\viewmodel\\loginscreen.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|c:\\users\\masca\\documents\\github\\intermodular\\desktop\\wpfintermodular\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|solutionrelative:wpfintermodular\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|c:\\users\\masca\\documents\\github\\intermodular\\desktop\\wpfintermodular\\views\\loginscreen.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{520E25B3-B6CD-4629-8C93-841EFB8E4A93}|WPFIntermodular\\WPFIntermodular.csproj|solutionrelative:wpfintermodular\\views\\loginscreen.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     }
   ],
   "DocumentGroupContainers": [
@@ -27,38 +27,39 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "addHabitaciones.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\ViewModel\\addHabitaciones.xaml.cs",
-              "RelativeDocumentMoniker": "WPFIntermodular\\ViewModel\\addHabitaciones.xaml.cs",
-              "ToolTip": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\ViewModel\\addHabitaciones.xaml.cs",
-              "RelativeToolTip": "WPFIntermodular\\ViewModel\\addHabitaciones.xaml.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Title": "NavigationBase.cs",
+              "DocumentMoniker": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\NavigationBase.cs",
+              "RelativeDocumentMoniker": "WPFIntermodular\\NavigationBase.cs",
+              "ToolTip": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\NavigationBase.cs*",
+              "RelativeToolTip": "WPFIntermodular\\NavigationBase.cs*",
+              "ViewState": "AQIAAAsAAAAAAAAAAAAQwCQAAAA2AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-06T17:40:24.28Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "addHabitaciones.xaml",
-              "DocumentMoniker": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\Views\\addHabitaciones.xaml",
-              "RelativeDocumentMoniker": "WPFIntermodular\\Views\\addHabitaciones.xaml",
-              "ToolTip": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\Views\\addHabitaciones.xaml",
-              "RelativeToolTip": "WPFIntermodular\\Views\\addHabitaciones.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-02-06T17:40:21.274Z",
+              "WhenOpened": "2025-02-06T17:54:19.462Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "MainWindow.xaml",
-              "DocumentMoniker": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\MainWindow.xaml",
-              "RelativeDocumentMoniker": "WPFIntermodular\\MainWindow.xaml",
-              "ToolTip": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\MainWindow.xaml",
-              "RelativeToolTip": "WPFIntermodular\\MainWindow.xaml",
+              "Title": "loginScreen.xaml",
+              "DocumentMoniker": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\Views\\loginScreen.xaml",
+              "RelativeDocumentMoniker": "WPFIntermodular\\Views\\loginScreen.xaml",
+              "ToolTip": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\Views\\loginScreen.xaml",
+              "RelativeToolTip": "WPFIntermodular\\Views\\loginScreen.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-02-06T17:40:17.756Z",
+              "WhenOpened": "2025-02-06T17:52:35.572Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "loginScreen.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\ViewModel\\loginScreen.xaml.cs",
+              "RelativeDocumentMoniker": "WPFIntermodular\\ViewModel\\loginScreen.xaml.cs",
+              "ToolTip": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\ViewModel\\loginScreen.xaml.cs*",
+              "RelativeToolTip": "WPFIntermodular\\ViewModel\\loginScreen.xaml.cs*",
+              "ViewState": "AQIAAA4AAAAAAAAAAAAAACkAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-06T17:52:31.624Z",
               "EditorCaption": ""
             }
           ]
