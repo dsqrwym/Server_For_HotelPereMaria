@@ -42,7 +42,8 @@ namespace WPFIntermodular.vistaUsuario
         }
         private void nav()
         {
-            _navigationService.NavigateTo("SecondWindow");
+            this.Hide();
+            _navigationService.NavigateTo("buscarReserva");
         }
     }
 }

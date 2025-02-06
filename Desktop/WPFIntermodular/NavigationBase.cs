@@ -31,9 +31,9 @@ namespace WPFIntermodular
         {
             switch (windowName)
             {
-                case "MainWindow":
-                    return typeof(MainWindow);  // Tipo de la ventana principal
-                case "SecondWindow":
+                case "login":
+                    return typeof(loginScreen);  // Tipo de la ventana principal
+                case "buscarReserva":
                     return typeof(buscadorHabitaciones);  // Tipo de la segunda ventana
                 // Agregar más ventanas según sea necesario
                 default:
