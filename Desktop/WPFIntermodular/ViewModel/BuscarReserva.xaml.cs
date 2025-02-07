@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Command;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -14,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using WPFIntermodular.model;
 
-namespace WPFIntermodular.vistaReserva
+namespace WPFIntermodular.ViewModel
 {
     public class Room
     {
@@ -22,6 +23,7 @@ namespace WPFIntermodular.vistaReserva
         public string RoomName { get; set; }
         public double Price { get; set; }
     }
+
 
     /// <summary>
     /// BuscarReserva.xaml 的交互逻辑
@@ -32,11 +34,20 @@ namespace WPFIntermodular.vistaReserva
 
         private ObservableCollection<model.Habitacion> habitaciones;
         private ObservableCollection<model.Habitacion> habitacionesOriginal;
+        private bool atras = false;
+
+        private NavigationService _navigationService;
+
+
+        private RelayCommand NavigateToSecondWindowCommand { get;  set; }
+
         public BuscarReserva(Window parent)
         {
             InitializeComponent();
             this.parent = parent;
             inicialPosi(parent);
+            _navigationService = new NavigationService();  // Crear una instancia del servicio
+            NavigateToSecondWindowCommand = new RelayCommand(nav);
 
             //Seleccionar tipo de habitacion
 
@@ -318,18 +329,29 @@ namespace WPFIntermodular.vistaReserva
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow m = new MainWindow();
-            Window w = m.buscarVentana("loginScreen");
-            this.Close();
+            atras = true;
+            nav();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            buscadorHabitaciones b = new buscadorHabitaciones();
-            MainWindow m = new MainWindow();
-            m.addVentana(b);
-            this.Hide();
-            b.Show();
+            atras = false;
+            nav();
+        }
+
+        private void nav()
+        {
+            if (atras)
+            {
+                this.Hide();
+                _navigationService.NavigateTo("login");
+            }
+            else
+            {
+                this.Hide();
+                _navigationService.NavigateTo("buscarHab");
+            }
+            
         }
     }
 }

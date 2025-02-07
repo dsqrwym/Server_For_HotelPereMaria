@@ -30,4 +30,8 @@
     <Resource Include="source\Logo.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\" />
+  </ItemGroup>
+
 </Project>

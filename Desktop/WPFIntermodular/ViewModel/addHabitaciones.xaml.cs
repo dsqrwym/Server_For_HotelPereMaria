@@ -17,7 +17,7 @@ using System.Diagnostics;
 using WPFIntermodular.model;
 
 
-namespace WPFIntermodular
+namespace WPFIntermodular.ViewModel
 {
     /// <summary>
     /// Lógica de interacción para addHabitaciones.xaml
@@ -165,9 +165,7 @@ namespace WPFIntermodular
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow m = new MainWindow();
-            Window w = m.buscarVentana("Buscador");
-            this.Hide();
+            
         }
     }
 

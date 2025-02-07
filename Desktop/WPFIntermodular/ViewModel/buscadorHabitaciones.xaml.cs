@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Command;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -20,29 +21,33 @@ using WPFIntermodular.model;
 using static System.Net.Mime.MediaTypeNames;
 
 
-namespace WPFIntermodular
+namespace WPFIntermodular.ViewModel
 {
     /// <summary>
     /// Lógica de interacción para buscadorHabitaciones.xaml
     /// </summary>
     public partial class buscadorHabitaciones : Window
     {
+        private bool editar = false;
 
         private ObservableCollection<Habitacion> habitaciones = new ObservableCollection<Habitacion>();
         Habitacion h = new Habitacion(1, "Suite", 3, 25, [],null);
-       
+
+        private NavigationService _navigationService;
         
+
+
+        private RelayCommand NavigateToSecondWindowCommand { get;  set; }
         public buscadorHabitaciones()
         {
 
 
             InitializeComponent();
-            
+
+            _navigationService = new NavigationService();  // Crear una instancia del servicio
+            NavigateToSecondWindowCommand = new RelayCommand(nav);
 
             buscarEditBtn.Content = "Crear";
-
-
-
 
             habitaciones.Add(h);
             
@@ -70,17 +75,20 @@ namespace WPFIntermodular
         {
             if (listaHab.SelectedIndex != -1)
             {
-                Habitacion h = habitaciones[listaHab.SelectedIndex];
-                addHabitaciones a = new addHabitaciones(h, true);
+                buscarEditBtn.Content = "Editar";
+
+                editar = true;
+                nav();
                 this.Hide();
-                a.Show();
+                
             }
             else
             {
                 buscarEditBtn.Content = "Crear";
-                addHabitaciones a = new addHabitaciones(null, false);
+                editar = false;
+                nav();
                 this.Hide();
-                a.Show();
+                
 
             }
         }
@@ -147,11 +155,17 @@ namespace WPFIntermodular
             habitacionesView.Refresh();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void nav()
         {
-            MainWindow m = new MainWindow();
-            Window w = m.buscarVentana("BuscarReserva");
-            this.Hide();
+            if (editar)
+            {
+                Habitacion h = habitaciones[listaHab.SelectedIndex];
+                _navigationService.NavigateTo("addHab", h,true);
+            }
+            else
+            {
+                _navigationService.NavigateTo("addUser",null);
+            }
         }
     }
 }

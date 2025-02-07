@@ -19,30 +19,12 @@ namespace WPFIntermodular
     /// 
     public partial class MainWindow : Window
     {
-        private List<Window> ventanas = new List<Window>();
 
         public MainWindow()
         {
             InitializeComponent();
             
         }
-        public Window buscarVentana(string nombre)
-        {
-            for (int i = 0; i < ventanas.Count; i++){
-                Window w = ventanas[i];
-                String titulo = w.Title.ToLower();
-                if(w != null &&titulo == nombre.ToLower())
-                {
-                    w.Show();
-                    return w;
-                }
-
-            }
-            return null;
-        }
-        public void addVentana(Window w ) {
-
-            ventanas.Add(w);
-        }
+        
     }
 }

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using WPFIntermodular.model;
 
-namespace WPFIntermodular.vistaUsuario
+namespace WPFIntermodular.ViewModel
 {
     /// <summary>
     /// Interaction logic for updateUser.xaml

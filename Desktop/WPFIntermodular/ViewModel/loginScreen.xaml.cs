@@ -15,7 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using WPFIntermodular.vistaReserva;
 
-namespace WPFIntermodular.vistaUsuario
+namespace WPFIntermodular.ViewModel
+
 {
     /// <summary>
     /// Interaction logic for loginScreen.xaml
@@ -43,7 +44,8 @@ namespace WPFIntermodular.vistaUsuario
         private void nav()
         {
             this.Hide();
-            _navigationService.NavigateTo("buscarReserva");
+            _navigationService.NavigateTo("buscarReserva",this);
+           
         }
     }
 }
