@@ -17,7 +17,7 @@ using System.Diagnostics;
 using WPFIntermodular.model;
 
 
-namespace WPFIntermodular.ViewModel
+namespace WPFIntermodular.view
 {
     /// <summary>
     /// Lógica de interacción para addHabitaciones.xaml

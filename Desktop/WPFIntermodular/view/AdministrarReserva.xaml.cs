@@ -5,7 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using WPFIntermodular.model;
 
-namespace WPFIntermodular.ViewModel
+namespace WPFIntermodular.view
 {
     public partial class AdministrarReserva : Window
     {

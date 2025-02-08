@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-using WPFIntermodular;
+using WPFIntermodular.view;
 
 namespace WPFIntermodular
 {

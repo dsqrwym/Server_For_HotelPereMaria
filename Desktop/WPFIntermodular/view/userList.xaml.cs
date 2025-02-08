@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using WPFIntermodular.model;
 
-namespace WPFIntermodular.ViewModel
+namespace WPFIntermodular.view
 {
     /// <summary>
     /// Interaction logic for userList.xaml

@@ -21,7 +21,7 @@ using WPFIntermodular.model;
 using static System.Net.Mime.MediaTypeNames;
 
 
-namespace WPFIntermodular.ViewModel
+namespace WPFIntermodular.view
 {
     /// <summary>
     /// Lógica de interacción para buscadorHabitaciones.xaml

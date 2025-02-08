@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using WPFIntermodular.model;
 
-namespace WPFIntermodular.ViewModel
+namespace WPFIntermodular.view
 {
     /// <summary>
     /// CrearReserva.xaml 的交互逻辑
