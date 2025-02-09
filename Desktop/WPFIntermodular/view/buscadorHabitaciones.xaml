@@ -17,7 +17,9 @@
         <StackPanel Grid.Column="0" Margin="20">
             <Border Style="{StaticResource Border}" Padding="10" CornerRadius="15" VerticalAlignment="Stretch">
                 <StackPanel>
-                    <Label FontSize="20">ID habitacion</Label>
+                        <Button Content="←" FontSize="20" Background="Transparent" HorizontalContentAlignment="Left" Click="Button_Click_1" ></Button>
+
+                        <Label FontSize="20">ID habitacion</Label>
                     <TextBox Name ="idText" Height="24" Width="244" HorizontalAlignment="Left"></TextBox>
 
                     <Label FontSize="20">Tipo</Label>

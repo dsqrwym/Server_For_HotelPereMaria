@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFIntermodular.view"
         mc:Ignorable="d"
-        Title="CrearReserva"  Height="1018" Width="1440" Background="{StaticResource azulBackground}">
+        Title="CrearReserva"  Height="1018" Width="1440" Background="{StaticResource Fondo}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="18*"/>

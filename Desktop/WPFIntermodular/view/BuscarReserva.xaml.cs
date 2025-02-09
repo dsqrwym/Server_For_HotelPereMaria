@@ -35,6 +35,7 @@ namespace WPFIntermodular.view
         private ObservableCollection<model.Habitacion> habitaciones;
         private ObservableCollection<model.Habitacion> habitacionesOriginal;
         private bool atras = false;
+        private bool listado = false;
 
         private NavigationService _navigationService;
 
@@ -333,24 +334,38 @@ namespace WPFIntermodular.view
             nav();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void ButtonHab(object sender, RoutedEventArgs e)
         {
             atras = false;
+            nav();
+        }
+        private void ButtonUsuario(object sender, RoutedEventArgs e)
+        {
+            listado = true;
             nav();
         }
 
         private void nav()
         {
-            if (atras)
+            if (listado)
             {
                 this.Hide();
-                _navigationService.NavigateTo("login");
+                _navigationService.NavigateTo("userList");
             }
             else
             {
-                this.Hide();
-                _navigationService.NavigateTo("buscarHab");
+                if (atras)
+                {
+                    this.Hide();
+                    _navigationService.NavigateTo("login");
+                }
+                else
+                {
+                    this.Hide();
+                    _navigationService.NavigateTo("buscarHab");
+                }
             }
+            
             
         }
     }

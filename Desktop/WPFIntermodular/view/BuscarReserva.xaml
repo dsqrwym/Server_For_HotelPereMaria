@@ -28,7 +28,7 @@
                 <TextBlock Margin="10" Text="Hotel Pere María" VerticalAlignment="Center" FontSize="20" FontWeight="Bold"/>
             </StackPanel>
         </Viewbox>
-        
+
         <!--Nombre Usuario-->
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
@@ -43,14 +43,21 @@
                 </TextBlock>
             </Border>
         </Grid>
-        
+
         <!--Cerrar Session-->
         <Canvas Grid.Column="2" >
             <Button Canvas.Top="10" Canvas.Right="20" 
                     Content="Cerrar Sesión" 
                      FontSize="18" Height="50" Width="150"
                     Style="{StaticResource RoundButtonStyle}" Click="Button_Click"/>
-            <Button Click="Button_Click_1" > ASUDHAUHDW</Button>
+            <Button Canvas.Top="10" Canvas.Right="20" 
+        Content="Lista habitaciones" 
+         FontSize="18" Height="50" Width="166"
+        Style="{StaticResource RoundButtonStyle}" Click="ButtonHab" HorizontalAlignment="Center" Canvas.Left="-145" VerticalAlignment="Top"/>
+            <Button Canvas.Top="10" Canvas.Right="20" 
+Content="Lista Usuarios" 
+ FontSize="18" Height="50" Width="166"
+Style="{StaticResource RoundButtonStyle}" Click="ButtonUsuario" HorizontalAlignment="Left" Canvas.Left="-336" VerticalAlignment="Top"/>
         </Canvas>
 
         <!--Buscador-->
@@ -69,7 +76,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            
+
             <!--Tipo de habitacion influye capacidad-->
             <StackPanel Margin="10 0" VerticalAlignment="Center">
                 <Label Content="_Tipo de habitación" Style="{StaticResource LabelStyle}" Target="{Binding ElementName=tipoHab}"/>
@@ -104,7 +111,7 @@
                     <CheckBox x:Name="checkBox_GM" Margin="5" Content="GM"/>
                 </StackPanel>
             </StackPanel>
-            
+
             <!--Precio por noche-->
             <DockPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">

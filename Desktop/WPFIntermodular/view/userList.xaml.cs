@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Command;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -24,6 +25,14 @@ namespace WPFIntermodular.view
     {
         private ObservableCollection<Usuario> usuarios;
         private ICollectionView vistaUsuarios;
+
+        private NavigationService _navigationService;
+
+        private bool editar = false;
+        private Usuario u;
+
+
+        private RelayCommand NavigateToSecondWindowCommand { get; set; }
         public userList()
         {
             InitializeComponent();
@@ -33,6 +42,8 @@ namespace WPFIntermodular.view
                 new Usuario { id = "1", nombre= "Kliman", rol= "Cliente", email="k@k.kom", fechaNac="0/0/0", dni="28394573K" },
                 new Usuario { id = "2", nombre= "Carlos", rol= "Empleado", email="carlos@mail.com", fechaNac="5/5/1990", dni="12345678Z" }
             };
+            _navigationService = new NavigationService();  // Crear una instancia del servicio
+            NavigateToSecondWindowCommand = new RelayCommand(nav);
             vistaUsuarios = CollectionViewSource.GetDefaultView(usuarios);
             UserListView.ItemsSource = vistaUsuarios;
         }
@@ -90,6 +101,7 @@ namespace WPFIntermodular.view
         {
             if (UserListView.SelectedItem is Usuario usuarioSeleccionado)
             {
+                u = usuarioSeleccionado;
                 updateUser ventanaActualizar = new updateUser(usuarioSeleccionado);
                 if (ventanaActualizar.ShowDialog() == true)
                 {
@@ -108,6 +120,23 @@ namespace WPFIntermodular.view
             addUser newUser = new addUser(nuevoId);
             newUser.ShowDialog();
             usuarios.Add(newUser.nuevoUsuario);
+        }
+
+        private void nav()
+        {
+
+            if (editar)
+            {
+                this.Hide();
+                _navigationService.NavigateTo("addUser");
+            }
+            else
+            {
+                this.Hide();
+                _navigationService.NavigateTo("updateUser",u);
+
+            }
+
         }
     }
 }

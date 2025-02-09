@@ -6,11 +6,12 @@
         xmlns:local="clr-namespace:WPFIntermodular.view"
         mc:Ignorable="d"
         Title="loginScreen" Height="400" Width="600">
-    <Grid Background="#32586d">
+    <Border Style="{StaticResource Border}">
+    <Grid>
 
         <StackPanel HorizontalAlignment="Center">
             <Image Source="/source/hotel.jpg" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200px"/>
-            <Label Content="Nombre de Usuario" Foreground="Orange" FontSize="18" Margin="0,10,0,0">
+                <Label Content="Nombre de Usuario" Style="{StaticResource Titulo}" Margin="0,10,0,0">
                 <Label.Effect>
                     <DropShadowEffect Color="Black" BlurRadius="0" ShadowDepth="3" Opacity="1"/>
                 </Label.Effect>
@@ -20,7 +21,7 @@
                     <DropShadowEffect Color="Black" BlurRadius="0" ShadowDepth="3" Opacity="1"/>
                 </TextBox.Effect>
             </TextBox>
-            <Label Content="Contraseña" Foreground="Orange" FontSize="18" Margin="0,10,0,0">
+                <Label Content="Contraseña" Style="{StaticResource Titulo}" Margin="0,10,0,0">
                 <Label.Effect>
                     <DropShadowEffect Color="Black" BlurRadius="0" ShadowDepth="3" Opacity="1"/>
                 </Label.Effect>
@@ -30,11 +31,12 @@
                     <DropShadowEffect Color="Black" BlurRadius="0" ShadowDepth="3" Opacity="1"/>
                 </TextBox.Effect>
             </TextBox>
-            <Button Margin="0,20,0,0" Content="Entrar" Foreground="Orange" Background="#32586d" BorderBrush="Orange" x:Name="loginBtn" Click="loginBtn_Click">
+                <Button Margin="0,20,0,0" Content="Entrar"  Style="{StaticResource BtnPrin}" x:Name="loginBtn" Click="loginBtn_Click">
                 <Button.Effect>
                     <DropShadowEffect Color="Black" BlurRadius="0" ShadowDepth="3" Opacity="1"/>
                 </Button.Effect>
             </Button>
         </StackPanel>
     </Grid>
+    </Border>
 </Window>
