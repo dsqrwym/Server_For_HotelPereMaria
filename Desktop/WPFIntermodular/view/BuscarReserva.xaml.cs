@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -36,6 +37,10 @@ namespace WPFIntermodular.view
         private ObservableCollection<model.Habitacion> habitacionesOriginal;
         private bool atras = false;
         private bool listado = false;
+        private bool crear = false;
+        private Habitacion h;
+        private bool listaReser = false;
+
 
         private NavigationService _navigationService;
 
@@ -295,12 +300,15 @@ namespace WPFIntermodular.view
         {
             Button buttonReserva = sender as Button;
             model.Habitacion habitacion = buttonReserva.DataContext as model.Habitacion;
+            h = habitacion;
             DateTime? fechaEntrada = fechaEntradaInput.SelectedDate;
             DateTime? fechaSalida = fechaSalidaInput.SelectedDate;
 
             if (fechaEntrada != null && fechaSalida != null)
             {
-                new CrearReserva(this, habitacion, fechaEntrada, fechaSalida).Show();
+                crear = true;
+                nav();
+                
             }
             else {
                 MessageBox.Show("Por favor, seleccione fechas de entrada y salida.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -347,26 +355,40 @@ namespace WPFIntermodular.view
 
         private void nav()
         {
-            if (listado)
+            string navDestination = crear ? "crearReserva" :
+                                    listado ? "userList" :
+                                    atras ? "login" :
+                                    listaReser ? "adminReserva" :
+                                    "buscarHab"; 
+
+            // Esconder la ventana actual
+            this.Hide();
+
+            // Realizar la navegación según el valor de navDestination
+            switch (navDestination)
             {
-                this.Hide();
-                _navigationService.NavigateTo("userList");
-            }
-            else
-            {
-                if (atras)
-                {
-                    this.Hide();
+                case "crearReserva":
+                    _navigationService.NavigateTo("crearReserva", this, h, fechaEntradaInput.SelectedDate, fechaSalidaInput.SelectedDate);
+                    break;
+                case "userList":
+                    _navigationService.NavigateTo("userList");
+                    break;
+                case "login":
                     _navigationService.NavigateTo("login");
-                }
-                else
-                {
-                    this.Hide();
+                    break;
+                case "adminReserva":
+                    _navigationService.NavigateTo("adminReserva");
+                    break;
+                case "buscarHab":
                     _navigationService.NavigateTo("buscarHab");
-                }
+                    break;
             }
-            
-            
+        }
+
+        private void ButtonLista(object sender, RoutedEventArgs e)
+        {
+            listaReser = true;
+            nav();
         }
     }
 }

@@ -55,9 +55,14 @@
          FontSize="18" Height="50" Width="166"
         Style="{StaticResource RoundButtonStyle}" Click="ButtonHab" HorizontalAlignment="Center" Canvas.Left="-145" VerticalAlignment="Top"/>
             <Button Canvas.Top="10" Canvas.Right="20" 
-Content="Lista Usuarios" 
+Content="Lista usuarios" 
  FontSize="18" Height="50" Width="166"
 Style="{StaticResource RoundButtonStyle}" Click="ButtonUsuario" HorizontalAlignment="Left" Canvas.Left="-336" VerticalAlignment="Top"/>
+            <Button Canvas.Top="10" Canvas.Right="20" 
+Content="Lista reservas" 
+ FontSize="18" Height="50" Width="166"
+Style="{StaticResource RoundButtonStyle}" Click="ButtonLista" HorizontalAlignment="Left" Canvas.Left="-521" VerticalAlignment="Center"/>
+
         </Canvas>
 
         <!--Buscador-->
