@@ -29,7 +29,7 @@ namespace WPFIntermodular.view
     public partial class buscadorHabitaciones : Window
     {
         private bool editar = false;
-
+        private bool atras = false;
         private ObservableCollection<Habitacion> habitaciones = new ObservableCollection<Habitacion>();
         Habitacion h = new Habitacion(1, "Suite", 3, 25, [],null);
 
@@ -157,15 +157,31 @@ namespace WPFIntermodular.view
 
         private void nav()
         {
-            if (editar)
+            if (atras)
             {
-                Habitacion h = habitaciones[listaHab.SelectedIndex];
-                _navigationService.NavigateTo("addHab", h,true);
+                this.Hide();
+                _navigationService.NavigateTo("buscarReserva", this);
+
             }
             else
             {
-                _navigationService.NavigateTo("addUser",null);
+                if (editar)
+                {
+                    Habitacion h = habitaciones[listaHab.SelectedIndex];
+                    _navigationService.NavigateTo("addHab", h, true);
+                }
+                else
+                {
+                    _navigationService.NavigateTo("addHab", h, false);
+                }
             }
+            
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            atras = true;
+            nav();
         }
     }
 }

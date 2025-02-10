@@ -10,15 +10,25 @@ namespace WPFIntermodular
         // Método para navegar a una nueva ventana
         public void NavigateTo(string windowName, params object[] parameters)
         {
-            
             // Resolver el tipo de ventana a partir del nombre
             Type windowType = GetWindowTypeByName(windowName);
 
             if (windowType != null)
             {
-                // Crear una instancia de la ventana
-                Window newWindow = (Window)Activator.CreateInstance(windowType, parameters);
-                newWindow.Show();  // Mostrar la ventana
+                // Obtener el constructor adecuado
+                var constructor = windowType.GetConstructor(
+                    parameters.Select(p => p.GetType()).ToArray());
+
+                if (constructor != null)
+                {
+                    // Crear una instancia de la ventana usando el constructor
+                    Window newWindow = (Window)constructor.Invoke(parameters);
+                    newWindow.Show();  // Mostrar la ventana
+                }
+                else
+                {
+                    MessageBox.Show("No se encontró un constructor adecuado para los parámetros.");
+                }
             }
             else
             {

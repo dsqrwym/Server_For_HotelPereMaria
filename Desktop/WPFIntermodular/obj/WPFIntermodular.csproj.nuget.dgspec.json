@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj": {}
   },
   "projects": {
@@ -12,6 +13,19 @@
         "projectPath": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj",
         "packagesPath": "C:\\Users\\yuzha\\.nuget\\packages\\",
         "outputPath": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\obj\\",
+=======
+    "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj",
+        "projectName": "WPFIntermodular",
+        "projectPath": "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj",
+        "packagesPath": "C:\\Users\\masca\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\WPFIntermodular\\obj\\",
+>>>>>>> 20ce5edaf43c3c77c7672881bcabd6b38ade29ef
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -79,7 +93,11 @@
               "privateAssets": "none"
             }
           },
+<<<<<<< HEAD
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+=======
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+>>>>>>> 20ce5edaf43c3c77c7672881bcabd6b38ade29ef
         }
       }
     }

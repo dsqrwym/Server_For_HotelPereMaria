@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.IO;
 using System.Diagnostics;
 using WPFIntermodular.model;
+using GalaSoft.MvvmLight.Command;
 
 
 namespace WPFIntermodular.view
@@ -28,15 +29,25 @@ namespace WPFIntermodular.view
         private byte[] imageBytes;
         private bool Editar = false;
         private Habitacion H;
-        public addHabitaciones(Habitacion h, Boolean editar)
+        private bool atras = false;
+
+        private NavigationService _navigationService;
+
+
+        private RelayCommand NavigateToSecondWindowCommand { get; set; }
+        public addHabitaciones(Habitacion h, bool editar) 
         {
-            InitializeComponent();
+
+            H = h;
             Editar = editar;
-            H= h;
+            
+            InitializeComponent();
+            _navigationService = new NavigationService();  // Crear una instancia del servicio
+            NavigateToSecondWindowCommand = new RelayCommand(nav);
             if (Editar)
             {
                 
-                fillFields(h);
+                fillFields(H);
             }
         }
 
@@ -165,7 +176,18 @@ namespace WPFIntermodular.view
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            nav();
+        }
+
+        private void nav()
+        {
             
+                this.Hide();
+                _navigationService.NavigateTo("buscarHab");
+            
+            
+            
+
         }
     }
 

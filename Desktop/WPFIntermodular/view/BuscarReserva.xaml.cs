@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -29,6 +30,11 @@ namespace WPFIntermodular.view
         private ObservableCollection<model.Habitacion> habitaciones;
         private ObservableCollection<model.Habitacion> habitacionesOriginal;
         private bool atras = false;
+        private bool listado = false;
+        private bool crear = false;
+        private Habitacion h;
+        private bool listaReser = false;
+
 
         private NavigationService _navigationService;
 
@@ -190,6 +196,111 @@ namespace WPFIntermodular.view
                     textBox.Text = "0";
                 }
             }
+<<<<<<< HEAD
+=======
+
+        }
+         private void ButtonBuscar_Click(object sender, RoutedEventArgs e)
+        {
+            // 重置房间结果
+            habitaciones.Clear();
+
+            // 获取筛选条件
+            string tipoSeleccionado = (tipoHab.SelectedItem as TipoHab)?.Nombre;
+            DateTime? fechaEntrada = fechaEntradaInput.SelectedDate;
+            DateTime? fechaSalida = fechaSalidaInput.SelectedDate;
+            bool incluyeComidas = checkBox_Comidas.IsChecked == true;
+            bool incluyeParking = checkBox_Parking.IsChecked == true;
+            bool incluyeGM = checkBox_GM.IsChecked == true;
+
+            // 获取价格范围
+            decimal precioDesde = (decimal)precio.LowerValue;
+            decimal precioHasta = (decimal)precio.HigherValue;
+
+            // 根据条件筛选
+            var resultados = habitacionesOriginal.Where(h =>
+            {
+                // 1. 检查房间类型
+                if (!string.IsNullOrEmpty(tipoSeleccionado) && h.Tipo != tipoSeleccionado)
+                {
+                    return false;
+                }
+
+                // 2. 检查日期范围 需要API
+                if (fechaEntrada.HasValue && fechaSalida.HasValue)
+                {
+                    
+                }
+
+                // 3. 检查额外服务
+                if (incluyeComidas && !h.Extras.ContainsKey("Comidas"))
+                {
+                    return false;
+                }
+                if (incluyeParking && !h.Extras.ContainsKey("Parking"))
+                {
+                    return false;
+                }
+                if (incluyeGM && !h.Extras.ContainsKey("GM"))
+                {
+                    return false;
+                }
+
+                // 4. 检查价格范围
+                if (h.Precio < precioDesde || h.Precio > precioHasta)
+                {
+                    return false;
+                }
+
+                return true;
+            });
+
+            foreach (var habitacion in resultados)
+            {
+                habitaciones.Add(habitacion);
+            }
+        }
+
+
+        private void ButtonReserva_Click(object sender, RoutedEventArgs e)
+        {
+            Button buttonReserva = sender as Button;
+            model.Habitacion habitacion = buttonReserva.DataContext as model.Habitacion;
+            h = habitacion;
+            DateTime? fechaEntrada = fechaEntradaInput.SelectedDate;
+            DateTime? fechaSalida = fechaSalidaInput.SelectedDate;
+
+            if (fechaEntrada != null && fechaSalida != null)
+            {
+                crear = true;
+                nav();
+                
+            }
+            else {
+                MessageBox.Show("Por favor, seleccione fechas de entrada y salida.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+        }
+
+        private void ButtonRestaura_Click(object sender, RoutedEventArgs e)
+        {
+            tipoHab.SelectedItem = null; // 清空房间类型选择
+            fechaEntradaInput.SelectedDate = null; // 清空选择的入住日期
+            fechaSalidaInput.SelectedDate = null; // 清空选择的退房日期
+            checkBox_Comidas.IsChecked = false; // 取消选中“包括餐饮”
+            checkBox_Parking.IsChecked = false; // 取消选中“包括停车”
+            checkBox_GM.IsChecked = false; // 取消选中“包括健身房”
+
+            // 重置价格范围到默认值
+            precio.LowerValue = precio.Minimum;
+            precio.HigherValue = precio.Maximum;
+
+            habitaciones.Clear();
+            foreach (var habitacion in habitacionesOriginal)
+            {
+                habitaciones.Add(habitacion);
+            }
+>>>>>>> 20ce5edaf43c3c77c7672881bcabd6b38ade29ef
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -198,25 +309,53 @@ namespace WPFIntermodular.view
             nav();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void ButtonHab(object sender, RoutedEventArgs e)
         {
             atras = false;
+            nav();
+        }
+        private void ButtonUsuario(object sender, RoutedEventArgs e)
+        {
+            listado = true;
             nav();
         }
 
         private void nav()
         {
-            if (atras)
+            string navDestination = crear ? "crearReserva" :
+                                    listado ? "userList" :
+                                    atras ? "login" :
+                                    listaReser ? "adminReserva" :
+                                    "buscarHab"; 
+
+            // Esconder la ventana actual
+            this.Hide();
+
+            // Realizar la navegación según el valor de navDestination
+            switch (navDestination)
             {
-                this.Hide();
-                _navigationService.NavigateTo("login");
+                case "crearReserva":
+                    _navigationService.NavigateTo("crearReserva", this, h, fechaEntradaInput.SelectedDate, fechaSalidaInput.SelectedDate);
+                    break;
+                case "userList":
+                    _navigationService.NavigateTo("userList");
+                    break;
+                case "login":
+                    _navigationService.NavigateTo("login");
+                    break;
+                case "adminReserva":
+                    _navigationService.NavigateTo("adminReserva");
+                    break;
+                case "buscarHab":
+                    _navigationService.NavigateTo("buscarHab");
+                    break;
             }
-            else
-            {
-                this.Hide();
-                _navigationService.NavigateTo("buscarHab");
-            }
-            
+        }
+
+        private void ButtonLista(object sender, RoutedEventArgs e)
+        {
+            listaReser = true;
+            nav();
         }
     }
 }

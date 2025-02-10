@@ -21,6 +21,9 @@ build/
 *.vbproj.user
 *.g.cs
 *.g.i.cs
+Desktop/.vs/WPFIntermodular/DesignTimeBuild/.dtbcache.v2
+Desktop/WPFIntermodular/obj/Debug/net8.0-windows/MainWindow.g.i.cs
+
 
 # ❌ Ignorar archivos relacionados con JetBrains IDE (Android Studio / IntelliJ IDEA)
 .idea/

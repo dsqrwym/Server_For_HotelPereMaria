@@ -1,4 +1,5 @@
 ﻿
+<<<<<<< HEAD
 FD:\yuzha\Documents\2DAM\INTERMODULAR\Desktop\WPFIntermodular\App.xaml;;
 FD:\yuzha\Documents\2DAM\INTERMODULAR\Desktop\WPFIntermodular\MainWindow.xaml;;
 FD:\yuzha\Documents\2DAM\INTERMODULAR\Desktop\WPFIntermodular\view\addUser.xaml;;
@@ -9,4 +10,16 @@ FD:\yuzha\Documents\2DAM\INTERMODULAR\Desktop\WPFIntermodular\view\CrearReserva.
 FD:\yuzha\Documents\2DAM\INTERMODULAR\Desktop\WPFIntermodular\view\loginScreen.xaml;;
 FD:\yuzha\Documents\2DAM\INTERMODULAR\Desktop\WPFIntermodular\view\updateUser.xaml;;
 FD:\yuzha\Documents\2DAM\INTERMODULAR\Desktop\WPFIntermodular\view\userList.xaml;;
+=======
+FC:\Users\masca\Desktop\Intermodular\Desktop\WPFIntermodular\App.xaml;;
+FC:\Users\masca\Desktop\Intermodular\Desktop\WPFIntermodular\MainWindow.xaml;;
+FC:\Users\masca\Desktop\Intermodular\Desktop\WPFIntermodular\view\addUser.xaml;;
+FC:\Users\masca\Desktop\Intermodular\Desktop\WPFIntermodular\view\AdministrarReserva.xaml;;
+FC:\Users\masca\Desktop\Intermodular\Desktop\WPFIntermodular\view\buscadorHabitaciones.xaml;;
+FC:\Users\masca\Desktop\Intermodular\Desktop\WPFIntermodular\view\BuscarReserva.xaml;;
+FC:\Users\masca\Desktop\Intermodular\Desktop\WPFIntermodular\view\CrearReserva.xaml;;
+FC:\Users\masca\Desktop\Intermodular\Desktop\WPFIntermodular\view\loginScreen.xaml;;
+FC:\Users\masca\Desktop\Intermodular\Desktop\WPFIntermodular\view\updateUser.xaml;;
+FC:\Users\masca\Desktop\Intermodular\Desktop\WPFIntermodular\view\userList.xaml;;
+>>>>>>> 20ce5edaf43c3c77c7672881bcabd6b38ade29ef
 

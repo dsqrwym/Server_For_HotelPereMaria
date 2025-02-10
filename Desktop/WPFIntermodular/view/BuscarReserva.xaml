@@ -33,7 +33,7 @@
                 <TextBlock Margin="10" Text="Hotel Pere María" VerticalAlignment="Center" FontSize="20" FontWeight="Bold"/>
             </StackPanel>
         </Viewbox>
-        
+
         <!--Nombre Usuario-->
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
@@ -48,14 +48,31 @@
                 </TextBlock>
             </Border>
         </Grid>
-        
+
         <!--Cerrar Session-->
         <Canvas Grid.Column="2" >
             <Button Canvas.Top="10" Canvas.Right="20" 
                     Content="Cerrar Sesión" 
                      FontSize="18" Height="50" Width="150"
+<<<<<<< HEAD
                     Style="{StaticResource RoundButtonStyle}" Command="{Binding CerrarSesionCommand}"/>
             <Button Click="Button_Click_1" > ASUDHAUHDW</Button>
+=======
+                    Style="{StaticResource RoundButtonStyle}" Click="Button_Click"/>
+            <Button Canvas.Top="10" Canvas.Right="20" 
+        Content="Lista habitaciones" 
+         FontSize="18" Height="50" Width="166"
+        Style="{StaticResource RoundButtonStyle}" Click="ButtonHab" HorizontalAlignment="Center" Canvas.Left="-145" VerticalAlignment="Top"/>
+            <Button Canvas.Top="10" Canvas.Right="20" 
+Content="Lista usuarios" 
+ FontSize="18" Height="50" Width="166"
+Style="{StaticResource RoundButtonStyle}" Click="ButtonUsuario" HorizontalAlignment="Left" Canvas.Left="-336" VerticalAlignment="Top"/>
+            <Button Canvas.Top="10" Canvas.Right="20" 
+Content="Lista reservas" 
+ FontSize="18" Height="50" Width="166"
+Style="{StaticResource RoundButtonStyle}" Click="ButtonLista" HorizontalAlignment="Left" Canvas.Left="-521" VerticalAlignment="Center"/>
+
+>>>>>>> 20ce5edaf43c3c77c7672881bcabd6b38ade29ef
         </Canvas>
 
         <!--Buscador-->
@@ -74,7 +91,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            
+
             <!--Tipo de habitacion influye capacidad-->
             <StackPanel Margin="10 0" VerticalAlignment="Center">
                 <Label Content="_Tipo de habitación" Style="{StaticResource LabelStyle}" Target="{Binding ElementName=tipoHab}"/>
@@ -109,7 +126,7 @@
                     <CheckBox x:Name="checkBox_GM" Margin="5" Content="GM" IsChecked="{Binding IncluyeGM}"/>
                 </StackPanel>
             </StackPanel>
-            
+
             <!--Precio por noche-->
             <DockPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">

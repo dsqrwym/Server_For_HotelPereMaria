@@ -19,9 +19,16 @@
     
     <!--Botones Principales-->
     <Style x:Key="BtnPrin" TargetType="Button">
-        <Setter Property="FontFamily" Value="CONSOLAS"></Setter>
-        <Setter Property="FontSize" Value="19"></Setter>
-        <Setter Property="Background" Value="#FF9933"></Setter>
+        <Setter Property="Content" Value="Entrar"/>
+        <Setter Property="Foreground" Value="Orange"/>
+        <Setter Property="Background" Value="#32586d"/>
+        <Setter Property="BorderBrush" Value="Orange"/>
+        <Setter Property="FontSize" Value="20"></Setter>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="Black" BlurRadius="0" ShadowDepth="3" Opacity="1"/>
+            </Setter.Value>
+        </Setter>
     </Style>
     <!--Botones Secundarios-->
     <Style x:Key="BtnSec" TargetType="Button">
@@ -35,4 +42,6 @@
         <Setter Property="FontSize" Value="19"></Setter>
         <Setter Property="FontWeight" Value="Bold"></Setter>
     </Style>
+    
+    
 </ResourceDictionary>

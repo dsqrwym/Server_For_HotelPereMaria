@@ -1,8 +1,14 @@
 {
   "version": 2,
+<<<<<<< HEAD
   "dgSpecHash": "vjGiot/+64I=",
   "success": true,
   "projectFilePath": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj",
+=======
+  "dgSpecHash": "Yqbs0s1VpLk=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj",
+>>>>>>> 20ce5edaf43c3c77c7672881bcabd6b38ade29ef
   "expectedPackageFiles": [
     "C:\\Users\\yuzha\\.nuget\\packages\\commonservicelocator\\2.0.2\\commonservicelocator.2.0.2.nupkg.sha512",
     "C:\\Users\\yuzha\\.nuget\\packages\\extended.wpf.toolkit\\4.6.1\\extended.wpf.toolkit.4.6.1.nupkg.sha512",
