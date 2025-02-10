@@ -14,16 +14,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using WPFIntermodular.model;
+using WPFIntermodular.viewmodel.reservaViewModel;
 
 namespace WPFIntermodular.view
 {
-    public class Room
-    {
-        public string ImageSource { get; set; }
-        public string RoomName { get; set; }
-        public double Price { get; set; }
-    }
-
 
     /// <summary>
     /// BuscarReserva.xaml 的交互逻辑
@@ -46,43 +40,13 @@ namespace WPFIntermodular.view
             InitializeComponent();
             this.parent = parent;
             inicialPosi(parent);
-            _navigationService = new NavigationService();  // Crear una instancia del servicio
-            NavigateToSecondWindowCommand = new RelayCommand(nav);
+        }
 
-            //Seleccionar tipo de habitacion
-
-            habitaciones = new ObservableCollection<model.Habitacion>
-            {
-                new model.Habitacion(1, "Individual", 1, 20m, new Dictionary<string, decimal>() { { "Wifi", 5m } }, new List<string>(){"/source/habitacion.png"}),
-                new model.Habitacion(2, "Suite", 3, 66m, new Dictionary<string, decimal>() { { "GM", 10m }, { "Parking", 10m}, { "Wifi", 5m}}, new List<string>(){"/source/habitacion.png"}),
-                new model.Habitacion(3, "Estándar", 2, 36m, new Dictionary<string, decimal>() { { "Parking", 10m } }, new List<string>(){"/source/habitacion.png"}),
-            };
-            resultadoHabitacion.ItemsSource = habitaciones;
-
-            habitacionesOriginal = new ObservableCollection<model.Habitacion>(habitaciones);
-
-            List<TipoHab> tiposHab = new List<TipoHab>{
-                new TipoHab("Individual", 1),
-                new TipoHab("Estándar", 2),
-                new TipoHab("Lujo", 2),
-                new TipoHab("Suite", 3),
-                new TipoHab("Suite dúplex", 6)
-            };
-
-            // 将数据绑定到 ComboBox
-            tipoHab.ItemsSource = tiposHab;
-            tipoHab.DisplayMemberPath = "Nombre";
-
-            fechaEntradaInput.DisplayDateStart = DateTime.Now.AddDays(1);
-            fechaSalidaInput.DisplayDateStart = DateTime.Now.AddDays(1);
-            //Aniade fechas no selecionables
-            var dateRanges = new List<CalendarDateRange>{
-                new CalendarDateRange(new DateTime(2025, 03, 01), new DateTime(2025, 03, 03)),
-                new CalendarDateRange(new DateTime(2025, 04, 05), new DateTime(2025, 04, 10)),
-                new CalendarDateRange(new DateTime(2025, 05, 15), new DateTime(2025, 05, 20))
-            };
-
-            foreach (var dateRange in dateRanges)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            var viewmodel = new BuscarReservaViewModel();
+            // 获取 ViewModel 中的 BlackoutDates 并应用到 DatePicker
+            foreach (var dateRange in viewmodel.GetBlackoutDates())
             {
                 fechaEntradaInput.BlackoutDates.Add(dateRange);
                 fechaSalidaInput.BlackoutDates.Add(dateRange);
@@ -225,105 +189,6 @@ namespace WPFIntermodular.view
                 {
                     textBox.Text = "0";
                 }
-            }
-
-        }
-         private void ButtonBuscar_Click(object sender, RoutedEventArgs e)
-        {
-            // 重置房间结果
-            habitaciones.Clear();
-
-            // 获取筛选条件
-            string tipoSeleccionado = (tipoHab.SelectedItem as TipoHab)?.Nombre;
-            DateTime? fechaEntrada = fechaEntradaInput.SelectedDate;
-            DateTime? fechaSalida = fechaSalidaInput.SelectedDate;
-            bool incluyeComidas = checkBox_Comidas.IsChecked == true;
-            bool incluyeParking = checkBox_Parking.IsChecked == true;
-            bool incluyeGM = checkBox_GM.IsChecked == true;
-
-            // 获取价格范围
-            decimal precioDesde = (decimal)precio.LowerValue;
-            decimal precioHasta = (decimal)precio.HigherValue;
-
-            // 根据条件筛选
-            var resultados = habitacionesOriginal.Where(h =>
-            {
-                // 1. 检查房间类型
-                if (!string.IsNullOrEmpty(tipoSeleccionado) && h.Tipo != tipoSeleccionado)
-                {
-                    return false;
-                }
-
-                // 2. 检查日期范围 需要API
-                if (fechaEntrada.HasValue && fechaSalida.HasValue)
-                {
-                    
-                }
-
-                // 3. 检查额外服务
-                if (incluyeComidas && !h.Extras.ContainsKey("Comidas"))
-                {
-                    return false;
-                }
-                if (incluyeParking && !h.Extras.ContainsKey("Parking"))
-                {
-                    return false;
-                }
-                if (incluyeGM && !h.Extras.ContainsKey("GM"))
-                {
-                    return false;
-                }
-
-                // 4. 检查价格范围
-                if (h.Precio < precioDesde || h.Precio > precioHasta)
-                {
-                    return false;
-                }
-
-                return true;
-            });
-
-            foreach (var habitacion in resultados)
-            {
-                habitaciones.Add(habitacion);
-            }
-        }
-
-
-        private void ButtonReserva_Click(object sender, RoutedEventArgs e)
-        {
-            Button buttonReserva = sender as Button;
-            model.Habitacion habitacion = buttonReserva.DataContext as model.Habitacion;
-            DateTime? fechaEntrada = fechaEntradaInput.SelectedDate;
-            DateTime? fechaSalida = fechaSalidaInput.SelectedDate;
-
-            if (fechaEntrada != null && fechaSalida != null)
-            {
-                new CrearReserva(this, habitacion, fechaEntrada, fechaSalida).Show();
-            }
-            else {
-                MessageBox.Show("Por favor, seleccione fechas de entrada y salida.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-        }
-
-        private void ButtonRestaura_Click(object sender, RoutedEventArgs e)
-        {
-            tipoHab.SelectedItem = null; // 清空房间类型选择
-            fechaEntradaInput.SelectedDate = null; // 清空选择的入住日期
-            fechaSalidaInput.SelectedDate = null; // 清空选择的退房日期
-            checkBox_Comidas.IsChecked = false; // 取消选中“包括餐饮”
-            checkBox_Parking.IsChecked = false; // 取消选中“包括停车”
-            checkBox_GM.IsChecked = false; // 取消选中“包括健身房”
-
-            // 重置价格范围到默认值
-            precio.LowerValue = precio.Minimum;
-            precio.HigherValue = precio.Maximum;
-
-            habitaciones.Clear();
-            foreach (var habitacion in habitacionesOriginal)
-            {
-                habitaciones.Add(habitacion);
             }
         }
 

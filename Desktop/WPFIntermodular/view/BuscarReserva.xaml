@@ -3,10 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WPFIntermodular.view"
+        xmlns:local="clr-namespace:WPFIntermodular.viewmodel.reservaViewModel"
+        xmlns:localView="clr-namespace:WPFIntermodular.view"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="BuscarReserva" Height="1018" Width="1440" Background="{StaticResource azulBackground}">
+        Title="BuscarReserva" Height="1018" Width="1440" Background="{StaticResource azulBackground}"
+        Loaded="Window_Loaded">
+    <Window.DataContext>
+        <local:BuscarReservaViewModel/>
+    </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"/>
@@ -39,7 +44,7 @@
             <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1 0 0 0" Padding="10 0 0 0">
                 <TextBlock VerticalAlignment="Center" FontSize="26" FontWeight="Bold">
                     <Run Text="Bienvenido "/>
-                    <Run x:Name="nombreUsuario"/>
+                    <Run Text="{Binding nombreUsuario}"/>
                 </TextBlock>
             </Border>
         </Grid>
@@ -49,7 +54,7 @@
             <Button Canvas.Top="10" Canvas.Right="20" 
                     Content="Cerrar Sesión" 
                      FontSize="18" Height="50" Width="150"
-                    Style="{StaticResource RoundButtonStyle}" Click="Button_Click"/>
+                    Style="{StaticResource RoundButtonStyle}" Command="{Binding CerrarSesionCommand}"/>
             <Button Click="Button_Click_1" > ASUDHAUHDW</Button>
         </Canvas>
 
@@ -73,9 +78,9 @@
             <!--Tipo de habitacion influye capacidad-->
             <StackPanel Margin="10 0" VerticalAlignment="Center">
                 <Label Content="_Tipo de habitación" Style="{StaticResource LabelStyle}" Target="{Binding ElementName=tipoHab}"/>
-                <ComboBox x:Name="tipoHab" 
-                             Style="{StaticResource ComboBoxStyle}" 
-                            ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                <ComboBox x:Name="tipoHab" ItemsSource="{Binding TiposHab}"
+                             Style="{StaticResource ComboBoxStyle}" SelectedItem="{Binding TipoSeleccionado}"
+                            ItemContainerStyle="{StaticResource ComboBoxItemStyle}" DisplayMemberPath="Nombre"
                             IsEditable="True" IsTextSearchCaseSensitive="False" 
                             KeyUp="tipoHab_KeyUp"
                         />
@@ -85,13 +90,13 @@
                 <!--Fecha de Entrada-->
                 <StackPanel Margin="50 0">
                     <Label Content="_Fecha de entrada" Style="{StaticResource LabelStyle}" Target="{Binding ElementName=fechaEntradaInput}"/>
-                    <DatePicker x:Name="fechaEntradaInput" SelectedDateChanged="fechaEntradaInput_SelectedDateChanged"/>
+                    <DatePicker x:Name="fechaEntradaInput" SelectedDateChanged="fechaEntradaInput_SelectedDateChanged" SelectedDate="{Binding FechaEntrada}" DisplayDateStart="{Binding startDate}"/>
                 </StackPanel>
 
                 <!--Fecha de salida-->
                 <StackPanel Margin="50 0">
                     <Label Content="_Fecha de salida" Style="{StaticResource LabelStyle}" Target="{Binding ElementName=fechaSalidaInput}"/>
-                    <DatePicker x:Name="fechaSalidaInput" SelectedDateChanged="fechaSalidaInput_SelectedDateChanged"/>
+                    <DatePicker x:Name="fechaSalidaInput" SelectedDateChanged="fechaSalidaInput_SelectedDateChanged" SelectedDate="{Binding FechaSalida}" DisplayDateStart="{Binding startEndDate}"/>
                 </StackPanel>
             </StackPanel>
 
@@ -99,9 +104,9 @@
             <StackPanel Margin="10 0 0 0" Grid.Row="1" VerticalAlignment="Center">
                 <Label Content="_Extra servicios" Style="{StaticResource LabelStyle}" Target="{Binding ElementName=serviciosAdcionales}"/>
                 <StackPanel x:Name="serviciosAdcionales" Orientation="Horizontal">
-                    <CheckBox x:Name="checkBox_Comidas" Margin="5" Content="Comidas"/>
-                    <CheckBox x:Name="checkBox_Parking" Margin="5" Content="Parking"/>
-                    <CheckBox x:Name="checkBox_GM" Margin="5" Content="GM"/>
+                    <CheckBox x:Name="checkBox_Comidas" Margin="5" Content="Comidas" IsChecked="{Binding IncluyeComidas}"/>
+                    <CheckBox x:Name="checkBox_Parking" Margin="5" Content="Parking" IsChecked="{Binding IncluyeParking}"/>
+                    <CheckBox x:Name="checkBox_GM" Margin="5" Content="GM" IsChecked="{Binding IncluyeGM}"/>
                 </StackPanel>
             </StackPanel>
             
@@ -129,7 +134,7 @@
 
                 <!--Slider-->
                 <xctk:RangeSlider x:Name="precio" Minimum="0" Maximum="1000"  DockPanel.Dock="Bottom"
-                                  LowerValue="0" HigherValue="1000" IsSnapToTickEnabled="True" 
+                                  IsSnapToTickEnabled="True" LowerValue="{Binding PrecioDesde}" HigherValue="{Binding PrecioHasta}"
                                   Margin="50 0"
                           />
             </DockPanel>
@@ -137,8 +142,8 @@
             <!--Boton Buscar-->
             <!--Buscar-->
             <StackPanel Grid.Column="2" Grid.RowSpan="2" VerticalAlignment="Center"  HorizontalAlignment="Stretch">
-                <Button Content="🔁" FontSize="20" Width="40" Margin="20" Style="{StaticResource cicleButton}" Click="ButtonRestaura_Click"/>
-                <Button Content="Buscar" FontSize="20" Height="50" Width="150" Click="ButtonBuscar_Click" Style="{StaticResource RoundButtonStyle}"/>
+                <Button Content="🔁" FontSize="20" Width="40" Margin="20" Style="{StaticResource cicleButton}" Command="{Binding ResetearCommand}"/>
+                <Button Content="Buscar" FontSize="20" Height="50" Width="150" Style="{StaticResource RoundButtonStyle}" Command="{Binding BuscarCommand}"/>
             </StackPanel>
         </Grid>
 
@@ -152,7 +157,7 @@
         <ScrollViewer Grid.Row="4" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" 
                       VerticalContentAlignment="Center" HorizontalScrollBarVisibility="Visible"
                       VerticalScrollBarVisibility="Disabled" Margin="50 0 50 5">
-            <ItemsControl x:Name="resultadoHabitacion" >
+            <ItemsControl x:Name="resultadoHabitacion" ItemsSource="{Binding Habitaciones}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal"/>
@@ -168,7 +173,7 @@
                                     <Run x:Name="precioHab" Text="{Binding Precio}" FontSize="12" FontWeight="Bold"/>
                                     <Run Text=" €/noche" FontSize="12" FontWeight="Bold"/>
                             </TextBlock>
-                            <Button Content="Reservar habitación" Height="39" Width="158" Style="{StaticResource RoundButtonStyle}" Margin="10" Click="ButtonReserva_Click"/>
+                            <Button Content="Reservar habitación" Height="39" Width="158" Style="{StaticResource RoundButtonStyle}" Margin="10" Command="{Binding DataContext.ReservarCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}"/>
                         </StackPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

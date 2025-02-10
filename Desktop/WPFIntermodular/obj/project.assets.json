@@ -7402,19 +7402,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\masca\\.nuget\\packages\\": {}
+    "C:\\Users\\yuzha\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj",
+      "projectUniqueName": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj",
       "projectName": "WPFIntermodular",
-      "projectPath": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj",
-      "packagesPath": "C:\\Users\\masca\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\obj\\",
+      "projectPath": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj",
+      "packagesPath": "C:\\Users\\yuzha\\.nuget\\packages\\",
+      "outputPath": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\masca\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\yuzha\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -7422,6 +7427,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -7439,7 +7445,8 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net8.0-windows7.0": {
@@ -7473,7 +7480,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
       }
     }
   },
@@ -7482,7 +7489,7 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "El paquete \"MvvmLightLibs 5.4.1.1\" se restauró con \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1\" en lugar de la plataforma de destino del proyecto \"net8.0-windows7.0\". Puede que el paquete no sea totalmente compatible con el proyecto.",
+      "message": "已使用“.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1”而不是项目目标框架“net8.0-windows7.0”还原包“MvvmLightLibs 5.4.1.1”。此包可能与项目不完全兼容。",
       "libraryId": "MvvmLightLibs",
       "targetGraphs": [
         "net8.0-windows7.0"
