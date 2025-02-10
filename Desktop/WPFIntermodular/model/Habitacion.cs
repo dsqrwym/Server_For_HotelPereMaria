@@ -16,8 +16,10 @@ namespace WPFIntermodular.model
         public decimal Precio {  get; set; }
         public Dictionary<string, decimal> Extras { get; set; } = new Dictionary<string, decimal>();
         public List<string> Images { get; set; }
+        public string Nombre { get; set; }
+        public string Descripccion { get;set; }
 
-        public Habitacion(int id, string tipo, int capacidad, decimal precio, Dictionary<string, decimal> extras, List<string> images) 
+        public Habitacion(int id, string tipo, int capacidad, decimal precio, Dictionary<string, decimal> extras, List<string> images,string nombre,string des) 
         {
             Id = id;
             Tipo = tipo;
@@ -25,6 +27,9 @@ namespace WPFIntermodular.model
             Precio = precio;
             Extras = extras;
             Images = images;
+            Nombre = nombre;
+            Descripccion = des;
+
         }
 
         public string PrimerImagen => Images?.FirstOrDefault() ?? "/source/habitacion.png";

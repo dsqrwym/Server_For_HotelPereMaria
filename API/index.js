@@ -4,6 +4,7 @@ const authRouter = require('./routes/authRoutes.js');
 const authAutenRouter = require('./routes/authAutenTokenRoutes.js');
 const reservaRouter = require('./routes/reservasRoutes.js');
 const imagenRouter = require('./routes/imagenRoutes.js');
+const habitacionesRouter = require('./routes/habitacionesRouter.js');
 require('./config/database.js');
 require('dotenv').config();
 
@@ -24,6 +25,9 @@ app.use('/api/auth', authAutenRouter);
 
 //Reservas
 app.use('/api/reservas', reservaRouter);
+
+//Habitacion
+app.use('/api/habitaciones', habitacionesRouter);
 
 //Imagen
 app.use('/api/imagen', imagenRouter);

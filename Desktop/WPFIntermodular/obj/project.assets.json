@@ -7402,32 +7402,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\yuzha\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\masca\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-<<<<<<< HEAD
-      "projectUniqueName": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj",
+      "projectUniqueName": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj",
       "projectName": "WPFIntermodular",
-      "projectPath": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj",
-      "packagesPath": "C:\\Users\\yuzha\\.nuget\\packages\\",
-      "outputPath": "D:\\yuzha\\Documents\\2DAM\\INTERMODULAR\\Desktop\\WPFIntermodular\\obj\\",
-=======
-      "projectUniqueName": "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj",
-      "projectName": "WPFIntermodular",
-      "projectPath": "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj",
+      "projectPath": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\WPFIntermodular.csproj",
       "packagesPath": "C:\\Users\\masca\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\masca\\Desktop\\Intermodular\\Desktop\\WPFIntermodular\\obj\\",
->>>>>>> 20ce5edaf43c3c77c7672881bcabd6b38ade29ef
+      "outputPath": "C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\yuzha\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\masca\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -7435,7 +7422,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -7453,8 +7439,7 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "9.0.100"
+      }
     },
     "frameworks": {
       "net8.0-windows7.0": {
@@ -7488,20 +7473,22 @@
             "privateAssets": "none"
           }
         },
-<<<<<<< HEAD
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
-=======
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
->>>>>>> 20ce5edaf43c3c77c7672881bcabd6b38ade29ef
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200/PortableRuntimeIdentifierGraph.json"
       }
     }
   },
   "logs": [
     {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problema al leer el archivo de caché C:\\Users\\masca\\Documents\\GitHub\\Intermodular\\Desktop\\WPFIntermodular\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    },
+    {
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "已使用“.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1”而不是项目目标框架“net8.0-windows7.0”还原包“MvvmLightLibs 5.4.1.1”。此包可能与项目不完全兼容。",
+      "message": "El paquete \"MvvmLightLibs 5.4.1.1\" se restauró con \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1\" en lugar de la plataforma de destino del proyecto \"net8.0-windows7.0\". Puede que el paquete no sea totalmente compatible con el proyecto.",
       "libraryId": "MvvmLightLibs",
       "targetGraphs": [
         "net8.0-windows7.0"

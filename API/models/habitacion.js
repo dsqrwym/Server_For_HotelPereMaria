@@ -19,6 +19,16 @@ const tipoCapacidadSchema = new Schema({
 }, { _id: false });
 
 const habitacionSchema = new Schema({
+  nombre: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  descripcion: {
+    type: String,
+    required: false,
+    trim: true
+  },
   tipo_capacidad: {
     type: tipoCapacidadSchema,
     required: true
@@ -34,8 +44,10 @@ const habitacionSchema = new Schema({
     _id: false
   }],
   fotos: [{ type: Schema.Types.ObjectId, ref: 'Imagen' }],
+  
   ...AuditableSchema.obj,
 });
+
 habitacionSchema.plugin(auditablePlugin);
 
 habitacionSchema.set('toJSON', {
