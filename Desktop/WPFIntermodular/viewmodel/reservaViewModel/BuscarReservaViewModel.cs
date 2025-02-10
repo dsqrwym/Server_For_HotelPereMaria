@@ -55,9 +55,9 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
             // 初始化房间数据
             habitacionesOriginal = new ObservableCollection<Habitacion>
             {
-                new Habitacion(1, "Individual", 1, 20m, new Dictionary<string, decimal>() { { "Wifi", 5m } }, new List<string>(){"/source/habitacion.png"}),
-                new Habitacion(2, "Suite", 3, 66m, new Dictionary<string, decimal>() { { "GM", 10m }, { "Parking", 10m}, { "Wifi", 5m}}, new List<string>(){"/source/habitacion.png"}),
-                new Habitacion(3, "Estándar", 2, 36m, new Dictionary<string, decimal>() { { "Parking", 10m } }, new List<string>(){"/source/habitacion.png"}),
+                new Habitacion(1, "Individual", 1, 20m, new Dictionary<string, decimal>() { { "Wifi", 5m } }, new List<string>(){"/source/habitacion.png","Ejemplo","asd"}),
+                new Habitacion(2, "Suite", 3, 66m, new Dictionary<string, decimal>() { { "GM", 10m }, { "Parking", 10m}, { "Wifi", 5m}}, new List<string>(){"/source/habitacion.png","Ejemplo","asd"}),
+                new Habitacion(3, "Estándar", 2, 36m, new Dictionary<string, decimal>() { { "Parking", 10m } }, new List<string>(){"/source/habitacion.png","Ejemplo","asd"}),
             };
 
             Habitaciones = new ObservableCollection<Habitacion>(habitacionesOriginal);

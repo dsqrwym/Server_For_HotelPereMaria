@@ -31,7 +31,7 @@ namespace WPFIntermodular.view
         private bool editar = false;
         private bool atras = false;
         private ObservableCollection<Habitacion> habitaciones = new ObservableCollection<Habitacion>();
-        Habitacion h = new Habitacion(1, "Suite", 3, 25, [],null);
+        Habitacion h = new Habitacion(1, "Suite", 3, 25, [],null,"Ejemplo","Ejemplo");
 
         private NavigationService _navigationService;
         
@@ -50,9 +50,10 @@ namespace WPFIntermodular.view
             buscarEditBtn.Content = "Crear";
 
             habitaciones.Add(h);
-            
 
-            listaHab.ItemsSource = habitaciones;
+
+            ConexionController c = new ConexionController();
+            listaHab.ItemsSource = (System.Collections.IEnumerable)c.Index();
 
 
 
