@@ -47,7 +47,7 @@ captures/
 
 # ❌ Ignorar archivos generados por proyectos WPF
 Desktop/WPFIntermodular/bin/
-Desktop/WPFIntermodular/obj/
+Desktop/WPFIntermodular/obj/*
 Desktop/WPFIntermodular/obj/Debug/net8.0-windows/
 Desktop/WPFIntermodular/obj/WPFIntermodular.csproj.nuget.g.props
 Desktop/WPFIntermodular/obj/Debug/net8.0-windows/*.g.i.cs
