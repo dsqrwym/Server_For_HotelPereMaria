@@ -51,6 +51,7 @@ namespace WPFIntermodular.model
     {
         public string Nombre { get; set; }
         public decimal Precio { get; set; }
+        public bool IsSelected { get; internal set; }
 
         public Extras(string nombre, decimal precio)
         {
