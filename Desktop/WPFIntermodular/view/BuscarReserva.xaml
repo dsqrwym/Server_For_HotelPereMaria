@@ -1,4 +1,17 @@
-﻿<Grid>
+﻿<Window x:Class="WPFIntermodular.view.BuscarReserva"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local.view="clr-namespace:WPFIntermodular.view"
+        xmlns:local="clr-namespace:WPFIntermodular.viewmodel.reservaViewModel"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="CrearReserva"  Height="1018" Width="1440" Background="{StaticResource azulBackground}">
+    <Window.DataContext>
+        <local:BuscarReservaViewModel/>
+    </Window.DataContext>
+    <Grid>
     <Grid.ColumnDefinitions>
         <ColumnDefinition Width="3*"/>
         <ColumnDefinition Width="6.5*"/>
@@ -40,12 +53,8 @@
         <Button Canvas.Top="10" Canvas.Right="20" 
                     Content="Cerrar Sesión" 
                      FontSize="18" Height="50" Width="150"
-<<<<<<< HEAD
                     Style="{StaticResource RoundButtonStyle}" Command="{Binding CerrarSesionCommand}"/>
-            <Button Click="Button_Click_1" >ASUDHAUHDW</Button>
-            =======
-                    Style="{StaticResource RoundButtonStyle}" Click="Button_Click"/>
-            <Button Canvas.Top="10" Canvas.Right="20" 
+                <Button Canvas.Top="10" Canvas.Right="20" 
         Content="Lista habitaciones" 
          FontSize="18" Height="50" Width="166"
         Style="{StaticResource RoundButtonStyle}" Click="ButtonHab" HorizontalAlignment="Center" Canvas.Left="-145" VerticalAlignment="Top"/>
@@ -57,9 +66,7 @@ Style="{StaticResource RoundButtonStyle}" Click="ButtonUsuario" HorizontalAlignm
 Content="Lista reservas" 
  FontSize="18" Height="50" Width="166"
 Style="{StaticResource RoundButtonStyle}" Click="ButtonLista" HorizontalAlignment="Left" Canvas.Left="-521" VerticalAlignment="Center"/>
-
-            >>>>>>> 20ce5edaf43c3c77c7672881bcabd6b38ade29ef
-    </Canvas>
+        </Canvas>
 
     <!--Buscador-->
     <TextBlock Grid.Row="1" Foreground="{StaticResource azulNormal}" FontSize="40" 
@@ -183,3 +190,4 @@ Style="{StaticResource RoundButtonStyle}" Click="ButtonLista" HorizontalAlignmen
         </ItemsControl>
     </ScrollViewer>
 </Grid>
+</Window>

@@ -196,9 +196,6 @@ namespace WPFIntermodular.view
                     textBox.Text = "0";
                 }
             }
-<<<<<<< HEAD
-=======
-
         }
          private void ButtonBuscar_Click(object sender, RoutedEventArgs e)
         {
@@ -300,7 +297,6 @@ namespace WPFIntermodular.view
             {
                 habitaciones.Add(habitacion);
             }
->>>>>>> 20ce5edaf43c3c77c7672881bcabd6b38ade29ef
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

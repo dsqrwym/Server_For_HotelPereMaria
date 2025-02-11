@@ -166,7 +166,7 @@ namespace WPFIntermodular.view
             {
 
 
-                Habitacion h = new Habitacion(4, tipoCombo.Text, 3, 4, [],null);
+                Habitacion h = new Habitacion(4, tipoCombo.Text, 3, 4, [],null,"","");
                 buscadorHabitaciones b = new buscadorHabitaciones();
                 b.addHab(h);
                 this.Hide();
