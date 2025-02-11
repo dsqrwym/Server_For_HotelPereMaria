@@ -50,15 +50,6 @@ namespace WPFIntermodular.view
             buscarEditBtn.Content = "Crear";
 
             habitaciones.Add(h);
-
-
-            ConexionController c = new ConexionController();
-            listaHab.ItemsSource = (System.Collections.IEnumerable)c.Index();
-
-
-
-
-
         }
        
         public void addHab(Habitacion h)

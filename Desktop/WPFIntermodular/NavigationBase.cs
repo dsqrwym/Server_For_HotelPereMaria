@@ -10,30 +10,63 @@ namespace WPFIntermodular
         // Método para navegar a una nueva ventana
         public void NavigateTo(string windowName, params object[] parameters)
         {
+            if (Application.Current == null || Application.Current.Windows == null)
+            {
+                MessageBox.Show("Error: No se pudo acceder a la lista de ventanas.");
+                return;
+            }
+
             // Resolver el tipo de ventana a partir del nombre
             Type windowType = GetWindowTypeByName(windowName);
 
-            if (windowType != null)
+            if (windowType == null)
             {
+                MessageBox.Show("Ventana no encontrada: " + windowName);
+                return;
+            }
+
+            // si ya existe dicha ventana
+            Window existingWindow = Application.Current.Windows
+                .OfType<Window>()
+                .FirstOrDefault(w => w.GetType() == windowType);
+
+            if (existingWindow != null)
+            {
+                existingWindow.Show();
+                return;
+            }
+
+
+            Window currentWindow = Application.Current.Windows
+           .OfType<Window>()
+           .FirstOrDefault(w => w.IsActive);
+            currentWindow?.Hide();
+
+            Window newWindow;
+            if (parameters.Length == 0)
+            {
+                newWindow = (Window)Activator.CreateInstance(windowType);
+            }
+            else
+            {
+
                 // Obtener el constructor adecuado
                 var constructor = windowType.GetConstructor(
-                    parameters.Select(p => p.GetType()).ToArray());
+                        parameters.Select(p => p.GetType()).ToArray());
 
                 if (constructor != null)
                 {
-                    // Crear una instancia de la ventana usando el constructor
-                    Window newWindow = (Window)constructor.Invoke(parameters);
-                    newWindow.Show();  // Mostrar la ventana
+                    // Crear y mostrar la nueva ventana
+                    newWindow = (Window)constructor.Invoke(parameters);
                 }
                 else
                 {
                     MessageBox.Show("No se encontró un constructor adecuado para los parámetros.");
+                    return;
                 }
             }
-            else
-            {
-                MessageBox.Show("Ventana no encontrada: " + windowName);
-            }
+
+            newWindow.Show();
         }
 
         // Método para obtener el tipo de ventana a partir de su nombre
@@ -42,7 +75,7 @@ namespace WPFIntermodular
             switch (windowName)
             {
                 case "login":
-                    return typeof(loginScreen);  
+                    return typeof(loginScreen);
                 case "buscarReserva":
                     return typeof(BuscarReserva);
                 case "addHab":
@@ -59,7 +92,7 @@ namespace WPFIntermodular
                     return typeof(updateUser);
                 case "userList":
                     return typeof(userList);
-               
+
 
                 // Agregar más ventanas según sea necesario
                 default:

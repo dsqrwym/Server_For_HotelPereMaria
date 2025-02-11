@@ -17,8 +17,12 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
     public class BuscarReservaViewModel : ViewModelBase
     {
         private readonly NavigationService _navigationService;
-        public  DateTime startDate { get; set; }
-        public DateTime startEndDate { get; set; }
+
+        private RelayCommand NavigateToSecondWindowCommand { get; set; }
+
+        private bool atras;
+        private bool listado;
+        private bool listaReser;
 
         public ObservableCollection<CalendarDateRange> BlackoutDates { get; set; }
         public ObservableCollection<Habitacion> Habitaciones { get; set; }
@@ -28,7 +32,13 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
         public RelayCommand ResetearCommand { get; set; }
         public RelayCommand<object> ReservarCommand { get; set; }
         public RelayCommand CerrarSesionCommand { get; set; }
+        public RelayCommand NavegarAUsuarioCommand { get; set; }
+        public RelayCommand NavegarAHabitacionCommand { get; set; }
+        public RelayCommand NavegarAListaReservasCommand { get; set; }
 
+
+        public  DateTime startDate { get; set; }
+        public DateTime startEndDate { get; set; }
         public List<TipoHab> TiposHab { get; set; }
         public TipoHab TipoSeleccionado { get; set; }
         public DateTime? FechaEntrada { get; set; }
@@ -41,6 +51,7 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
         public decimal PrecioHasta { get; set; }
 
         public string nombreUsuario { get; set; }
+        private Habitacion selectedHabitacion { get; set; }
 
 
         public BuscarReservaViewModel()
@@ -84,6 +95,10 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
             ResetearCommand = new RelayCommand(ResetearFiltros);
             ReservarCommand = new RelayCommand<object>(Reservar);
             CerrarSesionCommand = new RelayCommand(() => _navigationService.NavigateTo("login"));
+            NavegarAUsuarioCommand = new RelayCommand(NavegarAUsuario);
+            NavegarAHabitacionCommand = new RelayCommand(NavegarAHabitacion);
+            NavegarAListaReservasCommand = new RelayCommand(NavegarAListaReservas);
+            NavigateToSecondWindowCommand = new RelayCommand(nav);
         }
 
         public List<CalendarDateRange> GetBlackoutDates()
@@ -163,6 +178,47 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
                 {
                     MessageBox.Show("Por favor, seleccione fechas de entrada y salida.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
+            }
+        }
+        private void NavegarAHabitacion()
+        {
+            atras = false;
+            nav();
+        }
+
+        private void NavegarAUsuario()
+        {
+            listado = true;
+            nav();
+        }
+
+        private void NavegarAListaReservas()
+        {
+            listaReser = true;
+            nav();
+        }
+
+        private void nav()
+        {
+            string navDestination = listado ? "userList" :
+                                    atras ? "login" :
+                                    listaReser ? "adminReserva" :
+                                    "buscarHab";
+
+            switch (navDestination)
+            {
+                case "userList":
+                    _navigationService.NavigateTo("userList");
+                    break;
+                case "login":
+                    _navigationService.NavigateTo("login");
+                    break;
+                case "adminReserva":
+                    _navigationService.NavigateTo("adminReserva");
+                    break;
+                case "buscarHab":
+                    _navigationService.NavigateTo("buscarHab");
+                    break;
             }
         }
     }
