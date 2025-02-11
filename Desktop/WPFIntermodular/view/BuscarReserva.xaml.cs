@@ -215,10 +215,10 @@ namespace WPFIntermodular.view
                 }
 
                 // 4. 检查价格范围
-                if (h.Precio < precioDesde || h.Precio > precioHasta)
+               /* if (h.Precio < precioDesde || h.Precio > precioHasta)
                 {
                     return false;
-                }
+                }*/
 
                 return true;
             });

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using System.Windows;
 using WPFIntermodular.model;
 
 public class ConexionController : Controller
@@ -14,6 +15,7 @@ public class ConexionController : Controller
 
     public async Task<List<Habitacion>> Index()
     {
+        MessageBox.Show("INDEX");
         var reservas = await _conectarService.AllHabitaciones();
         return reservas;
     }

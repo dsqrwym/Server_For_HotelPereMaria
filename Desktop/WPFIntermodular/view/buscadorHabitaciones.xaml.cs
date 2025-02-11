@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml.Linq;
 using WPFIntermodular.model;
+using WPFIntermodular.viewmodel.habitacionViewModel;
 using static System.Net.Mime.MediaTypeNames;
 
 
@@ -31,7 +32,6 @@ namespace WPFIntermodular.view
         private bool editar = false;
         private bool atras = false;
         private ObservableCollection<Habitacion> habitaciones = new ObservableCollection<Habitacion>();
-        Habitacion h = new Habitacion(1, "Suite", 3, 25, [],null,"Ejemplo","Ejemplo");
 
         private NavigationService _navigationService;
         
@@ -41,17 +41,20 @@ namespace WPFIntermodular.view
         public buscadorHabitaciones()
         {
 
+            //Habitacion H = new Habitacion("1", "Suite", 3, 25, [], null, "Ejemplo", "Ejemplo");
 
             InitializeComponent();
+            this.DataContext = buscarHabitacionViewModel.instance;
+
 
             _navigationService = new NavigationService();  // Crear una instancia del servicio
             NavigateToSecondWindowCommand = new RelayCommand(nav);
 
             buscarEditBtn.Content = "Crear";
+            listaHab.ItemsSource = habitaciones;
 
-            habitaciones.Add(h);
-
-
+            
+            
            
 
 
@@ -143,7 +146,7 @@ namespace WPFIntermodular.view
 
                     bool tipoCoincide = string.IsNullOrEmpty(tipo) || habitacion.Tipo == tipo;
 
-                    bool idCoincide = (valido && id != -1) ? habitacion.Id == id : true;
+                    bool idCoincide = (valido && id != -1) ? habitacion.Id.Equals(id) : true;
 
                     //bool ocupadaCoincide = !ocupado.HasValue || habitacion.Ocupada == ocupado;
 
@@ -168,11 +171,11 @@ namespace WPFIntermodular.view
                 if (editar)
                 {
                     Habitacion h = habitaciones[listaHab.SelectedIndex];
-                    _navigationService.NavigateTo("addHab", h, true);
+                   // _navigationService.NavigateTo("addHab", h, true);
                 }
                 else
                 {
-                    _navigationService.NavigateTo("addHab", h, false);
+                    //_navigationService.NavigateTo("addHab", h, false);
                 }
             }
             

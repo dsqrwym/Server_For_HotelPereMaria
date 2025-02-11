@@ -115,7 +115,7 @@ namespace WPFIntermodular.view
 
                 foreach (var extras in habitacion.Extras)
                 {
-                    serviciosAdicionales.Add(new Extras(extras.Key, extras.Value));
+                    //serviciosAdicionales.Add(new Extras(extras.Key, extras.Value));
                 }
 
                 extrasList.ItemsSource = serviciosAdicionales;
@@ -144,7 +144,7 @@ namespace WPFIntermodular.view
             }
 
             //obtener precio por noche luego sumando extras
-            precio = habitacion.Precio;
+            //precio = habitacion.Precio;
             updatePrecio();
 
 

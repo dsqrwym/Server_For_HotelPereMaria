@@ -1,64 +1,19 @@
-const { Schema, model } = require('mongoose');
-const { AuditableSchema, auditablePlugin } = require('./auditableShema.js');
+const mongoose = require('mongoose');
 
-const tipoCapacidadSchema = new Schema({
-  tipo: {
-    type: String,
-    required: true,
-    enum: ['individual', 'estándar', 'lujo', 'suite', 'suite dúplex']
-  },
-  capacidad: {
-    type: Number,
-    required: true,
-    min: [1, 'La capacidad mínima es 1'],
-    validate: {
-      validator: Number.isInteger,
-      message: '{VALUE} no es un número entero válido',
-    }
-  },
-}, { _id: false });
-
-const habitacionSchema = new Schema({
-  nombre: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  descripcion: {
-    type: String,
-    required: false,
-    trim: true
-  },
-  tipo_capacidad: {
-    type: tipoCapacidadSchema,
-    required: true
-  },
-  precio_noche: {
-    type: Number,
-    required: true,
-    min: 1
-  },
-  extras: [{
-    nombre: { type: String, required: true },
-    precio: { type: Number, required: true, min: 1 },
-    _id: false
-  }],
-  fotos: [{ type: Schema.Types.ObjectId, ref: 'Imagen' }],
-  
-  ...AuditableSchema.obj,
+// Definir el esquema para Habitacion
+const habitacionSchema = new mongoose.Schema({
+  Id: { type: String, required: true },
+  Tipo: { type: String, required: true },
+  Capacidad: { type: Number, required: true },
+  Precio: { type: mongoose.Types.Decimal128, required: true },  // Utilizamos Decimal128 para manejar precios con decimales
+  Extras: { type: Map, of: mongoose.Types.Decimal128, default: {} }, // Un mapa de strings a decimales
+  Images: { type: [String], default: [] }, // Un array de strings para las URLs de imágenes
+  Nombre: { type: String, required: true, minlength: 3 },
+  Descripccion: { type: String, required: true }
 });
 
-habitacionSchema.plugin(auditablePlugin);
+// Crear el modelo basado en el esquema
+const Habitacion = mongoose.model('Habitacion', habitacionSchema);
 
-habitacionSchema.set('toJSON', {
-  virtuals: true,
-  transform: (doc, ret) => {
-    delete ret.id;
-    delete ret.desactivado;
-    delete ret.offTime;
-    delete ret.__v;
-    return ret;
-  }
-});
-
-module.exports = model('Habitacion', habitacionSchema, 'habitaciones');
+// Exportar el modelo para poder utilizarlo en otras partes de la aplicación
+module.exports = Habitacion;
