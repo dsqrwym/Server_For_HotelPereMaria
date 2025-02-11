@@ -43,7 +43,7 @@ namespace WPFIntermodular.view
         private void nav()
         {
             this.Hide();
-            _navigationService.NavigateTo("buscarReserva",this);
+            _navigationService.NavigateTo("buscarReserva");
            
         }
     }

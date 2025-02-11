@@ -25,8 +25,6 @@ namespace WPFIntermodular.view
     /// </summary>
     public partial class BuscarReserva : Window
     {
-        private Window parent;
-
         private ObservableCollection<model.Habitacion> habitaciones;
         private ObservableCollection<model.Habitacion> habitacionesOriginal;
         private bool atras = false;
@@ -41,11 +39,9 @@ namespace WPFIntermodular.view
 
         private RelayCommand NavigateToSecondWindowCommand { get;  set; }
 
-        public BuscarReserva(Window parent)
+        public BuscarReserva()
         {
             InitializeComponent();
-            this.parent = parent;
-            inicialPosi(parent);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -57,33 +53,6 @@ namespace WPFIntermodular.view
                 fechaEntradaInput.BlackoutDates.Add(dateRange);
                 fechaSalidaInput.BlackoutDates.Add(dateRange);
             }
-        }
-
-        private void inicialPosi(Window parent)
-        {
-            this.parent = parent;
-            this.WindowStyle = parent.WindowStyle;
-            this.WindowState    = parent.WindowState;
-            this.Width = parent.Width;
-            this.Height = parent.Height;
-            this.Left = parent.Left;
-            this.Top = parent.Top;
-            this.Closing += CrearReserva_Closing;
-        }
-
-        private void configuraAdministrarReservaView()
-        {
-            parent.WindowStyle = this.WindowStyle;
-            parent.WindowState = this.WindowState;
-            parent.Width = this.Width;
-            parent.Height = this.Height;
-            parent.Left = this.Left;
-            parent.Top = this.Top;
-            parent.Visibility = Visibility.Visible;
-        }
-        private void CrearReserva_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
-        {
-            configuraAdministrarReservaView();
         }
 
         private void tipoHab_KeyUp(object sender, KeyEventArgs e)
@@ -331,7 +300,7 @@ namespace WPFIntermodular.view
             switch (navDestination)
             {
                 case "crearReserva":
-                    _navigationService.NavigateTo("crearReserva", this, h, fechaEntradaInput.SelectedDate, fechaSalidaInput.SelectedDate);
+                    _navigationService.NavigateTo("crearReserva", h, fechaEntradaInput.SelectedDate, fechaSalidaInput.SelectedDate);
                     break;
                 case "userList":
                     _navigationService.NavigateTo("userList");

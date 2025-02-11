@@ -157,7 +157,7 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
             {
                 if (FechaEntrada != null && FechaSalida != null)
                 {
-                    new CrearReserva(null, habitacion, FechaEntrada, FechaSalida).Show();
+                    new CrearReserva(habitacion, FechaEntrada, FechaSalida).Show();
                 }
                 else
                 {

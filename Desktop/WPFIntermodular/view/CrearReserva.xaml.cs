@@ -21,8 +21,6 @@ namespace WPFIntermodular.view
     /// </summary>
     public partial class CrearReserva : Window
     {
-        private Window parent;
-
         private decimal precio;
         private ObservableCollection<Cliente> listaClientes;
         private ObservableCollection<Cliente> listClientesOriginal;
@@ -30,23 +28,10 @@ namespace WPFIntermodular.view
         public readonly static byte DETALLE = 0;
 
         public readonly static byte MODIFICAR = 1;
-        private void inicialPosi(Window parent)
-        {
-            this.parent = parent;
-            this.WindowStyle = parent.WindowStyle;
-            this.WindowState = parent.WindowState;
-            this.Width = parent.Width;
-            this.Height = parent.Height;
-            this.Left = parent.Left;
-            this.Top = parent.Top;
-            this.Closing += CrearReserva_Closing;
-        }
 
-        public CrearReserva(Window parent, Reserva reserva, byte state)
+        public CrearReserva(Reserva reserva, byte state)
         {
             InitializeComponent();
-
-            inicialPosi(parent);
 
             if (state == DETALLE) {
                 titulo.Text = $"Reserva {reserva.Id}";
@@ -116,11 +101,9 @@ namespace WPFIntermodular.view
 
         }
 
-        public CrearReserva(Window parent, model.Habitacion habitacion, DateTime? fechaEntrada, DateTime? fechaSalida)
+        public CrearReserva(model.Habitacion habitacion, DateTime? fechaEntrada, DateTime? fechaSalida)
         {
             InitializeComponent();
-
-            inicialPosi(parent);
 
             if (habitacion.Extras.Count == 0)
             {
@@ -184,28 +167,11 @@ namespace WPFIntermodular.view
 
         }
 
-        private void CrearReserva_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
-        {
-            configuraParentView();
-        }
-
         private void Button_CloseClick(object sender, RoutedEventArgs e)
         {
-            configuraParentView();
-            this.Visibility = Visibility.Collapsed;
             this.Close();
         }
 
-        private void configuraParentView()
-        {
-            parent.WindowStyle = this.WindowStyle;
-            parent.WindowState = this.WindowState;
-            parent.Width = this.Width;
-            parent.Height = this.Height;
-            parent.Left = this.Left;
-            parent.Top = this.Top;
-            parent.Visibility = Visibility.Visible;
-        }
 
         private void fechaEntradaInput_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {

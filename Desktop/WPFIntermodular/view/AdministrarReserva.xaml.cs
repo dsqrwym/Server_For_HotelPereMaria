@@ -162,7 +162,7 @@ namespace WPFIntermodular.view
                        MessageBoxImage.Warning);
                     return;
                 }
-                new CrearReserva(this, reserva, CrearReserva.MODIFICAR).Show();
+                new CrearReserva(reserva, CrearReserva.MODIFICAR).Show();
                 cerrarView();
             }
         }
@@ -174,7 +174,7 @@ namespace WPFIntermodular.view
             var reserva = button?.DataContext as model.Reserva;
             if (reserva != null)
             {
-                CrearReserva detalle = new CrearReserva(this, reserva, CrearReserva.DETALLE);
+                CrearReserva detalle = new CrearReserva(reserva, CrearReserva.DETALLE);
                 detalle.Show();
                 cerrarView();
             }
