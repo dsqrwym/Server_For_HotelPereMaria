@@ -52,8 +52,7 @@ namespace WPFIntermodular.view
             habitaciones.Add(h);
 
 
-            ConexionController c = new ConexionController();
-            listaHab.ItemsSource = (System.Collections.IEnumerable)c.Index();
+           
 
 
 

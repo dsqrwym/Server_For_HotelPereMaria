@@ -3,9 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WPFIntermodular.view"
+        xmlns:local="clr-namespace:WPFIntermodular.viewmodel.habitacionViewModel"
         mc:Ignorable="d"
         Title="Buscador" Height="700" Width="1440">
+    <Window.DataContext>
+        <local:buscarHabitacionViewModel />
+    </Window.DataContext>
 
     <Border Style="{StaticResource Fondo}">
     <Grid  >
@@ -49,7 +52,7 @@
         </StackPanel>
 
         <StackPanel Grid.Column="1" Margin="20">
-            <ListView Name="listaHab" Width="582" Margin="0,0,0,10" SelectionChanged="listaHab_SelectionChanged" >
+            <ListView Name="listaHab" Width="582" Margin="0,0,0,10" SelectionChanged="listaHab_SelectionChanged" ItemsSource="{Binding Habitaciones}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="80" />

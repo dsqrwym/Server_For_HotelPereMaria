@@ -42,6 +42,8 @@ namespace WPFIntermodular.view
         public BuscarReserva()
         {
             InitializeComponent();
+            _navigationService = new NavigationService();  // Crear una instancia del servicio
+            NavigateToSecondWindowCommand = new RelayCommand(nav);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
