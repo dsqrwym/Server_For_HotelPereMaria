@@ -47,11 +47,12 @@ namespace WPFIntermodular.view
             this.DataContext = buscarHabitacionViewModel.instance;
 
 
+
+
             _navigationService = new NavigationService();  // Crear una instancia del servicio
             NavigateToSecondWindowCommand = new RelayCommand(nav);
 
             buscarEditBtn.Content = "Crear";
-            listaHab.ItemsSource = habitaciones;
 
             
             

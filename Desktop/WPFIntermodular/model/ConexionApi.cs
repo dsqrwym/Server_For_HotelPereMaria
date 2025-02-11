@@ -25,9 +25,9 @@ public class ConexionApi
         try
         {
             MessageBox.Show("ALLHABITACIONES");
-            string _ulrEndpoint = "http://localhost:3000/api/habitaciones/67ab8f31c9550f7df7e09f76";
+            string _ulrEndpoint = "http://localhost:3000/api/habitaciones";
 
-            API.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OGZjOTkzOThjMjk5Y2Y3NmJlZDc4YiIsInRpcG8iOjMsImlhdCI6MTczOTI5OTkyNywiZXhwIjoxNzM5MzAxNzI3fQ.vUiXvAe8OU2JqObTmu9vLiu4yWeUr5awU9Tvc8DOPyA");
+            API.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OGZjOTkzOThjMjk5Y2Y3NmJlZDc4YiIsInRpcG8iOjMsImlhdCI6MTczOTMwMTc5MSwiZXhwIjoxNzM5MzAzNTkxfQ.rpVSv_1md1RpMWyNL5fhI1A5EldKBsqMU7tZtsQFEqY");
 
 
             var response = await API.GetAsync(_ulrEndpoint);

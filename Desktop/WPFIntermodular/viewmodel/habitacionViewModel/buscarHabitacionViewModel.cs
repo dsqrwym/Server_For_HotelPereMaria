@@ -57,7 +57,7 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
         }
 
 
-        private async Task CargarDatos()
+        public async Task CargarDatos()
         {
             MessageBox.Show("CargarDatos 1");
             var habitaciones = await c.Index();
@@ -71,7 +71,14 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
                 
                 foreach(var hab in habitaciones)
                 {
-                    MessageBox.Show(habitaciones.ToString());
+                    MessageBox.Show(hab.Id +
+                        hab.Tipo+
+                        hab.Capacidad+
+                        hab.Precio+
+                        hab.Extras+ // Extras vacíos
+                        new List<string>()+ // Lista de imágenes vacía
+                        hab.Nombre+
+                        hab.Descripccion);
                     Habitaciones.Add(new Habitacion(
                         hab.Id,
                         hab.Tipo,
@@ -87,7 +94,7 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
 
                 
             }
-            OnPropertyChanged("Habitaciones");
+            OnPropertyChanged(nameof(Habitaciones));
         }
 
 
