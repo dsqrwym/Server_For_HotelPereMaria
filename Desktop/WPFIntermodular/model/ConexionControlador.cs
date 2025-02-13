@@ -15,9 +15,15 @@ public class ConexionController : Controller
 
     public async Task<List<Habitacion>> Index()
     {
-        MessageBox.Show("INDEX");
         var reservas = await _conectarService.AllHabitaciones();
         return reservas;
+    }
+
+    public async Task<bool> GuardarHab(Habitacion h )
+    {
+        MessageBox.Show($"GuardarHab");
+        var respuesta = await _conectarService.addHab(h);
+        return respuesta;
     }
 
     

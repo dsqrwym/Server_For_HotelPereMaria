@@ -1,81 +1,101 @@
 ﻿<Window x:Class="WPFIntermodular.view.addHabitaciones"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Add/Edit Room" Width="1000" Height="600" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize">
+        xmlns:vm="clr-namespace:WPFIntermodular.viewmodel.habitacionViewModel"
+        Title="Add/Edit Room"
+        Width="1000" Height="650" WindowStartupLocation="CenterScreen">
 
-    <Border CornerRadius="10" Style="{StaticResource Border}" Width="1000" Height="600" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="30" BorderBrush="#E5E5E5" BorderThickness="1">
+    <Border CornerRadius="10" Style="{StaticResource Border}" Width="1000" Height="650"
+            HorizontalAlignment="Center" VerticalAlignment="Center" Padding="30"
+            BorderBrush="#E5E5E5" BorderThickness="1">
 
-        <Grid Margin="10,10,0,0">
-     
-            <Grid>
-                <Label Style="{StaticResource Titulo}" Content="Añadir habitación"   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
+        <Grid>
+            <Label Style="{StaticResource Titulo}" Content="" 
+                   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" x:Name="titulo"/>
 
-                <Button Content="X" Width="30" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" Foreground="Black" FontSize="14" FontWeight="Bold" BorderBrush="Transparent" Click="Button_Click"/>
+            <Button Content="X" Width="30" Height="30" HorizontalAlignment="Right" 
+                    VerticalAlignment="Top" Background="Transparent" Foreground="Black"
+                    FontSize="14" FontWeight="Bold" BorderBrush="Transparent"
+                    Command="{Binding CerrarCommand}" />
 
-                <Grid Margin="0,60,0,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+            <Grid Margin="0,60,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-                    <Grid Grid.Row="0" Margin="0,0,0,20">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="1*"/>
-                        </Grid.ColumnDefinitions>
+                <!-- ID -->
+                <StackPanel Grid.Row="0" Margin="0,0,0,10">
+                    <TextBlock Style="{StaticResource SubTitle}" Text="ID de la habitación" Margin="0,0,0,5"/>
+                    <TextBox Text="{Binding Habitacion.Id, Mode=TwoWay}" Height="40"/>
+                </StackPanel>
 
-                        <StackPanel Grid.Column="0" Margin="0,0,20,0">
-                            <TextBlock Style="{StaticResource SubTitle}" Text="Nombre"  Margin="0,0,0,5"/>
-                            <TextBox x:Name="nombreText" Height="40"/>
-                        </StackPanel>
+                <!-- Nombre y Tipo -->
+                <Grid Grid.Row="1" Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
 
-                        <StackPanel Grid.Column="1">
-                            <TextBlock Style="{StaticResource SubTitle}" Text="Tipos"  Margin="0,0,0,5"/>
-                            <ComboBox x:Name="tipoCombo" Height="40">
-                                <ComboBoxItem>Individual</ComboBoxItem>
-                                <ComboBoxItem>Estandar</ComboBoxItem>
-                                <ComboBoxItem>Lujo</ComboBoxItem>
-                                <ComboBoxItem>Suite</ComboBoxItem>
-                                <ComboBoxItem>Duplex</ComboBoxItem>
-                            </ComboBox>
-                        </StackPanel>
-                    </Grid>
-
-                    <StackPanel Grid.Row="1" Margin="0,0,0,20">
-                        <TextBlock Text="Descripción" Style="{StaticResource SubTitle}"  Margin="0,0,0,5"/>
-                        <TextBox x:Name="descripccionText" Height="239" TextWrapping="Wrap" AcceptsReturn="True"/>
+                    <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                        <TextBlock Style="{StaticResource SubTitle}" Text="Nombre" Margin="0,0,0,5"/>
+                        <TextBox Text="{Binding Nombre, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="40"/>
                     </StackPanel>
 
-                    <Grid Grid.Row="2">
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-
-                        <StackPanel>
-                            <TextBlock Text="Seleccionar imagen principal" Style="{StaticResource SubTitle}"  FontWeight="Bold" Margin="0,0,0,5" Width="299" />
-                            <Button x:Name="imagen" Content="Seleccionar archivo" HorizontalContentAlignment="Left" Width="302" Click="imagen_Click"     />
-                        </StackPanel>
-                        <StackPanel Grid.Column="1">
-                            <TextBlock Text="Opciones" Style="{StaticResource SubTitle}"  Margin="0,0,0,5" Width="91"/>
-                            <CheckBox x:Name="cunaCheck" Width="89">Cuna</CheckBox>
-                            <CheckBox x:Name="camaCheck" Width="89">Cama extra</CheckBox>
-                        </StackPanel>
-                        <StackPanel Grid.Column="2">
-                            <TextBlock Text="Precio por noche"  Style="{StaticResource SubTitle}"  Margin="0,0,0,5" Width="318"/>
-                            <TextBlock x:Name="precioText" Text="10" FontWeight="Bold" Margin="0,0,0,5" Width="161" />
-                        </StackPanel>
-
-
-                    </Grid>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Style="{StaticResource SubTitle}" Text="Tipo" Margin="0,0,0,5"/>
+                        <ComboBox ItemsSource="{Binding TiposHabitacion}"  
+                                  SelectedIndex="{Binding SelectedTipoIndex, Mode=TwoWay}" />
+                    </StackPanel>
                 </Grid>
 
-                <Button  Style="{StaticResource BtnPrin}"   x:Name="botonFinal" Width="150" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top"  FontWeight="Bold" Margin="0,488,0,0" Content="Crear" Click="botonFinal_Click"/>
-            </Grid>
-    </Grid>
-    </Border>
+                <!-- Capacidad y Precio -->
+                <Grid Grid.Row="2" Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
 
+                    <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                        <TextBlock Style="{StaticResource SubTitle}" Text="Capacidad" Margin="0,0,0,5"/>
+                        <TextBox Text="{Binding Habitacion.Capacidad, Mode=TwoWay}" Height="40"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Style="{StaticResource SubTitle}" Text="Precio" Margin="0,0,0,5"/>
+                        <TextBox Text="{Binding Precio, Mode=TwoWay}" Height="40"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Descripción -->
+                <StackPanel Grid.Row="3" Margin="0,0,0,10">
+                    <TextBlock Text="Descripción" Style="{StaticResource SubTitle}" Margin="0,0,0,5"/>
+                    <TextBox Text="{Binding Descripcion, Mode=TwoWay}" Height="80" TextWrapping="Wrap" AcceptsReturn="True"/>
+                </StackPanel>
+
+                <!-- Imagen -->
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Seleccionar imagen" Style="{StaticResource SubTitle}" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <Button Content="Seleccionar archivo" Command="{Binding SeleccionarImagenCommand}" Width="302"/>
+                        <Image Source="{Binding ImagenPreview}" Width="200" Height="150"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+
+            <!-- Botón Guardar -->
+            <Button Style="{StaticResource BtnPrin}" Width="150" Height="50"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom" FontWeight="Bold"
+                    Margin="0,10,10,10" Content="Guardar"
+                    Command="{Binding GuardarHabitacionCommand}" x:Name="btnFinal" />
+        </Grid>
+    </Border>
 </Window>

@@ -1,71 +1,69 @@
-﻿<Window x:Class="WPFIntermodular.view.buscadorHabitaciones"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WPFIntermodular.viewmodel.habitacionViewModel" xmlns:model="clr-namespace:WPFIntermodular.viewmodel.habitacionViewModel" d:DataContext="{d:DesignInstance Type=model:buscarHabitacionViewModel}"
-        mc:Ignorable="d"
-        Title="Buscador" Height="700" Width="1440">
+﻿    <Window x:Class="WPFIntermodular.view.buscadorHabitaciones"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:local="clr-namespace:WPFIntermodular.viewmodel.habitacionViewModel" xmlns:model="clr-namespace:WPFIntermodular.viewmodel.habitacionViewModel" d:DataContext="{d:DesignInstance Type=model:buscarHabitacionViewModel}"
+            mc:Ignorable="d"
+            Title="Buscador" Height="700" Width="1440">
    
 
-    <Border Style="{StaticResource Fondo}">
-    <Grid  >
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="3*" />
-        </Grid.ColumnDefinitions>
+        <Border Style="{StaticResource Fondo}">
+        <Grid  >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" Margin="20">
-            <Border Style="{StaticResource Border}" Padding="10" CornerRadius="15" VerticalAlignment="Stretch">
-                <StackPanel>
-                        <Button Content="←" FontSize="20" Background="Transparent" HorizontalContentAlignment="Left" Click="Button_Click_1" ></Button>
+            <StackPanel Grid.Column="0" Margin="20">
+                <Border Style="{StaticResource Border}" Padding="10" CornerRadius="15" VerticalAlignment="Stretch">
+                    <StackPanel>
+                            <Button Content="←" FontSize="20" Background="Transparent" HorizontalContentAlignment="Left" Click="Button_Click_1" ></Button>
 
-                        <Label FontSize="20">ID habitacion</Label>
-                    <TextBox Name ="idText" Height="24" Width="244" HorizontalAlignment="Left"></TextBox>
+                            <Label FontSize="20">ID habitacion</Label>
+                        <TextBox Name ="idText" Height="24" Width="244" HorizontalAlignment="Left"></TextBox>
 
-                    <Label FontSize="20">Tipo</Label>
-                    <ComboBox Name="tiposCombo" Height="24" Width="244" HorizontalAlignment="Left">
-                        <ComboBoxItem>Individual</ComboBoxItem>
-                        <ComboBoxItem>Estandar</ComboBoxItem>
-                        <ComboBoxItem>Lujo</ComboBoxItem>
-                        <ComboBoxItem>Suite</ComboBoxItem>
-                        <ComboBoxItem>Duplex</ComboBoxItem>
-                    </ComboBox>
-
-
+                        <Label FontSize="20">Tipo</Label>
+                        <ComboBox Name="tiposCombo" Height="24" Width="244" HorizontalAlignment="Left">
+                            <ComboBoxItem>Individual</ComboBoxItem>
+                            <ComboBoxItem>Estandar</ComboBoxItem>
+                            <ComboBoxItem>Lujo</ComboBoxItem>
+                            <ComboBoxItem>Suite</ComboBoxItem>
+                            <ComboBoxItem>Duplex</ComboBoxItem>
+                        </ComboBox>
 
 
-                    <Label FontSize="20" Margin="10,10,0,0">¿Ocupada?</Label>
-                    <StackPanel Orientation="Horizontal" Margin="10,0">
-                        <RadioButton FontSize="20" GroupName="si/no" FontFamily="Montserrat" Margin="0,0,10,0" Name="ocupadaSi">Sí</RadioButton>
-                        <RadioButton FontSize="20" GroupName="si/no" FontFamily="Montserrat" Name="ocupadaNo">No</RadioButton>
+
+
+                        <Label FontSize="20" Margin="10,10,0,0">¿Ocupada?</Label>
+                        <StackPanel Orientation="Horizontal" Margin="10,0">
+                            <RadioButton FontSize="20" GroupName="si/no" FontFamily="Montserrat" Margin="0,0,10,0" Name="ocupadaSi">Sí</RadioButton>
+                            <RadioButton FontSize="20" GroupName="si/no" FontFamily="Montserrat" Name="ocupadaNo">No</RadioButton>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10,0,0">
+                                <Button Style="{DynamicResource BtnSec}" Width="124" Height="37" Margin="0,0,10,0">Ofertas</Button>
+                            <Button Style="{StaticResource BtnPrin}"  Width="139"  Click="Button_Click" >Buscar</Button>
+                        </StackPanel>
                     </StackPanel>
+                </Border>
+            </StackPanel>
 
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10,0,0">
-                            <Button Style="{DynamicResource BtnSec}" Width="124" Height="37" Margin="0,0,10,0">Ofertas</Button>
-                        <Button Style="{StaticResource BtnPrin}"  Width="139"  Click="Button_Click" >Buscar</Button>
-                    </StackPanel>
-                </StackPanel>
-            </Border>
-        </StackPanel>
+            <StackPanel Grid.Column="1" Margin="20">
+                <DataGrid Name="listaHab" AutoGenerateColumns="False" Width="582" Margin="0,0,0,10" SelectionChanged="listaHab_SelectionChanged" ItemsSource="{Binding Habitaciones}"  SelectedItem="{Binding HabitacionSeleccionada, Mode=TwoWay}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="80" />
+                            <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" Width="80" />
+                            <DataGridTextColumn Header="Tipo" Binding="{Binding Tipo}" Width="80" />
+                            <DataGridTextColumn Header="Descripción" Binding="{Binding Descripccion}" Width="150" />
+                            <DataGridTextColumn Header="Capacidad" Binding="{Binding Capacidad}" Width="100" />
+                        </DataGrid.Columns>
+                    </DataGrid>
 
-        <StackPanel Grid.Column="1" Margin="20">
-            <ListView Name="listaHab" Width="582" Margin="0,0,0,10" SelectionChanged="listaHab_SelectionChanged" ItemsSource="{Binding Habitaciones}">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="80" />
-                            <GridViewColumn Header="Nombre" DisplayMemberBinding="{Binding Nombre}" Width="80" />
-                            <GridViewColumn Header="Descripccion" DisplayMemberBinding="{Binding Descripccion}" Width="80" />
-                            <GridViewColumn Header="Tipo" DisplayMemberBinding="{Binding Tipo}" Width="150" />
-                        <GridViewColumn Header="Capacidad" DisplayMemberBinding="{Binding Capacidad}" Width="100" />
+                <Button Name="buscarEditBtn"  Style="{StaticResource BtnPrin}" Width="188" Height="49"  Command="{Binding BuscarEditCommand}" Click="buscarEditBtn_Click"
+    ></Button>
+            </StackPanel>
 
-
-                        </GridView>
-                </ListView.View>
-            </ListView>
-                <Button Name="buscarEditBtn"  Style="{StaticResource BtnPrin}" Width="188" Height="49" Click="buscarEditBtn_Click"></Button>
-        </StackPanel>
-
-    </Grid>
-    </Border>
-</Window>
+        </Grid>
+        </Border>
+    </Window>

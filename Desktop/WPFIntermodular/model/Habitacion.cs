@@ -16,14 +16,14 @@ namespace WPFIntermodular.model
         [JsonProperty("Capacidad")]
         public int Capacidad { get; set; }
 
-        [JsonProperty("precio")]
-        public MongoDecimal Precio { get; set; } 
+        [JsonProperty("Precio")]
+        public double Precio { get; set; }  // Cambio aquí a MongoDouble
 
         [JsonProperty("Extras")]
-        public Dictionary<string, MongoDecimal> Extras { get; set; } = new Dictionary<string, MongoDecimal>();
+        public Dictionary<string,double> Extras { get; set; } = new Dictionary<string, double>(); // Cambio aquí a MongoDouble
 
         [JsonProperty("Images")]
-        public List<string> Images { get; set; }
+        public string Images { get; set; }
 
         [JsonProperty("Nombre")]
         public string Nombre { get; set; }
@@ -31,7 +31,7 @@ namespace WPFIntermodular.model
         [JsonProperty("Descripccion")]
         public string Descripccion { get; set; }
 
-        public Habitacion(string id, string tipo, int capacidad, MongoDecimal precio, Dictionary<string, MongoDecimal> extras, List<string> images, string nombre, string descripccion)
+        public Habitacion(string id, string tipo, int capacidad, double precio, Dictionary<string, double> extras, string images, string nombre, string descripccion)
         {
             Id = id;
             Tipo = tipo;
@@ -43,16 +43,11 @@ namespace WPFIntermodular.model
             Descripccion = descripccion;
         }
 
-        public string PrimerImagen => Images?.FirstOrDefault() ?? "/source/habitacion.png";
-
         public override string ToString()
         {
             return Nombre;
         }
     }
-    public class MongoDecimal
-    {
-        [JsonProperty("$numberDecimal")]
-        public decimal Value { get; set; }
-    }
+
+  
 }

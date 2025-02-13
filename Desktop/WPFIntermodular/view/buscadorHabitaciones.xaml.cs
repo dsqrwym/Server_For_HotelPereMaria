@@ -31,13 +31,9 @@ namespace WPFIntermodular.view
     {
         private bool editar = false;
         private bool atras = false;
-        private ObservableCollection<Habitacion> habitaciones = new ObservableCollection<Habitacion>();
-
-        private NavigationService _navigationService;
-        
-
-
-        private RelayCommand NavigateToSecondWindowCommand { get;  set; }
+        private ObservableCollection<Habitacion> Habitaciones = new ObservableCollection<Habitacion>();
+        Habitacion h;
+   
         public buscadorHabitaciones()
         {
 
@@ -47,10 +43,7 @@ namespace WPFIntermodular.view
             this.DataContext = buscarHabitacionViewModel.instance;
 
 
-
-
-            _navigationService = new NavigationService();  // Crear una instancia del servicio
-            NavigateToSecondWindowCommand = new RelayCommand(nav);
+          
 
             buscarEditBtn.Content = "Crear";
 
@@ -64,38 +57,9 @@ namespace WPFIntermodular.view
 
         }
        
-        public void addHab(Habitacion h)
-        {
-            habitaciones.Add(h);
-            listaHab.ItemsSource = habitaciones;
-        }
-        public void actLista()
-        {
-            listaHab.ItemsSource = habitaciones;
+        
 
-        }
-
-        private void buscarEditBtn_Click(object sender, RoutedEventArgs e)
-        {
-            if (listaHab.SelectedIndex != -1)
-            {
-                buscarEditBtn.Content = "Editar";
-
-                editar = true;
-                nav();
-                this.Hide();
-                
-            }
-            else
-            {
-                buscarEditBtn.Content = "Crear";
-                editar = false;
-                nav();
-                this.Hide();
-                
-
-            }
-        }
+       
 
         private void listaHab_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -136,9 +100,9 @@ namespace WPFIntermodular.view
 
         public void filterHabitaciones(string tipo, int id, bool valido, bool? ocupado)
         {
-            if (habitaciones == null) return;
+            if (Habitaciones == null) return;
 
-            ICollectionView habitacionesView = CollectionViewSource.GetDefaultView(habitaciones);
+            ICollectionView habitacionesView = CollectionViewSource.GetDefaultView(Habitaciones);
 
             habitacionesView.Filter = new Predicate<object>(obj =>
             {
@@ -159,33 +123,16 @@ namespace WPFIntermodular.view
             habitacionesView.Refresh();
         }
 
-        private void nav()
-        {
-            if (atras)
-            {
-                this.Hide();
-                _navigationService.NavigateTo("buscarReserva", this);
-
-            }
-            else
-            {
-                if (editar)
-                {
-                    Habitacion h = habitaciones[listaHab.SelectedIndex];
-                   // _navigationService.NavigateTo("addHab", h, true);
-                }
-                else
-                {
-                    //_navigationService.NavigateTo("addHab", h, false);
-                }
-            }
-            
-        }
+        
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             atras = true;
-            nav();
+        }
+
+        private void buscarEditBtn_Click(object sender, RoutedEventArgs e)
+        {
+            buscarHabitacionViewModel.instance.BuscarEditar();
         }
     }
 }
