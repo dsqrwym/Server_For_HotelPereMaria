@@ -81,7 +81,7 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
         public async Task CargarDatos()
         {
             var habitaciones = await c.Index();
-            if (habitaciones == null )
+            if (habitaciones == null)
             {
                 MessageBox.Show("No se han cargado datos, revise su conexion al servidor");
             }

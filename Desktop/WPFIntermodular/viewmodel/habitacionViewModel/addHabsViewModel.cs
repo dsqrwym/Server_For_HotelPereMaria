@@ -120,19 +120,29 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
         public ICommand GuardarHabitacionCommand { get; }
         public ICommand CerrarCommand { get; }
 
+
+        private NavigationService _navigationService;
+
+
+        private RelayCommand NavigateToSecondWindowCommand { get; set; }
+
         public addHabsViewModel(Habitacion habitacion, bool editar)
         {
             Habitacion = habitacion;
             Editar = editar;
 
-            if (editar)
+            _navigationService = new NavigationService();
+            NavigateToSecondWindowCommand = new RelayCommand(CerrarVentana);
+
+            if (Editar)
             {
                 Nombre = habitacion.Nombre;
                 Tipo = habitacion.Tipo;
                 Descripcion = habitacion.Descripccion;
+                SelectedTipoIndex = Array.IndexOf(_tiposHabitacion, habitacion.Tipo);
             }
 
-            SelectedTipoIndex = Array.IndexOf(_tiposHabitacion, habitacion.Tipo);
+            
 
             SeleccionarImagenCommand = new RelayCommand(SeleccionarImagen);
             CerrarCommand = new RelayCommand(CerrarVentana);
@@ -269,6 +279,7 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
         private void CerrarVentana()
         {
             MessageBox.Show("Cerrando ventana...");
+            _navigationService.NavigateTo("buscarHab");
         }
 
         private void SetProperty<T>(ref T field, T value, [System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)

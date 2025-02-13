@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.hotelperemaria.ui.login.loginScreen
 import com.hotelperemaria.ui.registro.registerScreen
-import com.hotelperemaria.ui.principal.principalScreen
+import com.hotelperemaria.ui.principal.PrincipalScreen
 @Composable
 fun NavigationWrapper() {
     val navController = rememberNavController()
@@ -20,7 +20,7 @@ fun NavigationWrapper() {
             registerScreen(viewModel()) { navController.navigate(Login) }
         }
         composable<Principal> {
-            principalScreen()
+            PrincipalScreen()
         }
 
 
