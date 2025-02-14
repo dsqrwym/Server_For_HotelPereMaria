@@ -32,17 +32,6 @@ namespace WPFIntermodular.view
             InitializeComponent();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            var viewmodel = new BuscarReservaViewModel();
-            // 获取 ViewModel 中的 BlackoutDates 并应用到 DatePicker
-            foreach (var dateRange in viewmodel.GetBlackoutDates())
-            {
-                fechaEntradaInput.BlackoutDates.Add(dateRange);
-                fechaSalidaInput.BlackoutDates.Add(dateRange);
-            }
-        }
-
         private void tipoHab_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) {

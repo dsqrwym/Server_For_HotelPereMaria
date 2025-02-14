@@ -1,20 +1,11 @@
-﻿using Microsoft.AspNetCore.Routing.Matching;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
+﻿using Newtonsoft.Json;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
-using WPFIntermodular.model;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using WPFIntermodular.model.reserva;
 
 namespace WPFIntermodular.network.reservaService
 {
@@ -22,7 +13,7 @@ namespace WPFIntermodular.network.reservaService
     {
         private static readonly HttpClient _httpClient = new HttpClient();
         private static string baseUrl = "http://localhost:3000/api/reservas/";
-        private static string _authToken;
+        private static string _authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OTJhY2M4NDcxYzI5MDk3NDgxMWQ2ZiIsInRpcG8iOjUsImlhdCI6MTczOTU3NDg0NywiZXhwIjoxNzM5NTc2NjQ3fQ.bKOnYe4yXUciY7nVRqmY1ZslY3wQvyruHHzYyT3xIss";
 
         public static void SetAuthToken(string token)
         {
@@ -33,10 +24,9 @@ namespace WPFIntermodular.network.reservaService
 
         public async static Task<List<Reserva>> ObtenerReservas()
         {
-            SetAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OTJhY2M4NDcxYzI5MDk3NDgxMWQ2ZiIsInRpcG8iOjUsImlhdCI6MTczOTUzMzU1NSwiZXhwIjoxNzM5NTM1MzU1fQ.EKo1WiQYvk2JACANd3neT5S8ngsefsjPGoMBk9eTaPU");
             try
             {
-                string _urlEndpoint = baseUrl+"?fields=id_usuario,id_habitacion,huespedes,fecha_entrada,fecha_salida,precio_total,extrasSeleccionados,altUser&page=0&limit=5&usuarioFields=nombre,tipo,email&habitacionFields=tipo_capacidad,precio_noche,extras"; // Cambia esto por tu URL real
+                string _urlEndpoint = baseUrl+"?fields=id_usuario,id_habitacion,huespedes,fecha_entrada,fecha_salida,precio_total,extrasSeleccionados,altUser&page=0&limit=5&usuarioFields=nombre,tipo,email&habitacionFields=Tipo,Capacidad,Precio,Extras,Images"; // Cambia esto por tu URL real
 
                 if (!string.IsNullOrEmpty(_authToken))
                 {
@@ -77,7 +67,6 @@ namespace WPFIntermodular.network.reservaService
 
         public static async Task<bool> EliminarReservaAsync(string reservaId)
         {
-            SetAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OTJhY2M4NDcxYzI5MDk3NDgxMWQ2ZiIsInRpcG8iOjUsImlhdCI6MTczOTQ5MTA1MiwiZXhwIjoxNzM5NDkyODUyfQ.BTg0ktY934rH19i4KXNwOUjnJLrcvd-Qi5rcI2fqUXo");
             try
             {
                 // 设置认证头
@@ -126,14 +115,12 @@ namespace WPFIntermodular.network.reservaService
                 _httpClient.DefaultRequestHeaders.Authorization = null;
             }
         }
-        public static async Task<List<CalendarDateRange>> ObtenerFechasReservadasAsync()
+        public static async Task<List<CalendarDateRange>> ObtenerFechasReservadasAsync(string id_habitacion, string id_reserva)
         {
-            SetAuthToken("your_token_here");
             try
             {
-                const string endpoint = "date/?";
-                var requestUrl = $"id_habitacion={baseUrl}&&id={endpoint}";
-
+                var requestUrl = $"{baseUrl}date/?id_habitacion={id_habitacion}&id={id_reserva}";
+                Debug.WriteLine(requestUrl);
                 _httpClient.DefaultRequestHeaders.Authorization =
                     new AuthenticationHeaderValue("Bearer", _authToken);
 
@@ -157,231 +144,242 @@ namespace WPFIntermodular.network.reservaService
                 _httpClient.DefaultRequestHeaders.Authorization = null;
             }
         }
-    }
-
-    public class ApiResponse<T>
-    {
-        [JsonProperty("statusCode")]
-        public int StatusCode { get; set; }
-
-        [JsonProperty("message")]
-        public string Message { get; set; }
-
-        [JsonProperty("data")]
-        public T Data { get; set; }
-
-        [JsonProperty("error")]
-        public string Error { get; set; }
-    }
-    public class ReservedDatesData
-    {
-        [JsonProperty("reservedDates")]
-        public List<ReservedDate> ReservedDates { get; set; }
-    }
-
-    public class ReservedDate
-    {
-        [JsonProperty("fecha_entrada")]
-        public DateTime FechaEntrada { get; set; }
-
-        [JsonProperty("fecha_salida")]
-        public DateTime FechaSalida { get; set; }
-    }
-    public class ReservaData
-    {
-        [JsonProperty("reservas")]
-        public List<Reserva> Reservas { get; set; }
-    }
-
-    public class Reserva : INotifyPropertyChanged
-    {
-        private bool _isSelected;
-        [JsonProperty("_id")]
-        public string Id { get; set; }
-
-        [JsonProperty("id_usuario")]
-        private Usuario usuario;
-        public Usuario Usuario {
-            get => usuario;
-            set
+        public static async Task<bool> CrearReservaAsync(Reserva nuevaReserva)
+        {
+            try
             {
-                usuario = value;
-                OnPropertyChanged();
-            } 
-        }
+                _httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", _authToken);
 
-        [JsonProperty("id_habitacion")]
-        private Habitacion habitacion;
-        public Habitacion Habitacion {
-            get => habitacion;
-            set
+                // 处理Extras转换
+                var requestData = new
+                {
+                    id_usuario = nuevaReserva.Usuario?.Id,
+                    id_habitacion = nuevaReserva.Habitacion?.Id,
+                    huespedes = nuevaReserva.CantidadHuesped,
+                    fecha_entrada = nuevaReserva.Fecha_ini.ToString("yyyy-MM-dd"),
+                    fecha_salida = nuevaReserva.Fecha_fin.ToString("yyyy-MM-dd"),
+                    extrasSeleccionados = nuevaReserva.ExtrasSeleccionadas?
+                        .Where(e => e.IsSelected)
+                        .ToDictionary(e => e.Nombre, e => e.Precio)
+                };
+
+                var json = JsonConvert.SerializeObject(requestData);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PostAsync(baseUrl, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+
+                HandleErrorResponse(response);
+                return false;
+            }
+            catch (Exception ex)
             {
-                habitacion = value;
-                OnPropertyChanged();
+                DialogService.ShowError(ex.Message, "Error creando reserva");
+                return false;
             }
-        }
-
-        [JsonProperty("huespedes")]
-        private int cantidadHuesped;
-        public int CantidadHuesped {
-            get => cantidadHuesped;
-            set
+            finally
             {
-                cantidadHuesped = value;
-                OnPropertyChanged();
+                _httpClient.DefaultRequestHeaders.Authorization = null;
             }
         }
 
-        [JsonProperty("fecha_entrada")]
-        private DateTime fecha_ini;
-        public DateTime Fecha_ini {
-            get => fecha_ini;
-            set {
-                fecha_ini = value;
-                OnPropertyChanged();        
-            }
-        }
-
-        [JsonProperty("fecha_salida")]
-        private DateTime fecha_fin;
-        public DateTime Fecha_fin {
-            get => fecha_fin;
-            set
-            {
-                fecha_fin = value;
-                OnPropertyChanged();
-            }
-        }
-
-        [JsonProperty("precio_total")]
-        private decimal precio_total;
-        public decimal Precio_total {
-            get => precio_total;
-            set
-            {
-                precio_total = value;
-                OnPropertyChanged();
-            }
-        }
-        [JsonProperty("extrasSeleccionados")]
-        private List<Extras> extrasSeleccionadas;
-        public List<Extras> ExtrasSeleccionadas
+        public static async Task<bool> ActualizarReservaAsync(Reserva reservaActualizada)
         {
-            get => extrasSeleccionadas;
-            set {  
-                extrasSeleccionadas = value;
-                OnPropertyChanged();
-            }
-        }
-
-        [JsonProperty("altUser")]
-        private string altUser;
-        public string AltUser
-        {
-            get => altUser;
-            set
+            try
             {
-                altUser = value;
-                OnPropertyChanged();
+                _httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", _authToken);
+
+                // 构造更新数据，排除不允许修改的字段
+                var updateData = new
+                {
+                    huespedes = reservaActualizada.CantidadHuesped,
+                    fecha_entrada = reservaActualizada.Fecha_ini.ToString("yyyy-MM-dd"),
+                    fecha_salida = reservaActualizada.Fecha_fin.ToString("yyyy-MM-dd"),
+                    extrasSeleccionados = reservaActualizada.ExtrasSeleccionadas?
+                        .Where(e => e.IsSelected)
+                        .ToDictionary(e => e.Nombre, e => e.Precio)
+                };
+
+                var json = JsonConvert.SerializeObject(updateData);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PutAsync($"{baseUrl}{reservaActualizada.Id}", content);
+
+                if (response.IsSuccessStatusCode) return true;
+
+                HandleErrorResponse(response);
+                return false;
             }
-        }
-        public bool IsSelected
-        {
-            get => _isSelected;
-            set
+            catch (Exception ex)
             {
-                _isSelected = value;
-                OnPropertyChanged();
-                Debug.WriteLine($"Reserva {Id} IsSelected changed to {value}");
+                DialogService.ShowError(ex.Message, "Error actualizando reserva");
+                return false;
+            }
+            finally
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = null;
             }
         }
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private static void HandleErrorResponse(HttpResponseMessage response)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            switch (response.StatusCode)
+            {
+                case HttpStatusCode.BadRequest:
+                    DialogService.ShowError("Datos de entrada inválidos");
+                    break;
+                case HttpStatusCode.Conflict:
+                    DialogService.ShowError("Conflicto de versión, la reserva fue modificada por otro usuario");
+                    break;
+                case HttpStatusCode.NotFound:
+                    DialogService.ShowError("Reserva no encontrada");
+                    break;
+                default:
+                    DialogService.ShowError($"Error HTTP: {(int)response.StatusCode}");
+                    break;
+            }
+        }
+
+        public static async Task<List<Extras>> ObtenerExtrasAsync()
+        {
+            try
+            {
+                var requestUrl = "http://localhost:3000/api/habitacion/extras";
+                _httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", _authToken);
+
+                var response = await _httpClient.GetAsync(requestUrl);
+                response.EnsureSuccessStatusCode();
+
+                var json = await response.Content.ReadAsStringAsync();
+                var apiResponse = JsonConvert.DeserializeObject<ApiResponse<List<Extras>>>(json);
+
+                return apiResponse?.Data ?? new List<Extras>();
+            }
+            catch (Exception ex)
+            {
+                DialogService.ShowError(ex.Message, "Error obteniendo extras");
+                return new List<Extras>();
+            }
+            finally
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = null;
+            }
+        }
+        public static async Task<List<TipoCapacidad>> ObtenerTiposHabitacionAsync()
+        {
+            string url = "http://localhost:3000/api/habitacion/types";
+            try
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authToken);
+
+                var response = await _httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+
+                var json = await response.Content.ReadAsStringAsync();
+                var apiResponse = JsonConvert.DeserializeObject<ApiResponse<List<TipoCapacidad>>>(json);
+
+                return apiResponse?.Data as List<TipoCapacidad> ?? new List<TipoCapacidad>();
+            }
+            catch (Exception ex)
+            {
+                DialogService.ShowError(ex.Message, "Error obteniendo tipos de habitación");
+                return new List<TipoCapacidad>();
+            }
+            finally
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = null;
+            }
+        }
+        public static async Task<List<Habitacion>> ObtenerHabitacionesDisponiblesAsync(DateTime fechaEntrada, DateTime fechaSalida)
+        {
+            try
+            {
+                // Construct the API URL
+                string url = $"http://localhost:3000/api/reservas/habitacion_disponible/?fecha_entrada={fechaEntrada:yyyy-MM-dd}&fecha_salida={fechaSalida:yyyy-MM-dd}";
+
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authToken);
+
+                // Send GET request to retrieve available rooms
+                var response = await _httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+
+                // Parse the response
+                var json = await response.Content.ReadAsStringAsync();
+                var apiResponse = JsonConvert.DeserializeObject<ApiResponse<List<Habitacion>>>(json);
+
+                return apiResponse?.Data ?? new List<Habitacion>(); // Return available rooms or an empty list if no data
+            }
+            catch (Exception ex)
+            {
+                DialogService.ShowError(ex.Message, "Error obteniendo habitaciones disponibles");
+                return new List<Habitacion>(); // Return empty list on error
+            }
+            finally
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = null;
+            }
+        }
+
+        public static async Task<List<Usuario>> ObtenerClientesAsync()
+        {
+            try
+            {
+                string url = "http://localhost:3000/api/user/client";
+
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authToken);
+
+                var response = await _httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+
+                var json = await response.Content.ReadAsStringAsync();
+                var apiResponse = JsonConvert.DeserializeObject<ApiResponse<List<Usuario>>>(json);
+
+                return apiResponse?.Data ?? new List<Usuario>();
+            }
+            catch (Exception ex)
+            {
+                DialogService.ShowError(ex.Message, "Error obteniendo clientes");
+                return new List<Usuario>(); 
+            }
+            finally
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = null;
+            }
+        }
+
+        public static async Task<List<Usuario>> ObtenerEmpleadosAsync()
+        {
+            try
+            {
+                string url = "http://localhost:3000/api/user/employee";
+
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authToken);
+
+                var response = await _httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+
+                var json = await response.Content.ReadAsStringAsync();
+                var apiResponse = JsonConvert.DeserializeObject<ApiResponse<List<Usuario>>>(json);
+
+                return apiResponse?.Data ?? new List<Usuario>();
+            }
+            catch (Exception ex)
+            {
+                DialogService.ShowError(ex.Message, "Error obteniendo clientes");
+                return new List<Usuario>();
+            }
+            finally
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = null;
+            }
         }
     }
 
-    public class Usuario : INotifyPropertyChanged
-    {
-        [JsonProperty("_id")]
-        public string Id { get; set; }
-
-        [JsonProperty("nombre")]
-        public string Nombre { get; set; }
-
-        [JsonProperty("email")]
-        public string Email { get; set; }
-        [JsonProperty("tipo")]
-        public int Tipo { get; set; }
-        public string TipoString => Tipo switch
-        {
-            1 => "Cliente",
-            2 => "Empleado",
-            3 => "Administrador",
-            5 => "Super Administrador",
-            _ => "Desconocido"
-        };
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-    }
-
-    public class Habitacion : INotifyPropertyChanged
-    {
-        [JsonProperty("_id")]
-        public string Id { get; set; }
-
-        [JsonProperty("tipo_capacidad")]
-        public TipoCapacidad TipoCapacidad { get; set; }
-        [JsonProperty("Extras")]
-        public List<Extras> Extras { get; set; }
-
-        [JsonProperty("precio_noche")]
-        public decimal PrecioNoche { get; set; }
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-    }
-
-    public class TipoCapacidad
-    {
-        [JsonProperty("tipo")]
-        public string Tipo { get; set; }
-
-        [JsonProperty("capacidad")]
-        public int Capacidad { get; set; }
-    }
-    public class Extras : INotifyPropertyChanged
-    {
-        [JsonProperty("nombre")]
-        public string Nombre { get; set; }
-
-        [JsonProperty("precio")]
-        public decimal Precio { get; set; }
-
-        private bool _isSelected;
-        public bool IsSelected
-        {
-            get => _isSelected;
-            set
-            {
-                _isSelected = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-    }
 }

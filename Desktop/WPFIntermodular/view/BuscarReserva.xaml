@@ -90,7 +90,7 @@ Style="{StaticResource RoundButtonStyle}" Command="{Binding NavegarAListaReserva
                 <Label Content="_Tipo de habitación" Style="{StaticResource LabelStyle}" Target="{Binding ElementName=tipoHab}"/>
                 <ComboBox x:Name="tipoHab" ItemsSource="{Binding TiposHab}"
                              Style="{StaticResource ComboBoxStyle}" SelectedItem="{Binding TipoSeleccionado}"
-                            ItemContainerStyle="{StaticResource ComboBoxItemStyle}" DisplayMemberPath="Nombre"
+                            ItemContainerStyle="{StaticResource ComboBoxItemStyle}" DisplayMemberPath="Tipo"
                             IsEditable="True" IsTextSearchCaseSensitive="False" 
                             KeyUp="tipoHab_KeyUp"
                         />
@@ -176,11 +176,11 @@ Style="{StaticResource RoundButtonStyle}" Command="{Binding NavegarAListaReserva
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Margin="20" HorizontalAlignment="Left">
-                            <Image Source="{Binding PrimerImagen}" MaxHeight="186"/>
+                            <Image Source="{Binding ImagesUrl}" MaxHeight="186"/>
                             <TextBlock TextAlignment="Center" Margin="10">
                                     <Run x:Name="nombreHab" Text="{Binding Tipo}" FontSize="18" FontWeight="Bold"/>
                                     <LineBreak/>
-                                    <Run x:Name="precioHab" Text="{Binding Precio}" FontSize="12" FontWeight="Bold"/>
+                                    <Run x:Name="precioHab" Text="{Binding PrecioNoche}" FontSize="12" FontWeight="Bold"/>
                                     <Run Text=" €/noche" FontSize="12" FontWeight="Bold"/>
                             </TextBlock>
                             <Button Content="Reservar habitación" Height="39" Width="158" Style="{StaticResource RoundButtonStyle}" Margin="10" Command="{Binding DataContext.ReservarCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}"/>

@@ -28,13 +28,6 @@ namespace WPFIntermodular.view
             Visibility = Visibility.Collapsed;
         }
 
-        private void botonBuscador_Click(object sender, RoutedEventArgs e)
-        {
-            //new BuscarReserva(this).Show();
-            cerrarView();
-        }
-
-
         private void comboBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
             ComboBox comboBox = sender as ComboBox;
@@ -44,6 +37,12 @@ namespace WPFIntermodular.view
                     comboBox.IsDropDownOpen = true;
                 }
             }
+        }
+
+        private void botonRestablecer_Click(object sender, RoutedEventArgs e)
+        {
+            fechaFinalInput.SelectedDate = null;
+            fechaInicioInput.SelectedDate = null;
         }
     }
 }

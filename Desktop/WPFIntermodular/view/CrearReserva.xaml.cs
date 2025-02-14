@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,10 +13,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using WPFIntermodular.model;
+using WPFIntermodular.model.reserva;
 using WPFIntermodular.network.reservaService;
-using Extras = WPFIntermodular.network.reservaService.Extras;
-using Usuario = WPFIntermodular.network.reservaService.Usuario;
 
 namespace WPFIntermodular.view
 {
@@ -32,16 +31,18 @@ namespace WPFIntermodular.view
         public readonly static byte DETALLE = 0;
 
         public readonly static byte MODIFICAR = 1;
-        private async void CargarFechasReservadas()
+        private Habitacion habitacion;
+        private async void CargarFechasReservadas(Reserva reserva)
         {
             try
             {
-                var fechasReservadas = await ReservaApiService.ObtenerFechasReservadasAsync();
+                var fechasReservadas = await ReservaApiService.ObtenerFechasReservadasAsync(reserva.Habitacion._id, reserva.Id);
 
                 foreach (var rango in fechasReservadas)
                 {
                     fechaEntradaInput.BlackoutDates.Add(rango);
                     fechaSalidaInput.BlackoutDates.Add(rango);
+                    Debug.WriteLine(rango.ToString());
                 }
             }
             catch (Exception ex)
@@ -49,16 +50,42 @@ namespace WPFIntermodular.view
                 DialogService.ShowError(ex.Message, "Error al cargar fechas reservadas");
             }
         }
+        private async void CargarDatosBasicos(Reserva reserva)
+        {
+            var clientes = await ReservaApiService.ObtenerClientesAsync();
 
-        public CrearReserva(network.reservaService.Reserva reserva, byte state)
+            listaClientes = new ObservableCollection<Usuario>(clientes);
+            listClientesOriginal = new ObservableCollection<Usuario>(clientes);
+            clienteComboBox.ItemsSource = listaClientes;
+            // 设置选中的客户
+            var clienteSeleccionado = listaClientes.FirstOrDefault(c => c.Id == reserva.Usuario.Id);
+            if (clienteSeleccionado != null)
+            {
+                clienteComboBox.SelectedItem = clienteSeleccionado;
+            }
+            else
+            {
+                listaClientes.Add(reserva.Usuario);
+                clienteComboBox.SelectedItem = reserva.Usuario;
+            }
+        }
+        private async void CargarDatosBasicos()
+        {
+            var clientes = await ReservaApiService.ObtenerClientesAsync();
+
+            listaClientes = new ObservableCollection<Usuario>(clientes);
+            listClientesOriginal = new ObservableCollection<Usuario>(clientes);
+            clienteComboBox.ItemsSource = listaClientes;
+        }
+
+
+        public CrearReserva(Reserva reserva, byte state)
         {
             InitializeComponent();
             
             /* Falta obtener todos usuarios*/
-            listaClientes = new ObservableCollection<Usuario>();
-            listClientesOriginal = new ObservableCollection<Usuario>();
-            clienteComboBox.ItemsSource = listaClientes;
-            extras = new ObservableCollection<Extras>(reserva.Habitacion.Extras.Select(extra => {
+            CargarDatosBasicos(reserva);
+            extras = new ObservableCollection<Extras>(reserva.Habitacion.ExtrasList.Select(extra => {
                 var matchingExtra = reserva.ExtrasSeleccionadas.FirstOrDefault(b => b.Nombre == extra.Nombre);
                 if (matchingExtra != null)
                 {
@@ -71,47 +98,45 @@ namespace WPFIntermodular.view
                 }
                 return extra;  // 保持原样
             }).ToList());
+            if(extras.Count == 0)
+            {
+                extrasList.Visibility = Visibility.Collapsed;
+            }
             extrasList.ItemsSource = extras;
 
-            // 设置选中的客户
-            var clienteSeleccionado = listaClientes.FirstOrDefault(c => c.Id == reserva.Usuario.Id);
-            if (clienteSeleccionado != null)
-            {
-                clienteComboBox.SelectedItem = clienteSeleccionado;
-            }
+            
 
             if (state == DETALLE)
             {
-                titulo.Text = $"Reserva {reserva.Id}";
+                titulo.Text = reserva.Habitacion.Id;
                 crearNuevaReserva.Visibility = Visibility.Collapsed;
                 cantidadHuespedes.IsEnabled = false;
                 clienteComboBox.IsEnabled = false;
                 extrasList.IsEnabled = false;
                 clienteNombre.Text = reserva.Usuario.Nombre;
                 clienteEmail.Text = reserva.Usuario.Email;
-                fechaEntradaInput.IsEnabled = true;
-                fechaSalidaInput.IsEnabled = true;
-                CargarFechasReservadas();
             }
             else
             {
                 //titulo.Text = $"Modificar Reserva: {reserva.Id}";
-                titulo.Text = $"Modificar {reserva.Id}";
+                titulo.Text = $"Modificar Reserva";
                 fechaEntradaInput.IsEnabled = true;
                 fechaSalidaInput.IsEnabled = true;
                 crearNuevaReserva.Content = "Modificar";
-                CargarFechasReservadas();
+                CargarFechasReservadas(reserva);
             }
 
             //fecha
             fechaEntradaInput.SelectedDate = reserva.Fecha_ini;
             fechaSalidaInput.SelectedDate = reserva.Fecha_fin;
+            fechaEntradaInput.DisplayDateStart = DateTime.Now.AddDays(1);
+            fechaSalidaInput.DisplayDateStart = DateTime.Now.AddDays(2);
 
             //cantidad huesped
             cantidadHuespedes.Value = reserva.CantidadHuesped;
 
             //Capacidad maxima
-            cantidadHuespedes.Maximum = reserva.Habitacion.TipoCapacidad.Capacidad;
+            cantidadHuespedes.Maximum = reserva.Habitacion.Capacidad;
 
             //obtener precio por noche luego sumando extras
             precio = reserva.Habitacion.PrecioNoche;
@@ -124,45 +149,32 @@ namespace WPFIntermodular.view
 
         }
 
-        public CrearReserva(network.reservaService.Habitacion habitacion, DateTime? fechaEntrada, DateTime? fechaSalida)
+        public CrearReserva(Habitacion habitacion, DateTime? fechaEntrada, DateTime? fechaSalida)
         {
             InitializeComponent();
 
             /* Falta obtener todos usuarios*/
-            listaClientes = new ObservableCollection<Usuario>();
-            listClientesOriginal = new ObservableCollection<Usuario>();
-            clienteComboBox.ItemsSource = listaClientes;
+            CargarDatosBasicos();
+            this.habitacion = habitacion;
 
-            if (habitacion.Extras.Count == 0)
+            if (habitacion.ExtrasList.Count == 0)
             {
                 contenedorListaExtras.Visibility = Visibility.Collapsed;
             }
             else
             {
-                extrasList.ItemsSource = habitacion.Extras;
+                extrasList.ItemsSource = habitacion.ExtrasList;
             }
 
-            titulo.Text = habitacion.TipoCapacidad.Tipo;
+            titulo.Text = habitacion.Tipo;
 
             //Capacidad maxima
-            cantidadHuespedes.Maximum = habitacion.TipoCapacidad.Capacidad;
+            cantidadHuespedes.Maximum = habitacion.Capacidad;
 
             fechaEntradaInput.SelectedDate = fechaEntrada;
             fechaSalidaInput.SelectedDate = fechaSalida;
             fechaEntradaInput.DisplayDateStart = DateTime.Now.AddDays(1);
             fechaSalidaInput.DisplayDateStart = DateTime.Now.AddDays(2);
-            //Aniade fechas no selecionables
-            var dateRanges = new List<CalendarDateRange>{
-                new CalendarDateRange(new DateTime(2025, 03, 01), new DateTime(2025, 03, 03)),
-                new CalendarDateRange(new DateTime(2025, 04, 05), new DateTime(2025, 04, 10)),
-                new CalendarDateRange(new DateTime(2025, 05, 15), new DateTime(2025, 05, 20))
-            };
-
-            foreach (var dateRange in dateRanges)
-            {
-                fechaEntradaInput.BlackoutDates.Add(dateRange);
-                fechaSalidaInput.BlackoutDates.Add(dateRange);
-            }
 
             //obtener precio por noche luego sumando extras
             precio = habitacion.PrecioNoche;
@@ -266,7 +278,7 @@ namespace WPFIntermodular.view
 
         private void clienteComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Cliente cliente = clienteComboBox.SelectedItem as Cliente;
+            Usuario cliente = clienteComboBox.SelectedItem as Usuario;
             if (cliente != null)
             {
                 clienteNombre.Text = cliente.Nombre;
@@ -338,16 +350,89 @@ namespace WPFIntermodular.view
             }
         }
 
+        private async Task crearNuevaReserva_ClickAsync(object sender, RoutedEventArgs e)
+        {
+
+            if (clienteComboBox.SelectedItem == null)
+            {
+                MessageBox.Show("Por favor, seleccione un cliente.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!fechaEntradaInput.SelectedDate.HasValue || !fechaSalidaInput.SelectedDate.HasValue)
+            {
+                MessageBox.Show("Por favor, seleccione fechas de entrada y salida.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            DateTime fechaEntrada = fechaEntradaInput.SelectedDate.Value;
+            DateTime fechaSalida = fechaSalidaInput.SelectedDate.Value;
+
+            if (fechaSalida <= fechaEntrada)
+            {
+                MessageBox.Show("La fecha de salida debe ser posterior a la fecha de entrada.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (cantidadHuespedes.Value == null || cantidadHuespedes.Value <= 0)
+            {
+                MessageBox.Show("Ingrese una cantidad válida de huéspedes.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            Usuario clienteSeleccionado = (Usuario)clienteComboBox.SelectedItem;
+
+            // **2️⃣ 组装 Reserva 对象**
+            Reserva nuevaReserva = new Reserva
+            {
+                Usuario = clienteSeleccionado,
+                Habitacion = habitacion,
+                Fecha_ini = fechaEntrada,
+                Fecha_fin = fechaSalida,
+                CantidadHuesped = (int)cantidadHuespedes.Value,
+                ExtrasSeleccionadas = extras.Where(e => e.IsSelected).ToList()
+            };
+
+            try
+            {
+                if (crearNuevaReserva.Content.Equals("Modificar"))
+                {
+                    // **3️⃣ 更新预订**
+                    bool exito = await ReservaApiService.ActualizarReservaAsync(nuevaReserva);
+                    if (exito)
+                    {
+                        MessageBox.Show("Reserva actualizada con éxito.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se pudo actualizar la reserva.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+                else
+                {
+                    // **4️⃣ 创建预订**
+                    bool exito = await ReservaApiService.CrearReservaAsync(nuevaReserva);
+                    if (exito)
+                    {
+                        MessageBox.Show("Reserva creada con éxito.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se pudo crear la reserva.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void crearNuevaReserva_Click(object sender, RoutedEventArgs e)
         {
-            if (crearNuevaReserva.Content.Equals("Modificar"))
-            {
-
-            }
-            else
-            {
-
-            }
+            crearNuevaReserva_ClickAsync(sender, e);
         }
     }
 }

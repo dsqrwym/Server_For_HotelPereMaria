@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using WPFIntermodular.network.reservaService;
 using WPFIntermodular.view;
+using WPFIntermodular.model.reserva;
 
 namespace WPFIntermodular.viewmodel.reservaViewModel
 {
@@ -20,6 +21,9 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
         private readonly NavigationService _navigationService;
         public ObservableCollection<Reserva> Reservas { get; }
         private readonly ObservableCollection<Reserva> _reservasOriginal;
+
+        public ObservableCollection<Usuario> Clientes { get; set; }
+        public ObservableCollection<Usuario> Empleados { get; set; }
 
         private bool _isAllSelected;
         public bool IsAllSelected
@@ -43,13 +47,14 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
 
         // Propiedades para filtros
         public ComboBoxItem SelectedRole { get; set; }
-        public string SearchClientName { get; set; }
-        public string SearchEmployeeName { get; set; }
+        public Usuario SearchClientName { get; set; }
+        public Usuario SearchEmployeeName { get; set; }
         public DateTime? FilterStartDate { get; set; }
         public DateTime? FilterEndDate { get; set; }
 
         // Comandos
         public RelayCommand EliminarSeleccionadosCommand { get; set; }
+        public RelayCommand CrearReservaScreen { get; set; }
         public RelayCommand FiltrarCommand { get; set; }
         public RelayCommand RestablecerFiltrosCommand { get; set; }
         public RelayCommand<Reserva> EditarCommand { get; set; }
@@ -75,6 +80,12 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
             EditarCommand = new RelayCommand<Reserva>(EditarReserva);
             VerDetallesCommand = new RelayCommand<Reserva>(MostrarDetallesReserva);
             EliminarIndividualCommand = new RelayCommand<Reserva>(EliminarReservaIndividual);
+            CrearReservaScreen = new RelayCommand(NavegarBuscaReserva);
+        }
+
+        private void NavegarBuscaReserva()
+        {
+            _navigationService.NavigateTo("BuscarReserva");
         }
 
         private void ConfigurarManejoEventos()
@@ -115,100 +126,11 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
             {
                 DialogService.ShowError($"Error cargando datos: {ex.Message}");
             }
-            //LoadSampleData();
-        }
-        private void LoadSampleData()
-        {
-            // Sample data initialization (replace with actual data loading)
-            var sampleReservas = new[]
-            {
-                new Reserva
-                {
-                    Id = "1",
-                    Usuario = new Usuario
-                    {
-                        Id = "1",
-                        Nombre = "Cliente 1",
-                        Tipo = 1,
-                        Email = "cliente1@test.com"
-                    },
-                    Habitacion = new Habitacion
-                    {
-                        Id = "101",
-                        PrecioNoche = 100.5m,
-                        TipoCapacidad = new TipoCapacidad
-                        {
-                            Tipo = "Doble",
-                            Capacidad = 2
-                        }
-                    },
-                    Fecha_ini = DateTime.Now,
-                    Fecha_fin = DateTime.Now.AddDays(1),
-                    CantidadHuesped = 2,
-                    AltUser = "Admin",
-                    Precio_total = 200m,
-                    IsSelected = false // 明确初始化状态
-                },
-                new Reserva
-                {
-                    Id = "2",
-                    Usuario = new Usuario
-                    {
-                        Id = "2",
-                        Nombre = "Cliente 2",
-                        Tipo = 2,
-                        Email = "cliente2@test.com"
-                    },
-                    Habitacion = new Habitacion
-                    {
-                        Id = "102",
-                        PrecioNoche = 150m,
-                        TipoCapacidad = new TipoCapacidad
-                        {
-                            Tipo = "Suite",
-                            Capacidad = 4
-                        }
-                    },
-                    Fecha_ini = DateTime.Now.AddDays(1),
-                    Fecha_fin = DateTime.Now.AddDays(3),
-                    CantidadHuesped = 3,
-                    AltUser = "Empleado",
-                    Precio_total = 450m,
-                    IsSelected = false
-                },
-                new Reserva
-                {
-                    Id = "2",
-                    Usuario = new Usuario
-                    {
-                        Id = "2",
-                        Nombre = "Cliente 2",
-                        Tipo = 2,
-                        Email = "cliente2@test.com"
-                    },
-                    Habitacion = new Habitacion
-                    {
-                        Id = "102",
-                        PrecioNoche = 150m,
-                        TipoCapacidad = new TipoCapacidad
-                        {
-                            Tipo = "Suite",
-                            Capacidad = 4
-                        }
-                    },
-                    Fecha_ini = DateTime.Now.AddDays(1),
-                    Fecha_fin = DateTime.Now.AddDays(3),
-                    CantidadHuesped = 3,
-                    AltUser = "Empleado",
-                    Precio_total = 450m,
-                    IsSelected = false
-                }
-            };
-            foreach (var reserva in sampleReservas)
-            {
-                Reservas.Add(reserva);
-                _reservasOriginal.Add(reserva);
-            }
+
+            Clientes = new ObservableCollection<Usuario>(await ReservaApiService.ObtenerClientesAsync());
+            Empleados = new ObservableCollection<Usuario>(await ReservaApiService.ObtenerEmpleadosAsync());
+            RaisePropertyChanged(nameof(Clientes));  // 通知UI更新
+            RaisePropertyChanged(nameof(Empleados));
         }
 
         private void ActualizarSeleccionGlobal(bool estaSeleccionado)
@@ -252,21 +174,22 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
             {
                 var query = _reservasOriginal.AsQueryable();
 
-                if (SelectedRole != null)
+                if (SelectedRole != null && SelectedRole.Tag != null)
                 {
-                    query = query.Where(r => r.Usuario.Tipo ==  Int32.Parse(SelectedRole.Tag.ToString()));
+                    query = query.Where(r => r.Usuario.Tipo == Int32.Parse(SelectedRole.Tag.ToString()));
+                    Debug.WriteLine(SelectedRole.Tag);
                 }
 
-                if (!string.IsNullOrEmpty(SearchClientName))
+                if (Clientes != null && SearchClientName != null && !string.IsNullOrEmpty(SearchClientName.Nombre))
                 {
                     query = query.Where(r =>
-                        r.Usuario.Nombre.Contains(SearchClientName, StringComparison.OrdinalIgnoreCase));
+                        r.Usuario.Nombre.Contains(SearchClientName.Nombre, StringComparison.OrdinalIgnoreCase));
                 }
 
-                if (!string.IsNullOrEmpty(SearchEmployeeName))
+                if (SearchEmployeeName != null && !string.IsNullOrEmpty(SearchEmployeeName.Id))
                 {
                     query = query.Where(r =>
-                        r.Habitacion.Id.Contains(SearchEmployeeName, StringComparison.OrdinalIgnoreCase));
+                        r.AltUser.Contains(SearchEmployeeName.Id, StringComparison.OrdinalIgnoreCase));
                 }
 
                 if (FilterStartDate.HasValue)

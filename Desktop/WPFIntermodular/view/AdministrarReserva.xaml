@@ -36,9 +36,8 @@
         </Viewbox>
         <!--Menu-->
         <StackPanel Margin="10,0" Orientation="Horizontal" Grid.Column="1">
-            <Button Margin="38 0" Content="Buscador" Style="{StaticResource FlatButtonStyle}" Click="botonBuscador_Click"/>
+            <Button Margin="38 0" Content="Buscador" Style="{StaticResource FlatButtonStyle}" Command="{Binding CrearReservaScreen}"/>
             <Button Margin="38 0" Content="Usuario" Style="{StaticResource FlatButtonStyle}"/>
-            <Button Margin="38 0" Content="Reservas" Style="{StaticResource FlatButtonStyle}"/>
             <Button Margin="38 0" Content="Habitaciones" Style="{StaticResource FlatButtonStyle}"/>
         </StackPanel>
 
@@ -71,34 +70,34 @@
                 <!--Nombre del Cliente-->
                 <StackPanel Margin="10 10">
                     <Label Margin="-3" Content="_Nombre de Cliente" Target="{Binding ElementName=nombreClienteSelect}"/>
-                    <ComboBox x:Name="nombreClienteSelect" SelectedValue="{Binding SearchClientName}"
-                              IsEditable="True" IsTextSearchEnabled="False" 
+                    <ComboBox x:Name="nombreClienteSelect" ItemsSource="{Binding Clientes}" SelectedItem="{Binding SearchClientName}"
+                              IsEditable="True" IsTextSearchEnabled="False" DisplayMemberPath="Nombre"
                               KeyUp="comboBox_KeyUp" Style="{StaticResource ComboBoxStyle}"/>
                 </StackPanel>
 
                 <!--Nombre del Empleado-->
                 <StackPanel Margin="10">
                     <Label Margin="-3" Content="_Nombre de Empleado" Target="{Binding ElementName=nombreEmpleadoSelect}"/>
-                    <ComboBox x:Name="nombreEmpleadoSelect"  Style="{StaticResource ComboBoxStyle}" SelectedValue="{Binding SearchEmployeeName}"
+                    <ComboBox x:Name="nombreEmpleadoSelect" ItemsSource="{Binding Empleados}"  Style="{StaticResource ComboBoxStyle}" DisplayMemberPath="Nombre" SelectedItem="{Binding SearchEmployeeName}"
                               IsEditable="True" IsTextSearchEnabled="False" KeyUp="comboBox_KeyUp"/>
                 </StackPanel>
 
                 <!--Fecha de Inicio-->
                 <StackPanel Margin="0 10">
                     <Label Margin="7 -3" Content="_Fecha de entrada" Target="{Binding ElementName=fechaInicioInput}"/>
-                    <DatePicker x:Name="fechaInicioInput" Style="{StaticResource DatePickerStyle}" SelectedDate="{Binding FilterStartDate}"/>
+                    <DatePicker x:Name="fechaInicioInput" Style="{StaticResource DatePickerStyle}" SelectedDate="{Binding FilterStartDate, Mode=TwoWay}"/>
                 </StackPanel>
 
                 <!--Nombre del Finalización-->
                 <StackPanel Margin="0 10">
                     <Label Margin="7 -3" Content="_Fecha de salida" Target="{Binding ElementName=fechaFinalInput}"/>
-                    <DatePicker x:Name="fechaFinalInput" Style="{StaticResource DatePickerStyle}" SelectedDate="{Binding FilterEndDate}"/>
+                    <DatePicker x:Name="fechaFinalInput" Style="{StaticResource DatePickerStyle}" SelectedDate="{Binding FilterEndDate, Mode=TwoWay}"/>
                 </StackPanel>
             </StackPanel>
 
             <!--Buscar-->
             <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
-                <Button x:Name="botonRestablecer" DockPanel.Dock="Bottom" Content="🔁" FontSize="20" Width="40" Margin="3 0" Style="{StaticResource cicleButton}" Command="{Binding RestablecerFiltrosCommand}"/>
+                <Button x:Name="botonRestablecer" DockPanel.Dock="Bottom" Content="🔁" FontSize="20" Width="40" Margin="3 0" Style="{StaticResource cicleButton}" Command="{Binding RestablecerFiltrosCommand}" Click="botonRestablecer_Click"/>
                 <Button x:Name="botonBuscar" DockPanel.Dock="Bottom" Content="Buscar" FontSize="20" Height="50" Width="150" Command="{Binding FiltrarCommand}" Style="{StaticResource RoundButtonStyle}"/>
             </StackPanel>
         </DockPanel>
@@ -177,7 +176,7 @@
 
                                 <TextBlock Grid.Column="1" Text="{Binding Id}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="10 0 0 0"/>
 
-                                <Image Grid.Column="2" MaxHeight="20" Stretch="Uniform" Source="{Binding Habitacion.Id}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                <Image Grid.Column="2" MaxHeight="20" Stretch="Uniform" Source="{Binding Habitacion.ImagesUrl}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
                                 <TextBlock Grid.Column="3" Text="{Binding Usuario.Nombre}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 

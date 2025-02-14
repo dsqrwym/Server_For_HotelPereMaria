@@ -1,87 +1,264 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
-namespace WPFIntermodular.model
+namespace WPFIntermodular.model.reserva
 {
-    public class Reserva: INotifyPropertyChanged
+
+    public class ApiResponse<T>
     {
-        public int Id { get; set; }
-        public int Id_usuario { get; set; }
-        public int Id_hab { get; set; }
-        public int Id_AltUser { get; set; }
-        public DateTime Fecha_ini { get; set; }
-        public DateTime Fecha_fin { get; set; }
-        public int CantidadHuesped {  get; set; }
-        public decimal Precio_total { get; set; }
-        public string HabitacionImage { get; set; }
+        [JsonProperty("statusCode")]
+        public int StatusCode { get; set; }
 
-        private bool _isSelected = false;
+        [JsonProperty("message")]
+        public string Message { get; set; }
 
+        [JsonProperty("data")]
+        public T Data { get; set; }
+
+        [JsonProperty("error")]
+        public string Error { get; set; }
+    }
+    public class ReservedDatesData
+    {
+        [JsonProperty("reservedDates")]
+        public List<ReservedDate> ReservedDates { get; set; }
+    }
+
+    public class ReservedDate
+    {
+        [JsonProperty("fecha_entrada")]
+        public DateTime FechaEntrada { get; set; }
+
+        [JsonProperty("fecha_salida")]
+        public DateTime FechaSalida { get; set; }
+    }
+    public class ReservaData
+    {
+        [JsonProperty("reservas")]
+        public List<Reserva> Reservas { get; set; }
+    }
+
+    public class Reserva : INotifyPropertyChanged
+    {
+        private bool _isSelected;
+        [JsonProperty("_id")]
+        public string Id { get; set; }
+
+        [JsonProperty("id_usuario")]
+        private Usuario usuario;
+        public Usuario Usuario
+        {
+            get => usuario;
+            set
+            {
+                usuario = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonProperty("id_habitacion")]
+        private Habitacion habitacion;
+        public Habitacion Habitacion
+        {
+            get => habitacion;
+            set
+            {
+                habitacion = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonProperty("huespedes")]
+        private int cantidadHuesped;
+        public int CantidadHuesped
+        {
+            get => cantidadHuesped;
+            set
+            {
+                cantidadHuesped = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonProperty("fecha_entrada")]
+        private DateTime fecha_ini;
+        public DateTime Fecha_ini
+        {
+            get => fecha_ini;
+            set
+            {
+                fecha_ini = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonProperty("fecha_salida")]
+        private DateTime fecha_fin;
+        public DateTime Fecha_fin
+        {
+            get => fecha_fin;
+            set
+            {
+                fecha_fin = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonProperty("precio_total")]
+        private decimal precio_total;
+        public decimal Precio_total
+        {
+            get => precio_total;
+            set
+            {
+                precio_total = value;
+                OnPropertyChanged();
+            }
+        }
+        [JsonProperty("extrasSeleccionados")]
+        private List<Extras> extrasSeleccionadas;
+        public List<Extras> ExtrasSeleccionadas
+        {
+            get => extrasSeleccionadas;
+            set
+            {
+                extrasSeleccionadas = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonProperty("altUser")]
+        private string altUser;
+        public string AltUser
+        {
+            get => altUser;
+            set
+            {
+                altUser = value;
+                OnPropertyChanged();
+            }
+        }
         public bool IsSelected
         {
             get => _isSelected;
             set
             {
                 _isSelected = value;
-                OnPropertyChanged(nameof(IsSelected));
+                OnPropertyChanged();
+                Debug.WriteLine($"Reserva {Id} IsSelected changed to {value}");
             }
         }
 
-        public Reserva(int id, int idUsuario, int idHab, int idAltUser, DateTime fechaIni, DateTime fechaFin, int cantidadHuesped, decimal precioTotal, string habitacionImg) {
-            Id = id;
-            Id_usuario = idUsuario;
-            Id_hab = idHab;
-            Id_AltUser = idAltUser;
-            Fecha_ini = fechaIni;
-            Fecha_fin = fechaFin;
-            CantidadHuesped = cantidadHuesped;
-            Precio_total = precioTotal;
-            HabitacionImage = habitacionImg;
-        }
+
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName) =>
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    public class Extras
-    {
-        public string Nombre { get; set; }
-        public decimal Precio { get; set; }
-        public bool IsSelected { get; internal set; }
-
-        public Extras(string nombre, decimal precio)
-        {
-            Nombre = nombre;
-            Precio = precio;
         }
     }
 
-    public class Cliente
+    public class Usuario : INotifyPropertyChanged
     {
-        public int Id { get; set; }
+        [JsonProperty("_id")]
+        public string Id { get; set; }
+
+        [JsonProperty("nombre")]
         public string Nombre { get; set; }
+
+        [JsonProperty("email")]
         public string Email { get; set; }
-
-        public Cliente(int id, string nombre, string email) 
+        [JsonProperty("tipo")]
+        public int Tipo { get; set; }
+        public string TipoString => Tipo switch
         {
-            Id = id;
-            Nombre = nombre;
-            Email = email;
+            1 => "Cliente",
+            2 => "Empleado",
+            3 => "Administrador",
+            5 => "Super Administrador",
+            _ => "Desconocido"
+        };
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 
-    public class TipoHab { 
-        public string Nombre {  get; set; }
-        public int Capacidad {  get; set; }
+    public class Habitacion : INotifyPropertyChanged
+    {
+        [JsonProperty("_id")]
+        public string _id { get; set; }
+        [JsonProperty("Id")]
+        public string Id { get; set; }
 
-        public TipoHab(string nombre, int capacidad)
+        [JsonProperty("Tipo")]
+        public string Tipo { get; set; }
+        [JsonProperty("Capacidad")]
+        public int Capacidad { get; set; }
+        [JsonProperty("Images")]
+        public string ImagesUrl { get; set; }
+        [JsonProperty("Extras")]
+        public Dictionary<string, decimal> extrasDict { get; set; }
+
+        public List<Extras> ExtrasList
         {
-            Nombre = nombre;
-            Capacidad = capacidad;
+            get
+            {
+                return extrasDict?.Select(kv => new Extras { Nombre = kv.Key, Precio = kv.Value }).ToList();
+            }
+            set
+            {
+                if (value != null)
+                {
+                    extrasDict = value.ToDictionary(e => e.Nombre, e => e.Precio);
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        [JsonProperty("Precio")]
+        public decimal PrecioNoche { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    public class TipoCapacidad
+    {
+        [JsonProperty("tipo")]
+        public string Tipo { get; set; }
+
+        [JsonProperty("capacidad")]
+        public int Capacidad { get; set; }
+    }
+    public class Extras : INotifyPropertyChanged
+    {
+        [JsonProperty("nombre")]
+        public string Nombre { get; set; }
+
+        [JsonProperty("precio")]
+        public decimal Precio { get; set; }
+
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                _isSelected = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
