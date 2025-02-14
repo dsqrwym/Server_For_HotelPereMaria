@@ -19,7 +19,7 @@ namespace WPFIntermodular.model
         public decimal Precio_total { get; set; }
         public string HabitacionImage { get; set; }
 
-        private bool _isSelected;
+        private bool _isSelected = false;
 
         public bool IsSelected
         {

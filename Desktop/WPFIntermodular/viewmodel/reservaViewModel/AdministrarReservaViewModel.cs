@@ -1,0 +1,420 @@
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using WPFIntermodular.network.reservaService;
+
+namespace WPFIntermodular.viewmodel.reservaViewModel
+{
+    public class AdministrarReservaViewModel : ViewModelBase
+    {
+        private const string ConfirmacionEliminacion = "Confirmar eliminación";
+        private const string Advertencia = "Advertencia";
+        private const string ErrorFiltro = "Error en filtros";
+        public ObservableCollection<Reserva> Reservas { get; }
+        private readonly ObservableCollection<Reserva> _reservasOriginal;
+
+        private bool _isAllSelected;
+        public bool IsAllSelected
+        {
+            get => _isAllSelected;
+            set
+            {
+                if (Set(ref _isAllSelected, value))
+                {
+                    ActualizarSeleccionGlobal(value);
+                }
+            }
+        }
+
+        private Visibility _deleteButtonVisibility = Visibility.Collapsed;
+        public Visibility DeleteButtonVisibility
+        {
+            get => _deleteButtonVisibility;
+            set => Set(ref _deleteButtonVisibility, value);
+        }
+
+        // Propiedades para filtros
+        public ComboBoxItem SelectedRole { get; set; }
+        public string SearchClientName { get; set; }
+        public string SearchEmployeeName { get; set; }
+        public DateTime? FilterStartDate { get; set; }
+        public DateTime? FilterEndDate { get; set; }
+
+        // Comandos
+        public RelayCommand EliminarSeleccionadosCommand { get; set; }
+        public RelayCommand FiltrarCommand { get; set; }
+        public RelayCommand RestablecerFiltrosCommand { get; set; }
+        public RelayCommand<Reserva> EditarCommand { get; set; }
+        public RelayCommand<Reserva> VerDetallesCommand { get; set; }
+        public RelayCommand<Reserva> EliminarIndividualCommand { get; set; }
+
+        public AdministrarReservaViewModel()
+        {
+            Reservas = new ObservableCollection<Reserva>();
+            _reservasOriginal = new ObservableCollection<Reserva>();
+
+            InicializarComandos();
+            CargarDatosIniciales();
+            ConfigurarManejoEventos();
+        }
+
+        private void InicializarComandos()
+        {
+            EliminarSeleccionadosCommand = new RelayCommand(EliminarReservasSeleccionadas);
+            FiltrarCommand = new RelayCommand(AplicarFiltros);
+            RestablecerFiltrosCommand = new RelayCommand(RestablecerFiltros);
+            EditarCommand = new RelayCommand<Reserva>(EditarReserva);
+            VerDetallesCommand = new RelayCommand<Reserva>(MostrarDetallesReserva);
+            EliminarIndividualCommand = new RelayCommand<Reserva>(EliminarReservaIndividual);
+        }
+
+        private void ConfigurarManejoEventos()
+        {
+            Reservas.CollectionChanged += (s, e) =>
+            {
+                if (e.NewItems != null)
+                {
+                    foreach (Reserva item in e.NewItems)
+                    {
+                        item.PropertyChanged += Reserva_PropertyChanged;
+                    }
+                }
+                if (e.OldItems != null)
+                {
+                    foreach (Reserva item in e.OldItems)
+                    {
+                        item.PropertyChanged -= Reserva_PropertyChanged;
+                    }
+                }
+            };
+
+            ActualizarVisibilidadBotonEliminar();
+        }
+
+        private async void CargarDatosIniciales()
+        {
+            try
+            {
+                var reservas = await ReservaApiService.ObtenerReservas();
+                foreach (var reserva in reservas)
+                {
+                    Reservas.Add(reserva);
+                    _reservasOriginal.Add(reserva);
+                }
+            }
+            catch (Exception ex)
+            {
+                DialogService.ShowError($"Error cargando datos: {ex.Message}");
+            }
+            //LoadSampleData();
+        }
+        private void LoadSampleData()
+        {
+            // Sample data initialization (replace with actual data loading)
+            var sampleReservas = new[]
+            {
+                new Reserva
+                {
+                    Id = "1",
+                    Usuario = new Usuario
+                    {
+                        Id = "1",
+                        Nombre = "Cliente 1",
+                        Tipo = 1,
+                        Email = "cliente1@test.com"
+                    },
+                    Habitacion = new Habitacion
+                    {
+                        Id = "101",
+                        PrecioNoche = 100.5m,
+                        TipoCapacidad = new TipoCapacidad
+                        {
+                            Tipo = "Doble",
+                            Capacidad = 2
+                        }
+                    },
+                    Fecha_ini = DateTime.Now,
+                    Fecha_fin = DateTime.Now.AddDays(1),
+                    CantidadHuesped = 2,
+                    AltUser = "Admin",
+                    Precio_total = 200m,
+                    IsSelected = false // 明确初始化状态
+                },
+                new Reserva
+                {
+                    Id = "2",
+                    Usuario = new Usuario
+                    {
+                        Id = "2",
+                        Nombre = "Cliente 2",
+                        Tipo = 2,
+                        Email = "cliente2@test.com"
+                    },
+                    Habitacion = new Habitacion
+                    {
+                        Id = "102",
+                        PrecioNoche = 150m,
+                        TipoCapacidad = new TipoCapacidad
+                        {
+                            Tipo = "Suite",
+                            Capacidad = 4
+                        }
+                    },
+                    Fecha_ini = DateTime.Now.AddDays(1),
+                    Fecha_fin = DateTime.Now.AddDays(3),
+                    CantidadHuesped = 3,
+                    AltUser = "Empleado",
+                    Precio_total = 450m,
+                    IsSelected = false
+                },
+                new Reserva
+                {
+                    Id = "2",
+                    Usuario = new Usuario
+                    {
+                        Id = "2",
+                        Nombre = "Cliente 2",
+                        Tipo = 2,
+                        Email = "cliente2@test.com"
+                    },
+                    Habitacion = new Habitacion
+                    {
+                        Id = "102",
+                        PrecioNoche = 150m,
+                        TipoCapacidad = new TipoCapacidad
+                        {
+                            Tipo = "Suite",
+                            Capacidad = 4
+                        }
+                    },
+                    Fecha_ini = DateTime.Now.AddDays(1),
+                    Fecha_fin = DateTime.Now.AddDays(3),
+                    CantidadHuesped = 3,
+                    AltUser = "Empleado",
+                    Precio_total = 450m,
+                    IsSelected = false
+                }
+            };
+            foreach (var reserva in sampleReservas)
+            {
+                Reservas.Add(reserva);
+                _reservasOriginal.Add(reserva);
+            }
+        }
+
+        private void ActualizarSeleccionGlobal(bool estaSeleccionado)
+        {
+            if (!Reservas.Any()) return;
+
+            // 使用临时变量避免多次触发事件
+            _isAllSelected = estaSeleccionado;
+
+            foreach (var reserva in Reservas)
+            {
+                reserva.IsSelected = estaSeleccionado;
+            }
+
+            // 手动触发属性变更
+            RaisePropertyChanged(nameof(IsAllSelected));
+            ActualizarVisibilidadBotonEliminar();
+        }
+        private void Reserva_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Reserva.IsSelected))
+            {
+                // 使用延迟更新解决界面渲染问题
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    ActualizarVisibilidadBotonEliminar();
+                    IsAllSelected = Reservas.All(r => r.IsSelected) && Reservas.Any();
+                }), System.Windows.Threading.DispatcherPriority.Background);
+            }
+        }
+
+        private void ActualizarVisibilidadBotonEliminar()
+        {
+            var cantidadSeleccionados = Reservas.Count(r => r.IsSelected);
+            DeleteButtonVisibility = cantidadSeleccionados > 1 ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void AplicarFiltros()
+        {
+            try
+            {
+                var query = _reservasOriginal.AsQueryable();
+
+                if (SelectedRole != null)
+                {
+                    query = query.Where(r => r.Usuario.Tipo ==  Int32.Parse(SelectedRole.Tag.ToString()));
+                }
+
+                if (!string.IsNullOrEmpty(SearchClientName))
+                {
+                    query = query.Where(r =>
+                        r.Usuario.Nombre.Contains(SearchClientName, StringComparison.OrdinalIgnoreCase));
+                }
+
+                if (!string.IsNullOrEmpty(SearchEmployeeName))
+                {
+                    query = query.Where(r =>
+                        r.Habitacion.Id.Contains(SearchEmployeeName, StringComparison.OrdinalIgnoreCase));
+                }
+
+                if (FilterStartDate.HasValue)
+                {
+                    query = query.Where(r => r.Fecha_ini >= FilterStartDate.Value);
+                }
+
+                if (FilterEndDate.HasValue)
+                {
+                    query = query.Where(r => r.Fecha_fin <= FilterEndDate.Value);
+                }
+
+                var resultados = query.ToList();
+                ActualizarListaReservas(resultados);
+            }
+            catch (Exception ex)
+            {
+                DialogService.ShowError($"{ErrorFiltro}: {ex.Message}");
+            }
+        }
+
+
+        private void ActualizarListaReservas(IEnumerable<Reserva> reservas)
+        {
+            foreach (var item in Reservas)
+            {
+                item.PropertyChanged -= Reserva_PropertyChanged;
+            }
+
+            Reservas.Clear();
+
+            foreach (var reserva in reservas)
+            {
+                reserva.IsSelected = false;
+                reserva.PropertyChanged += Reserva_PropertyChanged; // 添加新项监听
+                Reservas.Add(reserva);
+            }
+
+            // 强制更新状态
+            IsAllSelected = false;
+            ActualizarVisibilidadBotonEliminar();
+            RaisePropertyChanged(nameof(IsAllSelected));
+        }
+
+        private void RestablecerFiltros()
+        {
+            SelectedRole = null;
+            SearchClientName = null;
+            SearchEmployeeName = null;
+            FilterStartDate = null;
+            FilterEndDate = null;
+            ActualizarListaReservas(_reservasOriginal);
+            IsAllSelected = false;
+        }
+
+        private void EliminarReservasSeleccionadas()
+        {
+            var seleccionadas = Reservas.Where(r => r.IsSelected).ToList();
+            if (seleccionadas.Count == 0) return;
+
+            var confirmacion = DialogService.ShowConfirmation(
+                $"¿Está seguro de eliminar {seleccionadas.Count} reservas?",
+                ConfirmacionEliminacion);
+
+            if (confirmacion != MessageBoxResult.Yes) return;
+
+            var (validas, invalidas) = ClasificarReservas(seleccionadas);
+
+            if (invalidas.Any())
+            {
+                MostrarAdvertenciaReservasInvalidas(invalidas.Count);
+            }
+
+            EliminarReservas(validas);
+            IsAllSelected = false;
+            ActualizarVisibilidadBotonEliminar();
+        }
+
+        private (List<Reserva> validas, List<Reserva> invalidas)
+            ClasificarReservas(List<Reserva> reservas)
+        {
+            var invalidas = reservas.Where(r => r.Fecha_fin < DateTime.Today).ToList();
+            var validas = reservas.Except(invalidas).ToList();
+            return (validas, invalidas);
+        }
+
+        private void MostrarAdvertenciaReservasInvalidas(int cantidad)
+        {
+            DialogService.ShowWarning(
+                $"No se pueden eliminar {cantidad} reservas completadas",
+                Advertencia);
+        }
+
+        private void EliminarReservas(IEnumerable<Reserva> reservas)
+        {
+            foreach (var reserva in reservas.ToList())
+            {
+                if (ReservaApiService.EliminarReservaAsync(reserva.Id).Result)
+                {
+                    Reservas.Remove(reserva);
+                    _reservasOriginal.Remove(reserva);
+                }
+            }
+        }
+
+        private void EliminarReservaIndividual(Reserva reserva)
+        {
+            if (reserva == null) return;
+
+            if (reserva.Fecha_fin < DateTime.Today)
+            {
+                DialogService.ShowWarning(
+                    "No se pueden eliminar reservas pasadas",
+                    Advertencia);
+                return;
+            }
+
+            var confirmacion = DialogService.ShowConfirmation(
+                "¿Confirmar eliminación de la reserva seleccionada?",
+                ConfirmacionEliminacion);
+
+            if (confirmacion == MessageBoxResult.Yes)
+            {
+                if (ReservaApiService.EliminarReservaAsync(reserva.Id).Result)
+                {
+                    Reservas.Remove(reserva);
+                    _reservasOriginal.Remove(reserva);
+                }
+                else
+                {
+                    return;
+                }
+            }
+            ActualizarVisibilidadBotonEliminar();
+        }
+
+        private void EditarReserva(Reserva reserva)
+        {
+            if (reserva?.Fecha_ini <= DateTime.Today)
+            {
+                DialogService.ShowWarning(
+                    "No se pueden modificar reservas ya empezadas",
+                    Advertencia);
+                return;
+            }
+            DialogService.NavigateToEditReserva(reserva);
+        }
+
+        private void MostrarDetallesReserva(Reserva reserva)
+        {
+            DialogService.ShowReservaDetails(reserva);
+        }
+    }
+}

@@ -25,13 +25,7 @@ namespace WPFIntermodular.view
     /// </summary>
     public partial class BuscarReserva : Window
     {
-        private ObservableCollection<model.Habitacion> habitaciones;
-        private ObservableCollection<model.Habitacion> habitacionesOriginal;
-        private bool atras = false;
-        private bool listado = false;
-        private bool crear = false;
         private Habitacion h;
-        private bool listaReser = false;
 
         public BuscarReserva()
         {

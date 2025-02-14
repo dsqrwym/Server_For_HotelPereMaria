@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WPFIntermodular.view"
+        xmlns:local="clr-namespace:WPFIntermodular.view" xmlns:reservaviewmodel="clr-namespace:WPFIntermodular.viewmodel.reservaViewModel" d:DataContext="{d:DesignInstance Type=reservaviewmodel:AdministrarReservaViewModel}"
         mc:Ignorable="d"
         Title="AdministrarReserva" Height="1018" Width="1440" Background="{StaticResource azulBackground}">
     <Window.Resources>
@@ -42,11 +42,6 @@
             <Button Margin="38 0" Content="Habitaciones" Style="{StaticResource FlatButtonStyle}"/>
         </StackPanel>
 
-        <!--Avisos-->
-        <Canvas Grid.Column="2" Margin="0,0,0,54" Grid.RowSpan="1">
-            <Image Source="/source/alarma.png" Width="10" Canvas.Right="18" Canvas.Top="18"/>
-        </Canvas>
-
         <!--Buscador-->
         <TextBlock Grid.Row="1" Foreground="{StaticResource azulNormal}" FontSize="40" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Buscador:" Height="46"/>
 
@@ -65,17 +60,18 @@
                 <!--Rol selec-->
                 <StackPanel Margin="10 0">
                     <Label Content="_Rol" Margin="-3" Target="{Binding ElementName=rol}"/>
-                    <ComboBox x:Name="rol" Style="{StaticResource ComboBoxStyle}">
-                        <ComboBoxItem Content="Cliente" Style="{StaticResource ComboBoxItemStyle}"/>
-                        <ComboBoxItem Content="Empleado" Style="{StaticResource ComboBoxItemStyle}"/>
-                        <ComboBoxItem Content="Administrador" Style="{StaticResource ComboBoxItemStyle}"/>
+                    <ComboBox x:Name="rol" Style="{StaticResource ComboBoxStyle}" SelectedValue="{Binding SelectedRole}">
+                        <ComboBoxItem Content="Cliente" Tag="1" Style="{StaticResource ComboBoxItemStyle}"/>
+                        <ComboBoxItem Content="Empleado" Tag="2" Style="{StaticResource ComboBoxItemStyle}"/>
+                        <ComboBoxItem Content="Administrador" Tag="3" Style="{StaticResource ComboBoxItemStyle}"/>
+                        <ComboBoxItem Content="Super Administrador" Tag="5" Style="{StaticResource ComboBoxItemStyle}"/>
                     </ComboBox>
                 </StackPanel>
 
                 <!--Nombre del Cliente-->
                 <StackPanel Margin="10 10">
                     <Label Margin="-3" Content="_Nombre de Cliente" Target="{Binding ElementName=nombreClienteSelect}"/>
-                    <ComboBox x:Name="nombreClienteSelect" 
+                    <ComboBox x:Name="nombreClienteSelect" SelectedValue="{Binding SearchClientName}"
                               IsEditable="True" IsTextSearchEnabled="False" 
                               KeyUp="comboBox_KeyUp" Style="{StaticResource ComboBoxStyle}"/>
                 </StackPanel>
@@ -83,27 +79,27 @@
                 <!--Nombre del Empleado-->
                 <StackPanel Margin="10">
                     <Label Margin="-3" Content="_Nombre de Empleado" Target="{Binding ElementName=nombreEmpleadoSelect}"/>
-                    <ComboBox x:Name="nombreEmpleadoSelect"  Style="{StaticResource ComboBoxStyle}"
+                    <ComboBox x:Name="nombreEmpleadoSelect"  Style="{StaticResource ComboBoxStyle}" SelectedValue="{Binding SearchEmployeeName}"
                               IsEditable="True" IsTextSearchEnabled="False" KeyUp="comboBox_KeyUp"/>
                 </StackPanel>
 
                 <!--Fecha de Inicio-->
                 <StackPanel Margin="0 10">
                     <Label Margin="7 -3" Content="_Fecha de entrada" Target="{Binding ElementName=fechaInicioInput}"/>
-                    <DatePicker x:Name="fechaInicioInput" Style="{StaticResource DatePickerStyle}"/>
+                    <DatePicker x:Name="fechaInicioInput" Style="{StaticResource DatePickerStyle}" SelectedDate="{Binding FilterStartDate}"/>
                 </StackPanel>
 
                 <!--Nombre del Finalización-->
                 <StackPanel Margin="0 10">
                     <Label Margin="7 -3" Content="_Fecha de salida" Target="{Binding ElementName=fechaFinalInput}"/>
-                    <DatePicker x:Name="fechaFinalInput" Style="{StaticResource DatePickerStyle}"/>
+                    <DatePicker x:Name="fechaFinalInput" Style="{StaticResource DatePickerStyle}" SelectedDate="{Binding FilterEndDate}"/>
                 </StackPanel>
             </StackPanel>
 
             <!--Buscar-->
             <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
-                <Button x:Name="botonRestablecer" DockPanel.Dock="Bottom" Content="🔁" FontSize="20" Width="40" Margin="3 0" Style="{StaticResource cicleButton}" Click="botonRestablecer_Click"/>
-                <Button x:Name="botonBuscar" DockPanel.Dock="Bottom" Content="Buscar" FontSize="20" Height="50" Width="150" Click="botonBuscar_Click" Style="{StaticResource RoundButtonStyle}"/>
+                <Button x:Name="botonRestablecer" DockPanel.Dock="Bottom" Content="🔁" FontSize="20" Width="40" Margin="3 0" Style="{StaticResource cicleButton}" Command="{Binding RestablecerFiltrosCommand}"/>
+                <Button x:Name="botonBuscar" DockPanel.Dock="Bottom" Content="Buscar" FontSize="20" Height="50" Width="150" Command="{Binding FiltrarCommand}" Style="{StaticResource RoundButtonStyle}"/>
             </StackPanel>
         </DockPanel>
 
@@ -121,14 +117,14 @@
                     <ColumnDefinition Width="48*"/>
                     <ColumnDefinition Width="80*"/>
                     <ColumnDefinition Width="103*"/>
-                    <ColumnDefinition Width="210*"/>
-                    <ColumnDefinition Width="210*"/>
-                    <ColumnDefinition Width="183*"/>
+                    <ColumnDefinition Width="180*"/>
+                    <ColumnDefinition Width="200*"/>
+                    <ColumnDefinition Width="188*"/>
                     <ColumnDefinition Width="120*"/>
                 </Grid.ColumnDefinitions>
 
                 <Viewbox MaxHeight="20">
-                    <CheckBox x:Name="allCheckd" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                    <CheckBox x:Name="allCheckd" IsChecked="{Binding IsAllSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </Viewbox>
 
                 <TextBlock Text="ID" Grid.Column="1" Margin="10 0 0 0" Style="{StaticResource TextBlockStyle}"/>
@@ -143,7 +139,7 @@
 
                 <StackPanel Grid.Column="6"  Orientation="Horizontal">
                     <TextBlock Text="Acción" Margin="20 0 0 0" Style="{StaticResource TextBlockStyle}"/>
-                    <Button x:Name="deleteAllSelectedButton" Visibility="Collapsed" Margin="20 0 0 0" Background="Transparent" Content="&#x1F5D1;" FontSize="12" Foreground="Red" BorderThickness="0" Click="DeleteSelected_Click"/>
+                    <Button x:Name="deleteAllSelectedButton" Visibility="{Binding DeleteButtonVisibility}" Command="{Binding EliminarSeleccionadosCommand}" Margin="20 0 0 0" Background="Transparent" Content="&#x1F5D1;" FontSize="12" Foreground="Red" BorderThickness="0"/>
 
                 </StackPanel>
             </Grid>
@@ -169,40 +165,40 @@
                                     <ColumnDefinition Width="48*"/>
                                     <ColumnDefinition Width="80*"/>
                                     <ColumnDefinition Width="103*"/>
-                                    <ColumnDefinition Width="210*"/>
-                                    <ColumnDefinition Width="210*"/>
-                                    <ColumnDefinition Width="183*"/>
+                                    <ColumnDefinition Width="180*"/>
+                                    <ColumnDefinition Width="200*"/>
+                                    <ColumnDefinition Width="188*"/>
                                     <ColumnDefinition Width="120*"/>
                                 </Grid.ColumnDefinitions>
 
                                 <Viewbox MaxHeight="20">
-                                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" Checked="CheckBox_UpdateChecked" Unchecked="CheckBox_UpdateChecked"/>
+                                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                 </Viewbox>
 
                                 <TextBlock Grid.Column="1" Text="{Binding Id}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="10 0 0 0"/>
 
-                                <Image Grid.Column="2" MaxHeight="20" Stretch="Uniform" Source="{Binding HabitacionImage}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                <Image Grid.Column="2" MaxHeight="20" Stretch="Uniform" Source="{Binding Habitacion.Id}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
-                                <TextBlock Grid.Column="3" Text="{Binding Id_usuario}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                <TextBlock Grid.Column="3" Text="{Binding Usuario.Nombre}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
-                                <TextBlock Grid.Column="4" Text="{Binding Id_hab}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                <TextBlock Grid.Column="4" Text="{Binding AltUser}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
-                                <TextBlock Grid.Column="5" Text="{Binding Id_AltUser}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                <TextBlock Grid.Column="5" Text="{Binding Usuario.TipoString}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
                                 <StackPanel Grid.Column="6" Orientation="Horizontal">
-                                    <Button Margin="10 0" Background="Transparent" BorderThickness="0" Click="EditButton_Click">
+                                    <Button Margin="10 0" Background="Transparent" BorderThickness="0" Command="{Binding DataContext.EditarCommand, RelativeSource={RelativeSource AncestorType=Window}}">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="&#x270F;" FontSize="12" Foreground="#68EB9C" />
                                         </StackPanel>
                                     </Button>
 
-                                    <Button Margin="10 0" Background="Transparent" BorderThickness="0" Click="ViewDetailsButton_Click">
+                                    <Button Margin="10 0" Background="Transparent" BorderThickness="0" Command="{Binding DataContext.VerDetallesCommand, RelativeSource={RelativeSource AncestorType=Window}}">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="&#x2139;" FontSize="12" Foreground="Black" />
                                         </StackPanel>
                                     </Button>
 
-                                    <Button Margin="10 0" Background="Transparent" BorderThickness="0" Click="DeleteRow_Click">
+                                    <Button Margin="10 0" Background="Transparent" BorderThickness="0" Command="{Binding DataContext.EliminarIndividualCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="&#x1F5D1;" FontSize="12" Foreground="Red" />
                                         </StackPanel>
