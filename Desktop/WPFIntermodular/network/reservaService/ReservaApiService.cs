@@ -12,6 +12,7 @@ using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using WPFIntermodular.model;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -125,6 +126,37 @@ namespace WPFIntermodular.network.reservaService
                 _httpClient.DefaultRequestHeaders.Authorization = null;
             }
         }
+        public static async Task<List<CalendarDateRange>> ObtenerFechasReservadasAsync()
+        {
+            SetAuthToken("your_token_here");
+            try
+            {
+                const string endpoint = "date/?";
+                var requestUrl = $"id_habitacion={baseUrl}&&id={endpoint}";
+
+                _httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", _authToken);
+
+                var response = await _httpClient.GetAsync(requestUrl);
+                response.EnsureSuccessStatusCode();
+
+                var json = await response.Content.ReadAsStringAsync();
+                var apiResponse = JsonConvert.DeserializeObject<ApiResponse<ReservedDatesData>>(json);
+
+                return apiResponse?.Data?.ReservedDates?
+                    .Select(d => new CalendarDateRange(d.FechaEntrada, d.FechaSalida))
+                    .ToList() ?? new List<CalendarDateRange>();
+            }
+            catch (Exception ex)
+            {
+                DialogService.ShowError(ex.Message, "Error obteniendo fechas reservadas");
+                return new List<CalendarDateRange>();
+            }
+            finally
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = null;
+            }
+        }
     }
 
     public class ApiResponse<T>
@@ -141,7 +173,20 @@ namespace WPFIntermodular.network.reservaService
         [JsonProperty("error")]
         public string Error { get; set; }
     }
+    public class ReservedDatesData
+    {
+        [JsonProperty("reservedDates")]
+        public List<ReservedDate> ReservedDates { get; set; }
+    }
 
+    public class ReservedDate
+    {
+        [JsonProperty("fecha_entrada")]
+        public DateTime FechaEntrada { get; set; }
+
+        [JsonProperty("fecha_salida")]
+        public DateTime FechaSalida { get; set; }
+    }
     public class ReservaData
     {
         [JsonProperty("reservas")]

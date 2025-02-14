@@ -32,6 +32,23 @@ namespace WPFIntermodular.view
         public readonly static byte DETALLE = 0;
 
         public readonly static byte MODIFICAR = 1;
+        private async void CargarFechasReservadas()
+        {
+            try
+            {
+                var fechasReservadas = await ReservaApiService.ObtenerFechasReservadasAsync();
+
+                foreach (var rango in fechasReservadas)
+                {
+                    fechaEntradaInput.BlackoutDates.Add(rango);
+                    fechaSalidaInput.BlackoutDates.Add(rango);
+                }
+            }
+            catch (Exception ex)
+            {
+                DialogService.ShowError(ex.Message, "Error al cargar fechas reservadas");
+            }
+        }
 
         public CrearReserva(network.reservaService.Reserva reserva, byte state)
         {
@@ -72,6 +89,9 @@ namespace WPFIntermodular.view
                 extrasList.IsEnabled = false;
                 clienteNombre.Text = reserva.Usuario.Nombre;
                 clienteEmail.Text = reserva.Usuario.Email;
+                fechaEntradaInput.IsEnabled = true;
+                fechaSalidaInput.IsEnabled = true;
+                CargarFechasReservadas();
             }
             else
             {
@@ -80,6 +100,7 @@ namespace WPFIntermodular.view
                 fechaEntradaInput.IsEnabled = true;
                 fechaSalidaInput.IsEnabled = true;
                 crearNuevaReserva.Content = "Modificar";
+                CargarFechasReservadas();
             }
 
             //fecha
