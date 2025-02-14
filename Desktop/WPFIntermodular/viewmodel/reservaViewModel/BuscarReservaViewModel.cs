@@ -172,13 +172,15 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
             {
                 if (FechaEntrada != null && FechaSalida != null)
                 {
-                    new CrearReserva(habitacion, FechaEntrada, FechaSalida).Show();
+
+
                 }
                 else
                 {
-                    MessageBox.Show("Por favor, seleccione fechas de entrada y salida.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    DialogService.ShowError("Por favor, seleccione fechas de entrada y salida.");
                 }
             }
+            
         }
         private void NavegarAHabitacion()
         {

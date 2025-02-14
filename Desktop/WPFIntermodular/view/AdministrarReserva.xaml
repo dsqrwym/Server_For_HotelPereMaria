@@ -186,13 +186,13 @@
                                 <TextBlock Grid.Column="5" Text="{Binding Usuario.TipoString}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
                                 <StackPanel Grid.Column="6" Orientation="Horizontal">
-                                    <Button Margin="10 0" Background="Transparent" BorderThickness="0" Command="{Binding DataContext.EditarCommand, RelativeSource={RelativeSource AncestorType=Window}}">
+                                    <Button Margin="10 0" Background="Transparent" BorderThickness="0" Command="{Binding DataContext.EditarCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="&#x270F;" FontSize="12" Foreground="#68EB9C" />
                                         </StackPanel>
                                     </Button>
 
-                                    <Button Margin="10 0" Background="Transparent" BorderThickness="0" Command="{Binding DataContext.VerDetallesCommand, RelativeSource={RelativeSource AncestorType=Window}}">
+                                    <Button Margin="10 0" Background="Transparent" BorderThickness="0" Command="{Binding DataContext.VerDetallesCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="&#x2139;" FontSize="12" Foreground="Black" />
                                         </StackPanel>

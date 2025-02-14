@@ -81,7 +81,7 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <CheckBox Margin="10" Content="{Binding Nombre}" Tag="{Binding Precio}" Checked="CheckBox_UpdatePrice" Unchecked="CheckBox_UpdatePrice"/>
+                                        <CheckBox Margin="10" Content="{Binding Nombre}" Tag="{Binding Precio}" IsChecked="{Binding IsSelected}" Checked="CheckBox_UpdatePrice" Unchecked="CheckBox_UpdatePrice"/>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>

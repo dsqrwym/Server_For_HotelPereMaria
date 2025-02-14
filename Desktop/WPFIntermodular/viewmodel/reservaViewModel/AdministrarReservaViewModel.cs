@@ -8,6 +8,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using WPFIntermodular.network.reservaService;
+using WPFIntermodular.view;
 
 namespace WPFIntermodular.viewmodel.reservaViewModel
 {
@@ -16,6 +17,7 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
         private const string ConfirmacionEliminacion = "Confirmar eliminación";
         private const string Advertencia = "Advertencia";
         private const string ErrorFiltro = "Error en filtros";
+        private readonly NavigationService _navigationService;
         public ObservableCollection<Reserva> Reservas { get; }
         private readonly ObservableCollection<Reserva> _reservasOriginal;
 
@@ -56,6 +58,7 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
 
         public AdministrarReservaViewModel()
         {
+            _navigationService = new NavigationService();
             Reservas = new ObservableCollection<Reserva>();
             _reservasOriginal = new ObservableCollection<Reserva>();
 
@@ -402,6 +405,7 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
 
         private void EditarReserva(Reserva reserva)
         {
+            _navigationService.NavigateTo("CrearReserva", reserva, CrearReserva.MODIFICAR);
             if (reserva?.Fecha_ini <= DateTime.Today)
             {
                 DialogService.ShowWarning(
@@ -409,12 +413,15 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
                     Advertencia);
                 return;
             }
-            DialogService.NavigateToEditReserva(reserva);
+            new CrearReserva(reserva, CrearReserva.MODIFICAR).Show();
+            _navigationService.NavigateTo("CrearReserva", reserva, CrearReserva.MODIFICAR);
+
         }
 
         private void MostrarDetallesReserva(Reserva reserva)
         {
-            DialogService.ShowReservaDetails(reserva);
+            new CrearReserva(reserva, CrearReserva.DETALLE).Show();
+            _navigationService.NavigateTo("CrearReserva", reserva, CrearReserva.DETALLE);
         }
     }
 }

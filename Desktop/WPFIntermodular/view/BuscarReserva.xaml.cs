@@ -68,11 +68,11 @@ namespace WPFIntermodular.view
                 }
 
                 // No creo es necesario
-                if (fechaSalidaInput.SelectedDate.HasValue && fechaSalidaInput.SelectedDate.Value < fechaEntrada)
+                if (fechaSalidaInput.SelectedDate.HasValue && fechaSalidaInput.SelectedDate.Value <= fechaEntrada)
                 {
-                    MessageBox.Show("La fecha de salida no puede ser anterior a la fecha de entrada.",
+                    MessageBox.Show("La fecha de salida no puede ser anterior o igual a la fecha de entrada.",
                                     "Fecha inválida", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    fechaSalidaInput.SelectedDate = null;
+                    fechaEntradaInput.SelectedDate = null;
                 }
 
                 fechaSalidaInput.DisplayDateStart = fechaEntrada;
@@ -96,11 +96,11 @@ namespace WPFIntermodular.view
                     }
                 }
                 // Por si acaso
-                if (fechaEntradaInput.SelectedDate.HasValue && fechaEntradaInput.SelectedDate.Value > fechaSalida)
+                if (fechaEntradaInput.SelectedDate.HasValue && fechaEntradaInput.SelectedDate.Value >= fechaSalida)
                 {
-                    MessageBox.Show("La fecha de entrada no puede ser posterior a la fecha de salida.",
+                    MessageBox.Show("La fecha de entrada no puede ser posterior o igual a la fecha de salida.",
                                     "Fecha inválida", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    fechaEntradaInput.SelectedDate = null;
+                    fechaSalidaInput.SelectedDate = null;
                 }
 
                 fechaEntradaInput.DisplayDateEnd = fechaSalida;

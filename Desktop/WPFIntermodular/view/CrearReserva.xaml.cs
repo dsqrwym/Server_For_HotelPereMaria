@@ -13,6 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using WPFIntermodular.model;
+using WPFIntermodular.network.reservaService;
+using Extras = WPFIntermodular.network.reservaService.Extras;
+using Usuario = WPFIntermodular.network.reservaService.Usuario;
 
 namespace WPFIntermodular.view
 {
@@ -22,23 +25,53 @@ namespace WPFIntermodular.view
     public partial class CrearReserva : Window
     {
         private decimal precio;
-        private ObservableCollection<Cliente> listaClientes;
-        private ObservableCollection<Cliente> listClientesOriginal;
+        private ObservableCollection<Usuario> listaClientes;
+        private ObservableCollection<Usuario> listClientesOriginal;
+        private ObservableCollection<Extras> extras;
 
         public readonly static byte DETALLE = 0;
 
         public readonly static byte MODIFICAR = 1;
 
-        public CrearReserva(Reserva reserva, byte state)
+        public CrearReserva(network.reservaService.Reserva reserva, byte state)
         {
             InitializeComponent();
+            
+            /* Falta obtener todos usuarios*/
+            listaClientes = new ObservableCollection<Usuario>();
+            listClientesOriginal = new ObservableCollection<Usuario>();
+            clienteComboBox.ItemsSource = listaClientes;
+            extras = new ObservableCollection<Extras>(reserva.Habitacion.Extras.Select(extra => {
+                var matchingExtra = reserva.ExtrasSeleccionadas.FirstOrDefault(b => b.Nombre == extra.Nombre);
+                if (matchingExtra != null)
+                {
+                    return new Extras
+                    {
+                        Nombre = extra.Nombre,
+                        Precio = matchingExtra.Precio,  // 用 B 的价格替换
+                        IsSelected = true
+                    };
+                }
+                return extra;  // 保持原样
+            }).ToList());
+            extrasList.ItemsSource = extras;
 
-            if (state == DETALLE) {
+            // 设置选中的客户
+            var clienteSeleccionado = listaClientes.FirstOrDefault(c => c.Id == reserva.Usuario.Id);
+            if (clienteSeleccionado != null)
+            {
+                clienteComboBox.SelectedItem = clienteSeleccionado;
+            }
+
+            if (state == DETALLE)
+            {
                 titulo.Text = $"Reserva {reserva.Id}";
                 crearNuevaReserva.Visibility = Visibility.Collapsed;
                 cantidadHuespedes.IsEnabled = false;
                 clienteComboBox.IsEnabled = false;
                 extrasList.IsEnabled = false;
+                clienteNombre.Text = reserva.Usuario.Nombre;
+                clienteEmail.Text = reserva.Usuario.Email;
             }
             else
             {
@@ -53,57 +86,31 @@ namespace WPFIntermodular.view
             fechaEntradaInput.SelectedDate = reserva.Fecha_ini;
             fechaSalidaInput.SelectedDate = reserva.Fecha_fin;
 
-            extrasList.ItemsSource = new List<Extras> {
-                new Extras ("Wifi", 5.0m ),
-                new Extras ("Parking", 10.0m ),
-                new Extras ("Comidas", 20.0m ),
-                new Extras ("Piscina",15.0m ),
-                new Extras ("Wifi", 5.0m ),
-                new Extras ("Wifi", 5.0m ),
-                new Extras ("Parking", 10.0m ),
-                new Extras ("Comidas", 20.0m ),
-                new Extras ("Piscina",15.0m ),
-                new Extras ("Wifi", 5.0m ),
-                new Extras ("Parking", 10.0m ),
-                new Extras ("Comidas", 20.0m ),
-                new Extras ("Piscina",15.0m ),
-                new Extras ("Spa", 25.0m )
-            };
-
             //cantidad huesped
             cantidadHuespedes.Value = reserva.CantidadHuesped;
 
             //Capacidad maxima
-            cantidadHuespedes.Maximum = 10;
+            cantidadHuespedes.Maximum = reserva.Habitacion.TipoCapacidad.Capacidad;
 
             //obtener precio por noche luego sumando extras
-            precio = reserva.Precio_total;
+            precio = reserva.Habitacion.PrecioNoche;
 
             //Extras
             updatePrecio();
-
-            //Seleccione Cliente
-            var clientes = new ObservableCollection<Cliente>{
-            new Cliente(1, "Alice", "alice@example.com" ),
-            new Cliente(2, "Bob", "bob@example.com" ),
-            new Cliente(3, "Charlie", "charlie@example.com" )
-            };
-
-            listaClientes = new ObservableCollection<Cliente>(clientes);
-            listClientesOriginal = new ObservableCollection<Cliente>(clientes);
-
-            // 将数据绑定到 ComboBox
-            clienteComboBox.ItemsSource = listaClientes;
-
 
             // 设置 ComboBox 的显示项
             clienteComboBox.DisplayMemberPath = "Nombre";
 
         }
 
-        public CrearReserva(model.Habitacion habitacion, DateTime? fechaEntrada, DateTime? fechaSalida)
+        public CrearReserva(network.reservaService.Habitacion habitacion, DateTime? fechaEntrada, DateTime? fechaSalida)
         {
             InitializeComponent();
+
+            /* Falta obtener todos usuarios*/
+            listaClientes = new ObservableCollection<Usuario>();
+            listClientesOriginal = new ObservableCollection<Usuario>();
+            clienteComboBox.ItemsSource = listaClientes;
 
             if (habitacion.Extras.Count == 0)
             {
@@ -111,25 +118,18 @@ namespace WPFIntermodular.view
             }
             else
             {
-                List<Extras> serviciosAdicionales = new List<Extras>();
-
-                foreach (var extras in habitacion.Extras)
-                {
-                    serviciosAdicionales.Add(new Extras(extras.Key, extras.Value));
-                }
-
-                extrasList.ItemsSource = serviciosAdicionales;
+                extrasList.ItemsSource = habitacion.Extras;
             }
 
-            titulo.Text = habitacion.Tipo;
+            titulo.Text = habitacion.TipoCapacidad.Tipo;
 
             //Capacidad maxima
-            cantidadHuespedes.Maximum = habitacion.Capacidad;
+            cantidadHuespedes.Maximum = habitacion.TipoCapacidad.Capacidad;
 
             fechaEntradaInput.SelectedDate = fechaEntrada;
             fechaSalidaInput.SelectedDate = fechaSalida;
             fechaEntradaInput.DisplayDateStart = DateTime.Now.AddDays(1);
-            fechaSalidaInput.DisplayDateStart = DateTime.Now.AddDays(1);
+            fechaSalidaInput.DisplayDateStart = DateTime.Now.AddDays(2);
             //Aniade fechas no selecionables
             var dateRanges = new List<CalendarDateRange>{
                 new CalendarDateRange(new DateTime(2025, 03, 01), new DateTime(2025, 03, 03)),
@@ -144,23 +144,12 @@ namespace WPFIntermodular.view
             }
 
             //obtener precio por noche luego sumando extras
-            precio = habitacion.Precio;
+            precio = habitacion.PrecioNoche;
             updatePrecio();
-
-
-            //Seleccione Cliente
-            var clientes = new ObservableCollection<Cliente>{
-            new Cliente(1, "Alice", "alice@example.com" ),
-            new Cliente(2, "Bob", "bob@example.com" ),
-            new Cliente(3, "Charlie", "charlie@example.com" )
-            };
-
-            listaClientes = new ObservableCollection<Cliente>(clientes);
-            listClientesOriginal = new ObservableCollection<Cliente>(clientes);
 
             // 将数据绑定到 ComboBox
             clienteComboBox.ItemsSource = listaClientes;
-            
+
 
             // 设置 ComboBox 的显示项
             clienteComboBox.DisplayMemberPath = "Nombre";
@@ -191,15 +180,16 @@ namespace WPFIntermodular.view
                 }
 
                 // No creo es necesario
-                if (fechaSalidaInput.SelectedDate.HasValue && fechaSalidaInput.SelectedDate.Value < fechaEntrada)
+                if (fechaSalidaInput.SelectedDate.HasValue && fechaSalidaInput.SelectedDate.Value <= fechaEntrada)
                 {
-                    MessageBox.Show("La fecha de salida no puede ser anterior a la fecha de entrada.",
+                    MessageBox.Show("La fecha de salida no puede ser anterior o igual a la fecha de entrada.",
                                     "Fecha inválida", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    fechaSalidaInput.SelectedDate = null;
+                    fechaEntradaInput.SelectedDate = null;
                 }
 
                 fechaSalidaInput.DisplayDateStart = fechaEntrada;
             }
+            updatePrecio();
         }
 
         private void fechaSalidaInput_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -219,39 +209,45 @@ namespace WPFIntermodular.view
                     }
                 }
                 // Por si acaso
-                if (fechaEntradaInput.SelectedDate.HasValue && fechaEntradaInput.SelectedDate.Value > fechaSalida)
+                if (fechaEntradaInput.SelectedDate.HasValue && fechaEntradaInput.SelectedDate.Value >= fechaSalida)
                 {
-                    MessageBox.Show("La fecha de entrada no puede ser posterior a la fecha de salida.",
+                    MessageBox.Show("La fecha de entrada no puede ser posterior o igual a la fecha de salida.",
                                     "Fecha inválida", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    fechaEntradaInput.SelectedDate = null;
+                    fechaSalidaInput.SelectedDate = null;
                 }
 
                 fechaEntradaInput.DisplayDateEnd = fechaSalida;
             }
+            updatePrecio();
         }
 
         private void CheckBox_UpdatePrice(object sender, RoutedEventArgs e)
         {
-            var checkbox = sender as CheckBox;
-            if (checkbox != null) {
-                if (checkbox.IsChecked == true) {
-                    precio += (decimal)checkbox.Tag;
-                }
-                else {  
-                    precio -= (decimal)checkbox.Tag;
-                }
-                updatePrecio();
-            }
+           updatePrecio(); 
         }
         private void updatePrecio()
         {
-            precioTotal.Text = $"{precio.ToString("0.00")}€";
+            int noches = 1; // 默认至少1晚
+            if (fechaEntradaInput.SelectedDate.HasValue && fechaSalidaInput.SelectedDate.HasValue)
+            {
+                noches = (fechaSalidaInput.SelectedDate.Value - fechaEntradaInput.SelectedDate.Value).Days;
+                if (noches < 1) noches = 1; // 确保至少1晚
+            }
+
+            decimal precioBase = noches * precio; // 房间基础价格（每晚价格 * 天数）
+
+            decimal precioExtras = extras.Where(e => e.IsSelected).Sum(e => e.Precio); // 选中Extras的总价
+
+            decimal precioFinal = precioBase + precioExtras;
+
+            precioTotal.Text = $"{precioFinal:0.00}€";
         }
 
         private void clienteComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Cliente cliente =  clienteComboBox.SelectedItem as Cliente;
-            if (cliente != null) {
+            Cliente cliente = clienteComboBox.SelectedItem as Cliente;
+            if (cliente != null)
+            {
                 clienteNombre.Text = cliente.Nombre;
                 clienteEmail.Text = cliente.Email;
             }

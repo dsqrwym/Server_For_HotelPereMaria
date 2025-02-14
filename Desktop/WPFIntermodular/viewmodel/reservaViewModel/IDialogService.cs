@@ -17,14 +17,4 @@ public static class DialogService
     {
         return MessageBox.Show(message, title, MessageBoxButton.YesNo, MessageBoxImage.Question);
     }
-
-    public static void NavigateToEditReserva(Reserva reserva)
-    {
-       
-    }
-
-    public static void ShowReservaDetails(Reserva reserva)
-    {
-        
-    }
 }

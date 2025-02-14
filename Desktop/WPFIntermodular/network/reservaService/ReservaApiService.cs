@@ -32,7 +32,7 @@ namespace WPFIntermodular.network.reservaService
 
         public async static Task<List<Reserva>> ObtenerReservas()
         {
-            SetAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OTJhY2M4NDcxYzI5MDk3NDgxMWQ2ZiIsInRpcG8iOjUsImlhdCI6MTczOTQ5MTA1MiwiZXhwIjoxNzM5NDkyODUyfQ.BTg0ktY934rH19i4KXNwOUjnJLrcvd-Qi5rcI2fqUXo");
+            SetAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OTJhY2M4NDcxYzI5MDk3NDgxMWQ2ZiIsInRpcG8iOjUsImlhdCI6MTczOTUzMzU1NSwiZXhwIjoxNzM5NTM1MzU1fQ.EKo1WiQYvk2JACANd3neT5S8ngsefsjPGoMBk9eTaPU");
             try
             {
                 string _urlEndpoint = baseUrl+"?fields=id_usuario,id_habitacion,huespedes,fecha_entrada,fecha_salida,precio_total,extrasSeleccionados,altUser&page=0&limit=5&usuarioFields=nombre,tipo,email&habitacionFields=tipo_capacidad,precio_noche,extras"; // Cambia esto por tu URL real
@@ -218,6 +218,16 @@ namespace WPFIntermodular.network.reservaService
                 OnPropertyChanged();
             }
         }
+        [JsonProperty("extrasSeleccionados")]
+        private List<Extras> extrasSeleccionadas;
+        public List<Extras> ExtrasSeleccionadas
+        {
+            get => extrasSeleccionadas;
+            set {  
+                extrasSeleccionadas = value;
+                OnPropertyChanged();
+            }
+        }
 
         [JsonProperty("altUser")]
         private string altUser;
@@ -284,6 +294,8 @@ namespace WPFIntermodular.network.reservaService
 
         [JsonProperty("tipo_capacidad")]
         public TipoCapacidad TipoCapacidad { get; set; }
+        [JsonProperty("Extras")]
+        public List<Extras> Extras { get; set; }
 
         [JsonProperty("precio_noche")]
         public decimal PrecioNoche { get; set; }
@@ -301,5 +313,30 @@ namespace WPFIntermodular.network.reservaService
 
         [JsonProperty("capacidad")]
         public int Capacidad { get; set; }
+    }
+    public class Extras : INotifyPropertyChanged
+    {
+        [JsonProperty("nombre")]
+        public string Nombre { get; set; }
+
+        [JsonProperty("precio")]
+        public decimal Precio { get; set; }
+
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                _isSelected = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

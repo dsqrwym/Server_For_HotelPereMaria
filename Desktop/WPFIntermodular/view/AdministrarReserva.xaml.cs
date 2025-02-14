@@ -15,36 +15,7 @@ namespace WPFIntermodular.view
             DataContext = new viewmodel.reservaViewModel.AdministrarReservaViewModel();
         }
         // 编辑按钮点击事件
-        private void EditButton_Click(object sender, RoutedEventArgs e)
-        {
-            var button = sender as Button;
-            var reserva = button?.DataContext as model.Reserva;
-            if (reserva != null) 
-            {
-                if (reserva.Fecha_fin < DateTime.Today)
-                {
-                    MessageBox.Show($"No se puede modifiacr la reserva con ID {reserva.Id} porque la fecha de finalización es anterior a hoy.",
-                       "Eliminar reserva", MessageBoxButton.OK,
-                       MessageBoxImage.Warning);
-                    return;
-                }
-                new CrearReserva(reserva, CrearReserva.MODIFICAR).Show();
-                cerrarView();
-            }
-        }
 
-        // 查看按钮点击事件
-        private void ViewDetailsButton_Click(object sender, RoutedEventArgs e)
-        {
-            var button = sender as Button;
-            var reserva = button?.DataContext as model.Reserva;
-            if (reserva != null)
-            {
-                CrearReserva detalle = new CrearReserva(reserva, CrearReserva.DETALLE);
-                detalle.Show();
-                cerrarView();
-            }
-        }
 
         private void ButtonCrear_Click(object sender, RoutedEventArgs e)
         {
