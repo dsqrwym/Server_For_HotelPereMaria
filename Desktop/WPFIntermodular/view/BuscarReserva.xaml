@@ -152,7 +152,7 @@ Style="{StaticResource RoundButtonStyle}" Command="{Binding NavegarAListaReserva
             <!--Boton Buscar-->
             <!--Buscar-->
             <StackPanel Grid.Column="2" Grid.RowSpan="2" VerticalAlignment="Center"  HorizontalAlignment="Stretch">
-                <Button Content="🔁" FontSize="20" Width="40" Margin="20" Style="{StaticResource cicleButton}" Command="{Binding ResetearCommand}"/>
+                <Button Content="🔁" FontSize="20" Width="40" Margin="20" Style="{StaticResource cicleButton}" Command="{Binding ResetearCommand}" Click="ButtonRestaura_Click"/>
                 <Button Content="Buscar" FontSize="20" Height="50" Width="150" Style="{StaticResource RoundButtonStyle}" Command="{Binding BuscarCommand}"/>
             </StackPanel>
         </Grid>

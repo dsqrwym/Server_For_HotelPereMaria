@@ -1,25 +1,37 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Data;
 
 namespace WPFIntermodular.model
 {
     public class Habitacion
     {
-        public int Id {  get; set; }
-        public string Tipo { get; set; }
-        public int Capacidad {  get; set; }
-        public decimal Precio {  get; set; }
-        public Dictionary<string, decimal> Extras { get; set; } = new Dictionary<string, decimal>();
-        public List<string> Images { get; set; }
-        public string Nombre { get; set; }
-        public string Descripccion { get;set; }
+        [JsonProperty("Id")]
+        public string Id { get; set; }
 
-        public Habitacion(int id, string tipo, int capacidad, decimal precio, Dictionary<string, decimal> extras, List<string> images,string nombre,string des) 
+        [JsonProperty("Tipo")]
+        public string Tipo { get; set; }
+
+        [JsonProperty("Capacidad")]
+        public int Capacidad { get; set; }
+
+        [JsonProperty("Precio")]
+        public double Precio { get; set; }  // Cambio aquí a MongoDouble
+
+        [JsonProperty("Extras")]
+        public Dictionary<string,double> Extras { get; set; } = new Dictionary<string, double>(); // Cambio aquí a MongoDouble
+
+        [JsonProperty("Images")]
+        public string Images { get; set; }
+
+        [JsonProperty("Nombre")]
+        public string Nombre { get; set; }
+
+        [JsonProperty("Descripccion")]
+        public string Descripccion { get; set; }
+
+        public Habitacion(string id, string tipo, int capacidad, double precio, Dictionary<string, double> extras, string images, string nombre, string descripccion)
         {
             Id = id;
             Tipo = tipo;
@@ -28,10 +40,14 @@ namespace WPFIntermodular.model
             Extras = extras;
             Images = images;
             Nombre = nombre;
-            Descripccion = des;
-
+            Descripccion = descripccion;
         }
 
-        public string PrimerImagen => Images?.FirstOrDefault() ?? "/source/habitacion.png";
+        public override string ToString()
+        {
+            return Nombre;
+        }
     }
+
+  
 }

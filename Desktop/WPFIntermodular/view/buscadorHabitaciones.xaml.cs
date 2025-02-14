@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml.Linq;
 using WPFIntermodular.model;
+using WPFIntermodular.viewmodel.habitacionViewModel;
 using static System.Net.Mime.MediaTypeNames;
 
 
@@ -30,60 +31,30 @@ namespace WPFIntermodular.view
     {
         private bool editar = false;
         private bool atras = false;
-        private ObservableCollection<Habitacion> habitaciones = new ObservableCollection<Habitacion>();
-        Habitacion h = new Habitacion(1, "Suite", 3, 25, [],null,"Ejemplo","Ejemplo");
-
-        private NavigationService _navigationService;
-        
-
-
-        private RelayCommand NavigateToSecondWindowCommand { get;  set; }
+        private ObservableCollection<Habitacion> Habitaciones = new ObservableCollection<Habitacion>();
+        Habitacion h;
+   
         public buscadorHabitaciones()
         {
 
 
             InitializeComponent();
+            this.DataContext = buscarHabitacionViewModel.instance;
 
-            _navigationService = new NavigationService();  // Crear una instancia del servicio
-            NavigateToSecondWindowCommand = new RelayCommand(nav);
+
+          
 
             buscarEditBtn.Content = "Crear";
 
-            habitaciones.Add(h);
+
+
+
+
         }
        
-        public void addHab(Habitacion h)
-        {
-            habitaciones.Add(h);
-            listaHab.ItemsSource = habitaciones;
-        }
-        public void actLista()
-        {
-            listaHab.ItemsSource = habitaciones;
+        
 
-        }
-
-        private void buscarEditBtn_Click(object sender, RoutedEventArgs e)
-        {
-            if (listaHab.SelectedIndex != -1)
-            {
-                buscarEditBtn.Content = "Editar";
-
-                editar = true;
-                nav();
-                this.Hide();
-                
-            }
-            else
-            {
-                buscarEditBtn.Content = "Crear";
-                editar = false;
-                nav();
-                this.Hide();
-                
-
-            }
-        }
+       
 
         private void listaHab_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -110,70 +81,52 @@ namespace WPFIntermodular.view
                 valido = int.TryParse(idText.Text, out id);
             }
 
-            if (ocupadaSi.IsChecked == true)
-            {
-                ocupadao = true;  
-            }
-            else if (ocupadaNo.IsChecked == true)
-            {
-                ocupadao = false;  
-            }
+           
 
-            filterHabitaciones(tiposCombo.Text, id, valido, ocupadao);
         }
 
-        public void filterHabitaciones(string tipo, int id, bool valido, bool? ocupado)
+
+
+        
+
+        
+
+        private void buscarEditBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (habitaciones == null) return;
-
-            ICollectionView habitacionesView = CollectionViewSource.GetDefaultView(habitaciones);
-
-            habitacionesView.Filter = new Predicate<object>(obj =>
-            {
-                if (obj is Habitacion habitacion)
-                {
-
-                    bool tipoCoincide = string.IsNullOrEmpty(tipo) || habitacion.Tipo == tipo;
-
-                    bool idCoincide = (valido && id != -1) ? habitacion.Id == id : true;
-
-                    //bool ocupadaCoincide = !ocupado.HasValue || habitacion.Ocupada == ocupado;
-
-                    return tipoCoincide && idCoincide;
-                }
-                return false;
-            });
-
-            habitacionesView.Refresh();
+            this.Close();
+            buscarHabitacionViewModel.instance.BuscarEditar();
         }
 
-        private void nav()
+        private void borrarClick(object sender, RoutedEventArgs e)
         {
-            if (atras)
-            {
-                this.Hide();
-                _navigationService.NavigateTo("buscarReserva", this);
+            MessageBoxResult result = MessageBox.Show(
+                "¿Estás seguro de que deseas continuar?",  
+                "Confirmación",                           
+                MessageBoxButton.YesNo,                    
+                MessageBoxImage.Question                  
+            );
 
-            }
-            else
+            if (listaHab.SelectedIndex != null)
             {
-                if (editar)
+                if (result == MessageBoxResult.Yes)
                 {
-                    Habitacion h = habitaciones[listaHab.SelectedIndex];
-                    _navigationService.NavigateTo("addHab", h, true);
+                    Habitacion h = listaHab.SelectedItem as Habitacion;
+                    buscarHabitacionViewModel.instance.BorrarHabitacion(h);
+                    ConexionController controller = new ConexionController();
+                    controller.deleteHab(h);
+                    
                 }
                 else
                 {
-                    _navigationService.NavigateTo("addHab", h, false);
+                    MessageBox.Show("Operacion cancelada");
                 }
             }
-            
-        }
+            else
+            {
+                MessageBox.Show("Selecciona una habitacion");
+            }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            atras = true;
-            nav();
+            
         }
     }
 }

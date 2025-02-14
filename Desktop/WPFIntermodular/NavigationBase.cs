@@ -52,7 +52,7 @@ namespace WPFIntermodular
 
                 // Obtener el constructor adecuado
                 var constructor = windowType.GetConstructor(
-                        parameters.Select(p => p.GetType()).ToArray());
+                    parameters.Where(p => p != null).Select(p => p.GetType()).ToArray());
 
                 if (constructor != null)
                 {

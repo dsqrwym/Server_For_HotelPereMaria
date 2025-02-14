@@ -16,6 +16,7 @@ using System.IO;
 using System.Diagnostics;
 using WPFIntermodular.model;
 using GalaSoft.MvvmLight.Command;
+using WPFIntermodular.viewmodel.habitacionViewModel;
 
 
 namespace WPFIntermodular.view
@@ -25,171 +26,58 @@ namespace WPFIntermodular.view
     /// </summary>
     public partial class addHabitaciones : Window
     {
-        
-        private byte[] imageBytes;
-        private bool Editar = false;
+
         private Habitacion H;
-        private bool atras = false;
-
-        private NavigationService _navigationService;
-
-
-        private RelayCommand NavigateToSecondWindowCommand { get; set; }
+        private bool EDITAR;
         public addHabitaciones(Habitacion h, bool editar) 
         {
 
-            H = h;
-            Editar = editar;
+          
             
             InitializeComponent();
-            _navigationService = new NavigationService();  // Crear una instancia del servicio
-            NavigateToSecondWindowCommand = new RelayCommand(nav);
-            if (Editar)
+
+            H= h;
+            EDITAR= editar;
+            if (editar)
             {
-                
-                fillFields(H);
-            }
-        }
-
-        private void fillFields(Habitacion h)
-        {
-
-            //nombreText.Text = h.Nombre;
-            tipoCombo.Text = h.Tipo;
-            //imagen buscar como cargarla
-            //descripccionText.Text = h.Descripccion;
-            //precio por noche se calcula a parte
-            botonFinal.Content = "Editar";
-
-
-
-
-
-        }
-
-        private void imagen_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog
-            {
-                Title = "Seleccionar archivo multimedia",
-                Filter = "Archivos multimedia|*.mp4;*.mp3;*.wav;*.avi;*.mkv;*.jpg;*.png;*.gif|Todos los archivos|*.*",
-                Multiselect = false
-            };
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                byte[] imagen = File.ReadAllBytes(openFileDialog.FileName);  
-                String base64 = Convert.ToBase64String(imagen);  
-                imageBytes = imagen;  
-                convertImage(base64);
-            }
-        }
-        private Byte[] convertImage(String foto)
-        {
-            if (String.IsNullOrEmpty(foto)){
-                MessageBox.Show("No se recibio la imagen correctamente, porfavor seleccionela de nuevo");
-                return null;
+                btnFinal.Content = "Editar";
+                titulo.Content = "Editar";
             }
             else
             {
-                try
-                {
-                    byte[] imagenBytes = Convert.FromBase64String(foto);  // Convertimos de nuevo de Base64 a bytes
-                    imageBytes = imagenBytes;  // Asignamos los bytes a la variable global
-
-                    using (var stream = new MemoryStream(imageBytes))
-                    {
-                        // Creamos una imagen desde el flujo de memoria
-                        var bitmap = new BitmapImage();
-                        bitmap.BeginInit();
-                        bitmap.StreamSource = stream;
-                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmap.EndInit();
-
-                        // Mostramos la imagen en el control Image
-                        //imageDisplay.Source = bitmap;
-                    }
-                }
-                catch (Exception e) { }
-               
-                
+                btnFinal.Content ="Crear";
+                titulo.Content = "Crear";
 
             }
+            this.DataContext = new addHabsViewModel(h, editar);
 
-            return null;
-        }
-        private void ConvertirBinarioAImagen(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (imageBytes != null && imageBytes.Length > 0)
-                {
-                    // Convertimos los bytes de vuelta a un flujo de memoria
-                    using (var stream = new MemoryStream(imageBytes))
-                    {
-                        // Creamos una imagen desde el flujo de memoria
-                        var bitmap = new BitmapImage();
-                        bitmap.BeginInit();
-                        bitmap.StreamSource = stream;
-                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmap.EndInit();
-
-                        // Mostramos la imagen en el control Image de la UI
-                        //imageDisplay.Source = bitmap;
-                    }
-
-                }
-                else
-                {
-                    MessageBox.Show("No hay datos binarios para convertir.");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al convertir el binario a imagen: {ex.Message}");
-            }
+           
+           
         }
 
-        private void botonFinal_Click(object sender, RoutedEventArgs e)
+        
+
+        private void btnFinal_Click(object sender, RoutedEventArgs e)
         {
-            if (Editar)
-            {
-                //H.Descripccion = descripccionText.Text;
-                H.Tipo = tipoCombo.Text;
-               // H.Nombre = nombreText.Text;
-                buscadorHabitaciones b = new buscadorHabitaciones();
-                this.Hide();
-                b.actLista();
-                b.Show();
-            }
-            else
+            if (this.DataContext is addHabsViewModel vm)
             {
 
-
-                Habitacion h = new Habitacion(4, tipoCombo.Text, 3, 4, [],null,"","");
-                buscadorHabitaciones b = new buscadorHabitaciones();
-                b.addHab(h);
-                this.Hide();
-                b.Show();
+                this.Close();
+                vm.CerrarVentana();
             }
+
+            
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            nav();
-        }
+            if (this.DataContext is addHabsViewModel vm)
+            {
 
-        private void nav()
-        {
-            
-                this.Hide();
-                _navigationService.NavigateTo("buscarHab");
-            
-            
-            
-
+                this.Close();
+                vm.CerrarVentana();
+            }
         }
     }
-
 
 }

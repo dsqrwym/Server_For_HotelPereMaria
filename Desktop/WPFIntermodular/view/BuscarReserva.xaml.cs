@@ -25,7 +25,8 @@ namespace WPFIntermodular.view
     /// </summary>
     public partial class BuscarReserva : Window
     {
-        private Habitacion h;
+        
+        private RelayCommand NavigateToSecondWindowCommand { get; set; }
 
         public BuscarReserva()
         {
@@ -34,7 +35,8 @@ namespace WPFIntermodular.view
 
         private void tipoHab_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key != Key.Enter) {
+            if (e.Key != Key.Enter)
+            {
                 tipoHab.IsDropDownOpen = true;
             }
         }
@@ -142,6 +144,20 @@ namespace WPFIntermodular.view
                     textBox.Text = "0";
                 }
             }
+        }
+
+        private void ButtonRestaura_Click(object sender, RoutedEventArgs e)
+        {
+            tipoHab.SelectedItem = null; // 清空房间类型选择
+            fechaEntradaInput.SelectedDate = null; // 清空选择的入住日期
+            fechaSalidaInput.SelectedDate = null; // 清空选择的退房日期
+            checkBox_Comidas.IsChecked = false; // 取消选中“包括餐饮”
+            checkBox_Parking.IsChecked = false; // 取消选中“包括停车”
+            checkBox_GM.IsChecked = false; // 取消选中“包括健身房”
+
+            // 重置价格范围到默认值
+            precio.LowerValue = precio.Minimum;
+            precio.HigherValue = precio.Maximum;
         }
     }
 }

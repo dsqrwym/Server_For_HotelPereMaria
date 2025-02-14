@@ -175,6 +175,7 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
 
         private void ResetearFiltros()
         {
+            InicializarDatosAsync();
             TipoSeleccionado = null;
             FechaEntrada = null;
             FechaSalida = null;
