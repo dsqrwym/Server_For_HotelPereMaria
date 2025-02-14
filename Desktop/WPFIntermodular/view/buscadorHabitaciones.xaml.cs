@@ -86,14 +86,7 @@ namespace WPFIntermodular.view
                 valido = int.TryParse(idText.Text, out id);
             }
 
-            if (ocupadaSi.IsChecked == true)
-            {
-                ocupadao = true;  
-            }
-            else if (ocupadaNo.IsChecked == true)
-            {
-                ocupadao = false;  
-            }
+           
 
             filterHabitaciones(tiposCombo.Text, id, valido, ocupadao);
         }

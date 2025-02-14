@@ -117,18 +117,20 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-// Eliminar (desactivar) una habitación
+
 router.delete('/:id', async (req, res) => {
-    try {
-        const habitacion = await Habitacion.findByIdAndDelete(req.params.id);
-        if (!habitacion) {
-            return res.status(404).json({ error: 'Habitación no encontrada' });
-        }
-        res.status(200).json({ message: 'Habitación eliminada correctamente' });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Error al eliminar la habitación" });
-    }
+  try {
+      const habitacion = await Habitacion.findOneAndDelete({ Id: req.params.id }); // Buscar por "Id" en lugar de "_id"
+      
+      if (!habitacion) {
+          return res.status(404).json({ error: 'Habitación no encontrada' });
+      }
+      
+      res.status(200).json({ message: 'Habitación eliminada correctamente' });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Error al eliminar la habitación" });
+  }
 });
 
 

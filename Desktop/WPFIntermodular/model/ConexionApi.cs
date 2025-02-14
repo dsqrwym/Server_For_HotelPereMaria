@@ -20,7 +20,7 @@ public class ConexionApi
 
     public HttpClient API => _httpClient;
 
-    private string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OTJhY2M4NDcxYzI5MDk3NDgxMWQ2ZiIsInRpcG8iOjUsImlhdCI6MTczOTQ4MzE1NiwiZXhwIjoxNzM5NDg0OTU2fQ.yHcq2tGBtMS8JAUGEB56PnbuF3tCsxwt2-rMFjKgUNM";
+    private string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OTJhY2M4NDcxYzI5MDk3NDgxMWQ2ZiIsInRpcG8iOjUsImlhdCI6MTczOTUyNTQ5NywiZXhwIjoxNzM5NTI3Mjk3fQ.63xcMboVMKXPEIb60TpB5ajgx7EZ23ho-q6U8vkNfOs";
 
 
 

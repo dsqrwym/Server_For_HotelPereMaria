@@ -33,13 +33,7 @@
                         </ComboBox>
 
 
-
-
-                        <Label FontSize="20" Margin="10,10,0,0">¿Ocupada?</Label>
-                        <StackPanel Orientation="Horizontal" Margin="10,0">
-                            <RadioButton FontSize="20" GroupName="si/no" FontFamily="Montserrat" Margin="0,0,10,0" Name="ocupadaSi">Sí</RadioButton>
-                            <RadioButton FontSize="20" GroupName="si/no" FontFamily="Montserrat" Name="ocupadaNo">No</RadioButton>
-                        </StackPanel>
+                        
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10,0,0">
                                 <Button Style="{DynamicResource BtnSec}" Width="124" Height="37" Margin="0,0,10,0">Ofertas</Button>
@@ -49,7 +43,7 @@
                 </Border>
             </StackPanel>
 
-            <StackPanel Grid.Column="1" Margin="20">
+            <StackPanel Grid.Column="1" Margin="20" >
                 <DataGrid Name="listaHab" AutoGenerateColumns="False" Width="582" Margin="0,0,0,10" SelectionChanged="listaHab_SelectionChanged" ItemsSource="{Binding Habitaciones}"  SelectedItem="{Binding HabitacionSeleccionada, Mode=TwoWay}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="80" />
@@ -59,9 +53,10 @@
                             <DataGridTextColumn Header="Capacidad" Binding="{Binding Capacidad}" Width="100" />
                         </DataGrid.Columns>
                     </DataGrid>
-
-                <Button Name="buscarEditBtn"  Style="{StaticResource BtnPrin}" Width="188" Height="49"  Command="{Binding BuscarEditCommand}" Click="buscarEditBtn_Click"
-    ></Button>
+                <StackPanel Orientation="Horizontal" Width="409">
+                    <Button Name="buscarEditBt"  Style="{StaticResource BtnPrin}" Width="188" Height="49"  Command="{Binding BuscarEditCommand}" Click="buscarEditBtn_Click" Content="Borrar" Margin="10"></Button>
+                    <Button Name="buscarEditBtn"  Style="{StaticResource BtnPrin}" Width="188" Height="49"  Command="{Binding BuscarEditCommand}" Click="buscarEditBtn_Click" Margin="10"></Button>
+                </StackPanel>
             </StackPanel>
 
         </Grid>
