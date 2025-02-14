@@ -77,6 +77,25 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
           
         }
 
+        public void AgregarHabitacion(Habitacion nuevaHabitacion)
+        {
+            if (nuevaHabitacion != null)
+            {
+                Habitaciones.Add(nuevaHabitacion);
+                OnPropertyChanged(nameof(Habitaciones));
+            }
+        }
+
+        public void BorrarHabitacion(Habitacion habitacion)
+        {
+            if (habitacion != null)
+            {
+                Habitaciones.Remove(habitacion);
+                OnPropertyChanged(nameof(Habitaciones));
+            }
+        }
+
+
 
         public async Task CargarDatos()
         {

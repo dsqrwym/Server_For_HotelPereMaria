@@ -5,18 +5,18 @@
         Title="Add/Edit Room"
         Width="1000" Height="650" WindowStartupLocation="CenterScreen">
 
+
     <Border CornerRadius="10" Style="{StaticResource Border}" Width="1000" Height="650"
             HorizontalAlignment="Center" VerticalAlignment="Center" Padding="30"
             BorderBrush="#E5E5E5" BorderThickness="1">
-
         <Grid>
-            <Label Style="{StaticResource Titulo}" Content="" 
+            <Label Style="{StaticResource Titulo}" Content="Editar habitación" 
                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" x:Name="titulo"/>
 
-            <Button Content="X" Width="30" Height="30" HorizontalAlignment="Left" 
+            <Button Content="X" Height="30" 
                     VerticalAlignment="Top" Background="Transparent" Foreground="Black"
                     FontSize="14" FontWeight="Bold" BorderBrush="Transparent"
-                    Command="{Binding CerrarCommand}" Margin="908,0,0,0" Click="Button_Click" />
+                     Margin="908,0,0,0" Click="Button_Click_1" />
 
             <Grid Margin="0,60,0,0">
                 <Grid.RowDefinitions>
@@ -27,13 +27,11 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <!-- ID -->
                 <StackPanel Grid.Row="0" Margin="0,0,0,10">
                     <TextBlock Style="{StaticResource SubTitle}" Text="ID de la habitación" Margin="0,0,0,5"/>
                     <TextBox Text="{Binding Habitacion.Id, Mode=TwoWay}" Height="40"/>
                 </StackPanel>
 
-                <!-- Nombre y Tipo -->
                 <Grid Grid.Row="1" Margin="0,0,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*"/>
@@ -47,12 +45,12 @@
 
                     <StackPanel Grid.Column="1">
                         <TextBlock Style="{StaticResource SubTitle}" Text="Tipo" Margin="0,0,0,5"/>
+
                         <ComboBox ItemsSource="{Binding TiposHabitacion}"  
                                   SelectedIndex="{Binding SelectedTipoIndex, Mode=TwoWay}" />
                     </StackPanel>
                 </Grid>
 
-                <!-- Capacidad y Precio -->
                 <Grid Grid.Row="2" Margin="0,0,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
@@ -70,13 +68,11 @@
                     </StackPanel>
                 </Grid>
 
-                <!-- Descripción -->
                 <StackPanel Grid.Row="3" Margin="0,0,0,10">
                     <TextBlock Text="Descripción" Style="{StaticResource SubTitle}" Margin="0,0,0,5"/>
                     <TextBox Text="{Binding Descripcion, Mode=TwoWay}" Height="80" TextWrapping="Wrap" AcceptsReturn="True"/>
                 </StackPanel>
 
-                <!-- Imagen -->
                 <Grid Grid.Row="4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
@@ -91,11 +87,10 @@
                 </Grid>
             </Grid>
 
-            <!-- Botón Guardar -->
             <Button Style="{StaticResource BtnPrin}" Width="150" Height="50"
                     HorizontalAlignment="Right" VerticalAlignment="Bottom" FontWeight="Bold"
                     Margin="0,10,10,10" Content="Guardar"
-                    Command="{Binding GuardarHabitacionCommand}" x:Name="btnFinal" Click="btnFinal_Click" />
+                    Command="{Binding GuardarHabitacionCommand}" x:Name="btnFinal" Click="btnFinal_Click"/>
         </Grid>
     </Border>
 </Window>

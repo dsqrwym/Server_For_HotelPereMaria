@@ -18,7 +18,7 @@
             <StackPanel Grid.Column="0" Margin="20">
                 <Border Style="{StaticResource Border}" Padding="10" CornerRadius="15" VerticalAlignment="Stretch">
                     <StackPanel>
-                            <Button Content="←" FontSize="20" Background="Transparent" HorizontalContentAlignment="Left" Click="Button_Click_1" ></Button>
+                            <Button Content="←" FontSize="20" Background="Transparent" HorizontalContentAlignment="Left" ></Button>
 
                             <Label FontSize="20">ID habitacion</Label>
                         <TextBox Name ="idText" Height="24" Width="244" HorizontalAlignment="Left"></TextBox>
@@ -54,7 +54,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                 <StackPanel Orientation="Horizontal" Width="409">
-                    <Button Name="buscarEditBt"  Style="{StaticResource BtnPrin}" Width="188" Height="49"  Command="{Binding BuscarEditCommand}" Click="buscarEditBtn_Click" Content="Borrar" Margin="10"></Button>
+                    <Button Name="btnBorrar"  Style="{StaticResource BtnPrin}" Width="188" Height="49"  Click="borrarClick" Content="Borrar" Margin="10"></Button>
                     <Button Name="buscarEditBtn"  Style="{StaticResource BtnPrin}" Width="188" Height="49"  Command="{Binding BuscarEditCommand}" Click="buscarEditBtn_Click" Margin="10"></Button>
                 </StackPanel>
             </StackPanel>

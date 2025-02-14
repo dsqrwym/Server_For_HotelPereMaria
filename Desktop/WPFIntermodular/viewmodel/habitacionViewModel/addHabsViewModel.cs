@@ -1,22 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using Microsoft.Win32;
 using GalaSoft.MvvmLight.Command;
+using Microsoft.Win32;
 using WPFIntermodular.model;
-using System.Text.RegularExpressions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WPFIntermodular.viewmodel.habitacionViewModel
 {
     public class addHabsViewModel : INotifyPropertyChanged
     {
+        // Lista de tipos de habitación
         private readonly string[] _tiposHabitacion = { "Individual", "Estandar", "Lujo", "Suite", "Duplex" };
-
         public string[] TiposHabitacion => _tiposHabitacion;
 
+        // Campos privados
         private bool _editar;
         private Habitacion _habitacion;
         private string _nombre;
@@ -25,41 +30,40 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
         private int _selectedTipoIndex;
         private BitmapImage _imagenPreview;
         private byte[] _imageBytes;
+        private string imageb64;
 
+        // Propiedad para el precio (enlazada al TextBox de Precio)
         public double Precio
         {
-            get => Habitacion?.Precio ?? 0.0;
+            get => _habitacion?.Precio ?? 0.0;
             set
             {
-                if (Habitacion != null && Habitacion.Precio != value)
+                if (_habitacion != null && _habitacion.Precio != value)
                 {
-                    Habitacion.Precio = value;
+                    _habitacion.Precio = value;
                     OnPropertyChanged(nameof(Precio));
                 }
             }
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+        // Propiedad para determinar si se está editando o creando
+       
 
-        private string imageb64;
-        public bool Editar
-        {
-            get => _editar;
-            set => SetProperty(ref _editar, value);
-        }
-
+        // Objeto Habitacion (contiene ID, Capacidad, Extras, etc.)
         public Habitacion Habitacion
         {
             get => _habitacion;
             set => SetProperty(ref _habitacion, value);
         }
 
+        // Propiedad para el nombre (enlazada al TextBox de Nombre)
         public string Nombre
         {
             get => _nombre;
             set => SetProperty(ref _nombre, value);
         }
 
+        // Propiedad para el tipo (enlazada al ComboBox)
         public string Tipo
         {
             get => _tipo;
@@ -70,11 +74,11 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
                     _tipo = value;
                     OnPropertyChanged(nameof(Tipo));
 
+                    // Actualizamos el índice seleccionado en el ComboBox
                     int newIndex = Array.IndexOf(_tiposHabitacion, _tipo);
                     if (newIndex != -1 && newIndex != _selectedTipoIndex)
                     {
-                        _selectedTipoIndex = newIndex;
-                        OnPropertyChanged(nameof(SelectedTipoIndex));
+                        SelectedTipoIndex = newIndex;
                     }
                 }
             }
@@ -86,11 +90,6 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
             set => SetProperty(ref _descripcion, value);
         }
 
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         public int SelectedTipoIndex
         {
             get => _selectedTipoIndex;
@@ -100,11 +99,9 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
                 {
                     _selectedTipoIndex = value;
                     OnPropertyChanged(nameof(SelectedTipoIndex));
-
                     if (_selectedTipoIndex >= 0 && _selectedTipoIndex < _tiposHabitacion.Length)
                     {
-                        _tipo = _tiposHabitacion[_selectedTipoIndex];
-                        OnPropertyChanged(nameof(Tipo)); // Notificar cambio en Tipo
+                        Tipo = _tiposHabitacion[_selectedTipoIndex];
                     }
                 }
             }
@@ -120,35 +117,37 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
         public ICommand GuardarHabitacionCommand { get; }
         public ICommand CerrarCommand { get; }
 
-
         private NavigationService _navigationService;
 
-
-        private RelayCommand NavigateToSecondWindowCommand { get; set; }
-
+        private bool Editar;
         public addHabsViewModel(Habitacion habitacion, bool editar)
         {
             Habitacion = habitacion;
             Editar = editar;
 
             _navigationService = new NavigationService();
-            NavigateToSecondWindowCommand = new RelayCommand(CerrarVentana);
+
+            SeleccionarImagenCommand = new RelayCommand(SeleccionarImagen);
+            GuardarHabitacionCommand = new RelayCommand(async () => await CrearHabitacionAsync());
+            CerrarCommand = new RelayCommand(CerrarVentana);
 
             if (Editar)
             {
                 Nombre = habitacion.Nombre;
                 Tipo = habitacion.Tipo;
-                Descripcion = habitacion.Descripccion;
+                Descripcion = habitacion.Descripccion; 
                 SelectedTipoIndex = Array.IndexOf(_tiposHabitacion, habitacion.Tipo);
             }
-
-            
-
-            SeleccionarImagenCommand = new RelayCommand(SeleccionarImagen);
-            CerrarCommand = new RelayCommand(CerrarVentana);
-            GuardarHabitacionCommand = new RelayCommand(async () => await CrearHabitacionAsync());
+            else
+            {
+                Nombre = string.Empty;
+                Tipo = _tiposHabitacion[0];
+                SelectedTipoIndex = 0;
+                Descripcion = string.Empty;
+            }
         }
 
+        // Método para seleccionar imagen (abre diálogo y carga imagen en Base64 y vista previa)
         private void SeleccionarImagen()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
@@ -162,20 +161,24 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
             {
                 _imageBytes = File.ReadAllBytes(openFileDialog.FileName);
                 ImagenPreview = ConvertirBytesAImagen(_imageBytes);
-
-                imageb64 = convetir64(_imageBytes);
+                imageb64 = ConvertirA64(_imageBytes);
             }
         }
 
-        private string convetir64(byte[] imagenBytes)
+        // Convierte un arreglo de bytes a cadena en Base64
+        private string ConvertirA64(byte[] imagenBytes)
         {
-            MessageBox.Show(Convert.ToBase64String(imagenBytes));
-            return Convert.ToBase64String(imagenBytes);
+            string base64 = Convert.ToBase64String(imagenBytes);
+            // Puedes quitar este MessageBox una vez que hayas depurado la conversión
+            MessageBox.Show(base64);
+            return base64;
         }
 
+        // Convierte un arreglo de bytes a BitmapImage para la vista previa
         private BitmapImage ConvertirBytesAImagen(byte[] imagenBytes)
         {
-            if (imagenBytes == null || imagenBytes.Length == 0) return null;
+            if (imagenBytes == null || imagenBytes.Length == 0)
+                return null;
 
             using (var stream = new MemoryStream(imagenBytes))
             {
@@ -188,106 +191,173 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
             }
         }
 
+        // Método asíncrono para crear/guardar la habitación
         public async Task<Habitacion> CrearHabitacionAsync()
         {
-            try
+
+            if (Editar)
+            {
+                bool result = comps();
+                if (result)
+                {
+                    ConexionController c = new ConexionController();
+                    Habitacion nuevaHabitacion = new Habitacion(
+                        Habitacion.Id,
+                        Tipo,
+                        Habitacion.Capacidad,
+                        Precio, // Utilizamos la propiedad Precio
+                        new Dictionary<string, double>(Habitacion.Extras), // Conversión de extras si es necesario
+                        imageb64, // Imagen en Base64
+                        Nombre,
+                        Descripcion);
+                    bool resultado = await c.editHab(nuevaHabitacion);
+                    if (resultado)
+                    {
+                        //buscarHabitacionViewModel.instance.AgregarHabitacion(nuevaHabitacion);
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ha habido un problema al editar la habitación.");
+                    }
+                    return resultado ? nuevaHabitacion : null;
+                }
+                return null;
+
+            }
+            else
             {
 
-                if (string.IsNullOrWhiteSpace(Habitacion.Id) || !Regex.IsMatch(Habitacion.Id, @"^H\d{3,}$"))
+                try
                 {
-                    MessageBox.Show("Error: ID inválido. Debe comenzar con 'H' seguido de números.");
+                    bool result = comps();
+                    if (result)
+                    {
+                        Habitacion nuevaHabitacion = new Habitacion(
+                                            Habitacion.Id,
+                                            Tipo,
+                                            Habitacion.Capacidad,
+                                            Precio, // Utilizamos la propiedad Precio
+                                            new Dictionary<string, double>(Habitacion.Extras), // Conversión de extras si es necesario
+                                            imageb64, // Imagen en Base64
+                                            Nombre,
+                                            Descripcion
+                                        );
+
+                        MessageBox.Show("Procesando creación de habitación...");
+
+                        // Se asume que tienes un controlador de conexión para guardar la habitación
+                        ConexionController c = new ConexionController();
+                        bool resultado = await c.GuardarHab(nuevaHabitacion);
+
+                        if (resultado)
+                        {
+                            buscarHabitacionViewModel.instance.AgregarHabitacion(nuevaHabitacion);
+
+                        }
+                        else
+                        {
+                            MessageBox.Show("Ha habido un problema al guardar la habitación.");
+                        }
+
+                        return resultado ? nuevaHabitacion : null;
+                    }
+
                     return null;
-                }
 
-                string[] tiposValidos = { "Individual", "Estandar", "Lujo", "Suite", "Duplex" };
-                if (string.IsNullOrEmpty(Tipo) || !tiposValidos.Contains(Tipo, StringComparer.OrdinalIgnoreCase))
-                {
-                    MessageBox.Show("Error: Tipo de habitación no válido.");
-                    return null;
-                }
 
-                if (Habitacion.Capacidad <= 0)
-                {
-                    MessageBox.Show("Error: La capacidad debe ser mayor a 0.");
-                    return null;
-                }
-
-                if (Precio <= 0)
-                {
-                    MessageBox.Show("Error: El precio debe ser un número positivo.");
-                    return null;
-                }
-
-                if (Habitacion.Extras != null && Habitacion.Extras.Any(e => e.Value <= 0))
-                {
-                    MessageBox.Show("Error: Todos los extras deben tener un precio mayor a 0.");
-                    return null;
-                }
-
-                if (string.IsNullOrEmpty(imageb64))
-                {
-                    MessageBox.Show("Error: Debe agregar al menos una imagen válida.");
-                    return null;
-                }
-
-                if (string.IsNullOrWhiteSpace(Nombre))
-                {
-                    MessageBox.Show("Error: El nombre de la habitación no puede estar vacío.");
-                    return null;
-                }
-
-                if (string.IsNullOrWhiteSpace(Descripcion) || Descripcion.Length < 10)
-                {
-                    MessageBox.Show("Error: La descripción debe tener al menos 10 caracteres.");
-                    return null;
-                }
-
-                Habitacion nuevaHabitacion = new Habitacion(
-                           Habitacion.Id,
-                           Tipo,
-                           Habitacion.Capacidad,
-                           200, // Directamente asignamos el precio como double
-                           new Dictionary<string, double>(Habitacion.Extras), // Cambiamos de MongoDecimal a double
-                           imageb64, // Imagen convertida a Base64
-                           Nombre,
-                           Descripcion
-                       );
-
-                MessageBox.Show($"Pedro Sancheeeez");
-
-                ConexionController c = new ConexionController();
-                bool resultado = await c.GuardarHab(nuevaHabitacion);
-
-                if (resultado)
-                {
-                    MessageBox.Show($"Habitación '{nuevaHabitacion.Nombre}' creada con éxito.");
-                }
-                else
-                {
-                    MessageBox.Show("Ha habido un problema");
-                }
-
-                return resultado ? nuevaHabitacion : null;
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error al crear la habitación: {ex.Message}");
                 return null;
             }
+            }
         }
 
-        private void CerrarVentana()
+        // Método para cerrar la ventana (o navegar a otra vista)
+
+        private bool comps()
         {
-            MessageBox.Show("Cerrando ventana...");
+        
+            // Validar ID: debe comenzar con 'H' seguido de al menos 3 dígitos
+            if (string.IsNullOrWhiteSpace(Habitacion.Id) || !Regex.IsMatch(Habitacion.Id, @"^H\d{3,}$"))
+            {
+                MessageBox.Show("Error: ID inválido. Debe comenzar con 'H' seguido de números.");
+                return false;
+            }
+
+            // Validar Tipo
+            string[] tiposValidos = _tiposHabitacion;
+            if (string.IsNullOrEmpty(Tipo) || !tiposValidos.Contains(Tipo, StringComparer.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("Error: Tipo de habitación no válido.");
+                return false;
+            }
+
+            // Validar capacidad
+            if (Habitacion.Capacidad <= 0)
+            {
+                MessageBox.Show("Error: La capacidad debe ser mayor a 0.");
+                return false;
+            }
+
+            // Validar precio
+            if (Precio <= 0)
+            {
+                MessageBox.Show("Error: El precio debe ser un número positivo.");
+                return false;
+            }
+
+            // Validar extras (si existen)
+            if (Habitacion.Extras != null && Habitacion.Extras.Any(e => e.Value <= 0))
+            {
+                MessageBox.Show("Error: Todos los extras deben tener un precio mayor a 0.");
+                return false;
+            }
+
+            // Validar imagen
+            if (string.IsNullOrEmpty(imageb64))
+            {
+                MessageBox.Show("Error: Debe agregar al menos una imagen válida.");
+                return false;
+            }
+
+            // Validar nombre
+            if (string.IsNullOrWhiteSpace(Nombre))
+            {
+                MessageBox.Show("Error: El nombre de la habitación no puede estar vacío.");
+                return false;
+            }
+
+            // Validar descripción
+            if (string.IsNullOrWhiteSpace(Descripcion) || Descripcion.Length < 10)
+            {
+                MessageBox.Show("Error: La descripción debe tener al menos 10 caracteres.");
+                return false;
+            }
+
+            return true;
+        }
+        public void CerrarVentana()
+        {
             _navigationService.NavigateTo("buscarHab");
         }
 
+        // Implementación de INotifyPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        // Método auxiliar para actualizar propiedades y notificar cambios
         private void SetProperty<T>(ref T field, T value, [System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
         {
             if (!Equals(field, value))
             {
                 field = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                OnPropertyChanged(propertyName);
             }
         }
     }

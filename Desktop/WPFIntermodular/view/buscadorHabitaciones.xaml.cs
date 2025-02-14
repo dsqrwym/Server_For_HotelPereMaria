@@ -37,7 +37,6 @@ namespace WPFIntermodular.view
         public buscadorHabitaciones()
         {
 
-            //Habitacion H = new Habitacion("1", "Suite", 3, 25, [], null, "Ejemplo", "Ejemplo");
 
             InitializeComponent();
             this.DataContext = buscarHabitacionViewModel.instance;
@@ -46,10 +45,6 @@ namespace WPFIntermodular.view
           
 
             buscarEditBtn.Content = "Crear";
-
-            
-            
-           
 
 
 
@@ -88,44 +83,50 @@ namespace WPFIntermodular.view
 
            
 
-            filterHabitaciones(tiposCombo.Text, id, valido, ocupadao);
         }
 
-        public void filterHabitaciones(string tipo, int id, bool valido, bool? ocupado)
-        {
-            if (Habitaciones == null) return;
 
-            ICollectionView habitacionesView = CollectionViewSource.GetDefaultView(Habitaciones);
-
-            habitacionesView.Filter = new Predicate<object>(obj =>
-            {
-                if (obj is Habitacion habitacion)
-                {
-
-                    bool tipoCoincide = string.IsNullOrEmpty(tipo) || habitacion.Tipo == tipo;
-
-                    bool idCoincide = (valido && id != -1) ? habitacion.Id.Equals(id) : true;
-
-                    //bool ocupadaCoincide = !ocupado.HasValue || habitacion.Ocupada == ocupado;
-
-                    return tipoCoincide && idCoincide;
-                }
-                return false;
-            });
-
-            habitacionesView.Refresh();
-        }
 
         
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            atras = true;
-        }
+        
 
         private void buscarEditBtn_Click(object sender, RoutedEventArgs e)
         {
+            this.Close();
             buscarHabitacionViewModel.instance.BuscarEditar();
+        }
+
+        private void borrarClick(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show(
+                "¿Estás seguro de que deseas continuar?",  
+                "Confirmación",                           
+                MessageBoxButton.YesNo,                    
+                MessageBoxImage.Question                  
+            );
+
+            if (listaHab.SelectedIndex != null)
+            {
+                if (result == MessageBoxResult.Yes)
+                {
+                    Habitacion h = listaHab.SelectedItem as Habitacion;
+                    buscarHabitacionViewModel.instance.BorrarHabitacion(h);
+                    ConexionController controller = new ConexionController();
+                    controller.deleteHab(h);
+                    
+                }
+                else
+                {
+                    MessageBox.Show("Operacion cancelada");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Selecciona una habitacion");
+            }
+
+            
         }
     }
 }

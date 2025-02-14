@@ -61,19 +61,21 @@ namespace WPFIntermodular.view
         {
             if (this.DataContext is addHabsViewModel vm)
             {
-                this.Hide();
-                vm.CrearHabitacionAsync();
 
+                this.Close();
+                vm.CerrarVentana();
             }
+
+            
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             if (this.DataContext is addHabsViewModel vm)
             {
-                this.Hide();
-                vm.CrearHabitacionAsync();
 
+                this.Close();
+                vm.CerrarVentana();
             }
         }
     }

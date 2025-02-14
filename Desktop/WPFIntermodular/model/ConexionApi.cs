@@ -20,7 +20,7 @@ public class ConexionApi
 
     public HttpClient API => _httpClient;
 
-    private string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OTJhY2M4NDcxYzI5MDk3NDgxMWQ2ZiIsInRpcG8iOjUsImlhdCI6MTczOTUyNTQ5NywiZXhwIjoxNzM5NTI3Mjk3fQ.63xcMboVMKXPEIb60TpB5ajgx7EZ23ho-q6U8vkNfOs";
+    private string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OTJhY2M4NDcxYzI5MDk3NDgxMWQ2ZiIsInRpcG8iOjUsImlhdCI6MTczOTUzNDM0MiwiZXhwIjoxNzM5NTM2MTQyfQ.HqsSCh0In1Ggq7ddmOZelOyX24uv-fWa5tYStORCCD0";
 
 
 
@@ -70,7 +70,6 @@ public class ConexionApi
     {
         try
         {
-            MessageBox.Show("addHab");
             const string urlEndpoint = "http://localhost:3000/api/habitaciones";
 
             // Configurar el header de autorización
@@ -106,5 +105,56 @@ public class ConexionApi
             return false;
         }
     }
+    public async Task<bool> deleteHab(Habitacion h)
+    {
+        string _ulrEndpoint = $"http://localhost:3000/api/habitaciones/{h.Id}";
+        API.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
+        // Enviar la solicitud DELETE
+        HttpResponseMessage response = await API.DeleteAsync(_ulrEndpoint);
+
+        if (response.IsSuccessStatusCode)
+        {
+            MessageBox.Show("Habitación eliminada correctamente.");
+            return true;
+        }
+        else
+        {
+            string error = await response.Content.ReadAsStringAsync();
+            MessageBox.Show($"Error al eliminar la habitación: {response.StatusCode}\n{error}");
+            return false;
+        }
+    }
+
+    public async Task<bool> editHab(Habitacion h)
+    {
+
+        string _ulrEndpoint = $"http://localhost:3000/api/habitaciones/{h.Id}";
+
+
+        string json = JsonConvert.SerializeObject(h);
+
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+
+
+        API.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        
+        HttpResponseMessage response = await API.PutAsync(_ulrEndpoint,content);
+
+        if (response.IsSuccessStatusCode)
+        {
+            MessageBox.Show("Habitación edita correctamente.");
+            return true;
+        }
+        else
+        {
+            string error = await response.Content.ReadAsStringAsync();
+            MessageBox.Show($"Error al editar la habitación: {response.StatusCode}\n{error}");
+            return false;
+        }
+    }
 }

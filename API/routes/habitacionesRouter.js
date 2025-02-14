@@ -95,26 +95,32 @@ router.post('/', async (req, res) => {
   
 // Actualizar una habitación
 router.put('/:id', async (req, res) => {
-    try {
-        const { Nombre, Descripccion } = req.body;
+  try {
+      const { Nombre, Descripccion } = req.body;
 
-        // Validaciones manuales
-        if (Nombre && Nombre.trim().length < 3) {
-            return res.status(400).json({ error: 'El nombre debe tener al menos 3 caracteres.' });
-        }
-        if (Descripccion && Descripccion.trim().length > 500) {
-            return res.status(400).json({ error: 'La descripción no puede superar los 500 caracteres.' });
-        }
+      // Validaciones manuales
+      if (Nombre && Nombre.trim().length < 3) {
+          return res.status(400).json({ error: 'El nombre debe tener al menos 3 caracteres.' });
+      }
+      if (Descripccion && Descripccion.trim().length > 500) {
+          return res.status(400).json({ error: 'La descripción no puede superar los 500 caracteres.' });
+      }
 
-        const habitacionActualizada = await Habitacion.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-        if (!habitacionActualizada) {
-            return res.status(404).json({ error: 'Habitación no encontrada' });
-        }
-        res.status(200).json(habitacionActualizada);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Error al actualizar la habitación" });
-    }
+      const habitacionActualizada = await Habitacion.findOneAndUpdate(
+          { Id: req.params.id }, 
+          req.body,
+          { new: true, runValidators: true }
+      );
+
+      if (!habitacionActualizada) {
+          return res.status(404).json({ error: 'Habitación no encontrada' });
+      }
+
+      res.status(200).json(habitacionActualizada);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Error al actualizar la habitación" });
+  }
 });
 
 

@@ -21,8 +21,18 @@ public class ConexionController : Controller
 
     public async Task<bool> GuardarHab(Habitacion h )
     {
-        MessageBox.Show($"GuardarHab");
         var respuesta = await _conectarService.addHab(h);
+        return respuesta;
+    }
+
+    public async Task<bool> deleteHab(Habitacion h)
+    {
+        var respuesta = await _conectarService.deleteHab(h);
+        return respuesta;
+    }
+    public async Task<bool> editHab(Habitacion h)
+    {
+        var respuesta = await _conectarService.editHab(h);
         return respuesta;
     }
 
