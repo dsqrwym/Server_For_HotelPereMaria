@@ -6,24 +6,27 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hotelperemaria.data.model.Habitaciones
-import com.hotelperemaria.network.RetrofitServiceFactory
+import com.hotelperemaria.data.repository.RoomRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class princiapalScreenViewModel:ViewModel() {
+@HiltViewModel
+class PrinciapalScreenViewModel @Inject constructor(private val repository: RoomRepository) :
+    ViewModel() {
 
     private val _habitaciones = MutableLiveData<List<Habitaciones>>()
     val habitaciones: LiveData<List<Habitaciones>> = _habitaciones
 
-    private val apiService = RetrofitServiceFactory.makeRetrofitService()
 
     init {
         obtenerHabitaciones()
     }
 
-    fun obtenerHabitaciones() {
+    private fun obtenerHabitaciones() {
         viewModelScope.launch {
             try {
-                val response = apiService.listHabs()
+                val response = repository.getHabList()
                 // Verifica si la respuesta es válida
                 if (response.isNotEmpty()) {
                     _habitaciones.value = response

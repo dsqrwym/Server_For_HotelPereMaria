@@ -6,11 +6,13 @@ import androidx.security.crypto.MasterKey
 import com.hotelperemaria.data.auth.SessionManager
 import com.hotelperemaria.data.auth.TokenAuthenticator
 import com.hotelperemaria.data.network.ApiAuthService
+import com.hotelperemaria.data.network.ApiHabitacionService
 import com.hotelperemaria.data.network.ApiReservaService
 import com.hotelperemaria.data.repository.AuthRepository
 import com.hotelperemaria.data.repository.ReservationRepository
 import com.hotelperemaria.data.repository.RoomRepository
 import com.hotelperemaria.data.repository.UserRepository
+import com.hotelperemaria.network.RetrofitService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Lazy
 import dagger.Module
@@ -23,6 +25,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 
@@ -43,8 +46,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideHabitacionRepository(): RoomRepository {
-        return RoomRepository()
+    fun provideHabitacionRepository(apiHabitacionService: ApiHabitacionService, sessionManager: SessionManager): RoomRepository {
+        return RoomRepository(apiHabitacionService, sessionManager)
     }
 }
 
@@ -139,6 +142,18 @@ object NetworkModule {
     @Singleton
     fun provideApiReservationService(retrofit: Retrofit): ApiReservaService {
         return retrofit.create(ApiReservaService::class.java)
+    }
 
+    @Provides
+    @Singleton
+    fun provideApiHabitacionService(okHttpClient: OkHttpClient): ApiHabitacionService {
+        return makeRetrofitServiceTito(okHttpClient).create(ApiHabitacionService::class.java)
+    }
+    private fun makeRetrofitServiceTito(okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("http://10.0.2.2:3000/api/")
+            .client(okHttpClient) // Usamos el cliente con el interceptor
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
     }
 }
