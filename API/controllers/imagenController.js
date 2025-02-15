@@ -2,7 +2,7 @@ const Imagen = require('../models/imagen.js');
 const Habitacion = require('../models/habitacion.js');
 const { imagenSchema } = require('../utils/Joi/imagenJoi.js');
 const { mongoIdArraySchema, mongoIdSchema } = require('../utils/Joi/utilJoi.js');
-const { handleValidationError } = require('../utils/util.js');
+const { handleValidationError, sendResponse } = require('../utils/util.js');
 
 
 async function uploadImagen(req, res, tipo) {
@@ -21,7 +21,7 @@ async function uploadImagen(req, res, tipo) {
             id_imagen: newImagen.id,
         });
     } catch (error) {
-        handleValidationError(res, error, 'Error al subir imagen');
+        return handleValidationError(res, error, 'Error al subir imagen');
     }
 }
 
@@ -48,9 +48,7 @@ exports.subirHabitacionImagen = async (req, res) => {
 
         const habitacion = await Habitacion.findById(id_habitacion).session(session);
         if (!habitacion) {
-            return res.status(404).json({
-                error: 'Habitación no encontrada',
-            });
+            sendResponse(res, 404, 'Habitación no encontrada');
         }
 
         const newImagen = new Imagen({
@@ -74,22 +72,16 @@ exports.subirHabitacionImagen = async (req, res) => {
         );
 
         if (updateResult.modifiedCount === 0) {
-            return res.status(409).json({
-                error: 'Conflicto de versión, por favor intente de nuevo',
-            });
+            return sendResponse(res, 409, 'Conflicto de versión, por favor intente de nuevo')
         }
 
         await session.commitTransaction();
 
-        res.status(201).json({
-            mensaje: 'Imagen subida con éxito',
-            id_imagen: newImagen._id,
-        });
-
+        return sendResponse(res, 201, 'Imagen subida con éxito', { id_imagen: newImagen._id })
     } catch (error) {
         await session.abortTransaction();
 
-        handleValidationError(res, error, 'Error al subir imagen');
+        return handleValidationError(res, error, 'Error al subir imagen');
     } finally {
         session.endSession();
     }
@@ -103,14 +95,11 @@ exports.obtenerFotosHabitacion = async (req, res) => {
         const imagenes = await Imagen.find({ _id: { $in: fotos }, tipo: 'habitacion' }).select('image');
 
         if (imagenes.length === 0) {
-            return res.status(404).json({
-                error: 'No se encontraron imágenes con los IDs proporcionados',
-            });
+            return sendResponse(res, 404, 'No se encontraron imágenes con los IDs proporcionados')
         }
-
-        res.status(200).json(imagenes);
+        return sendResponse(res, 200, "Obtenido con exido", imagenes)
     } catch (error) {
-        handleValidationError(res, error, 'Error al obtener imágenes');
+        return handleValidationError(res, error, 'Error al obtener imágenes');
     }
 };
 
@@ -122,14 +111,12 @@ async function getImagenById(req, res, roles) {
         const imagen = await Imagen.findOne({ _id: id, tipo: { $in: roles } }).select('image');;
 
         if (!imagen) {
-            return res.status(404).json({
-                error: 'No se encontraron imágene con los ID proporcionado',
-            });
+            return sendResponse(res, 404, 'No se encontraron imágenes con los IDs proporcionados')
         }
 
-        res.status(200).json(imagen);
+        return sendResponse(res, 200, "Obtenido con exido", imagen)
     } catch (error) {
-        handleValidationError(res, error, 'Error al obtener imágen');
+        return handleValidationError(res, error, 'Error al obtener imágen');
     }
 };
 
@@ -150,7 +137,7 @@ async function deleteImagenById(req, res, roles) {
 
         const imagen = await Imagen.findById(id).select('_v');
         if (!imagen) {
-            return res.status(404).json({ error: 'Imagen no encontrada' });
+            return sendResponse(res, 404, 'Imagen no encontrada')
         }
         const _v = imagen.__v;
 
@@ -160,16 +147,13 @@ async function deleteImagenById(req, res, roles) {
         );
 
         if (result.n === 0) {
-            return res.status(404).json({ error: 'Conflicto de versión o imagen ya desactivada' });
+            return sendResponse(res, 404, 'Conflicto de versión o imagen ya desactivada')
         }
 
-        res.status(200).json({
-            mensaje: 'Reserva eliminada con éxito',
-        });
 
-        res.status(200).json(imagen);
+        return sendResponse(res, 200, 'Reserva eliminada con éxito')
     } catch (error) {
-        handleValidationError(res, error, 'Error al eliminar imagen');
+        return handleValidationError(res, error, 'Error al eliminar imagen');
     }
 };
 

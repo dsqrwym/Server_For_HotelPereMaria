@@ -5,6 +5,8 @@ const authAutenRouter = require('./routes/authAutenTokenRoutes.js');
 const reservaRouter = require('./routes/reservasRoutes.js');
 const imagenRouter = require('./routes/imagenRoutes.js');
 const habitacionesRouter = require('./routes/habitacionesRouter.js');
+const habitacion = require('./routes/habitacionRoutes.js');
+const userRouter = require('./routes/usuarioRouter.js');
 const compression = require('compression');
 const zlib= require("zlib");
 require('./config/database.js');
@@ -44,10 +46,10 @@ app.use('/api/auth', authAutenRouter);
 
 //Reservas
 app.use('/api/reservas', reservaRouter);
-
+app.use('/api/habitacion', habitacion);
+app.use('/api/user',userRouter);
 //Habitacion
 app.use('/api/habitaciones', habitacionesRouter);
-
 //Imagen
 app.use('/api/imagen', imagenRouter);
 

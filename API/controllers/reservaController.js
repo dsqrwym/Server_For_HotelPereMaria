@@ -1,10 +1,45 @@
 const Reserva = require('../models/reserva.js');
+const Habitacion = require('../models/habitacion.js');
 // Campos validos
 const allowedFields = Object.keys(Reserva.schema.obj);
-const { crearReservaSchema, queryAndPaginationSchema } = require('../utils/Joi/reservaJoi.js');
+const { crearReservaSchema, queryAndPaginationSchema, dateSchema } = require('../utils/Joi/reservaJoi.js');
 const { checkRelatedData, validateReserva } = require('../utils/reservaUtil.js');
 const { mongoIdSchema } = require('../utils/Joi/utilJoi.js');
-const { handleValidationError } = require('../utils/util.js');
+const { handleValidationError, sendResponse } = require('../utils/util.js');
+
+
+exports.getHabitacionesDisponibles = async (req, res) => {
+    try {
+        // 验证查询参数
+        const validatedQuery = await dateSchema.validateAsync(req.query);
+        const { fecha_entrada, fecha_salida } = validatedQuery;
+
+        // 格式化日期
+        const entrada = new Date(fecha_entrada);
+        const salida = new Date(fecha_salida);
+
+        // 查找所有房间
+        const habitaciones = await Habitacion.find({});
+
+        // 查找已被预订的房间
+        const habitacionesReservadas = await Reserva.find({
+            $or: [
+                { fecha_entrada: { $lte: salida }, fecha_salida: { $gte: entrada } },
+                { fecha_entrada: { $gte: entrada }, fecha_salida: { $lte: salida } }
+            ]
+        }).distinct('id_habitacion');  // 获取在此日期范围内已被预订的房间ID
+
+        // 筛选出没有被预订的房间
+        const habitacionesDisponibles = habitaciones.filter(habitacion => 
+            !habitacionesReservadas.includes(habitacion._id.toString())
+        );
+
+        // 返回空闲房间
+        return sendResponse(res, 200, 'Habitaciones disponibles obtenidas con éxito', habitacionesDisponibles);
+    } catch (error) {
+        return handleValidationError(res, error, 'Error al obtener las habitaciones disponibles');
+    }
+};
 
 // Crear una nueva reserva
 exports.createReserva = async (req, res) => {
@@ -30,9 +65,7 @@ exports.createReserva = async (req, res) => {
         // 调用 validateReserva 函数进行验证
         const validationError = await validateReserva(reservaData);
         if (validationError) {
-            return res.status(validationError.statusCode || 400).json({
-                error: validationError.message
-            });
+            return sendResponse(res, validationError.statusCode || 400, validationError.message);
         }
 
         const precio_total = reservaData.precio_total;
@@ -49,12 +82,9 @@ exports.createReserva = async (req, res) => {
         });
 
         await newReserva.save();
-        res.status(201).json({
-            mensaje: 'Reserva creada con éxito',
-            reserva: newReserva.toJSON(),
-        });
+        return sendResponse(res, 201, 'Reserva creada con éxito', newReserva.toJSON());
     } catch (error) {
-        handleValidationError(res, error, 'Error al crear la reserva');
+        return handleValidationError(res, error, 'Error al crear la reserva');
     }
 };
 
@@ -127,9 +157,9 @@ exports.getReservas = async (req, res) => {
             }
         }
 
-        res.status(200).json(response);
+        return sendResponse(res, 200, 'Reservas obtenidas con éxito', response);
     } catch (error) {
-        handleValidationError(res, error, 'Error al obtener las reservas');
+        return handleValidationError(res, error, 'Error al obtener las reservas');
     }
 };
 
@@ -167,12 +197,12 @@ exports.getReservaById = async (req, res) => {
         const reserva = await query.exec();
 
         if (!reserva || reserva.desactivado) {
-            return res.status(404).json({ error: 'Reserva no encontrada o desactivada' });
+            return sendResponse(res, 404, 'Reserva no encontrada o desactivada');
         }
 
-        res.status(200).json(reserva);
+        return sendResponse(res, 200, 'Reserva obtenida con éxito', reserva);
     } catch (error) {
-        handleValidationError(res, error, 'Error al obtener la reserva');
+        return handleValidationError(res, error, 'Error al obtener la reserva');
     }
 };
 
@@ -187,7 +217,7 @@ exports.updateReserva = async (req, res) => {
 
         const reserva = await Reserva.findById(id);
         if (!reserva) {
-            return res.status(404).json({ error: 'Reserva no encontrada' });
+            return sendResponse(res, 404, 'Reserva no encontrada o desactivada');
         }
         const _v = reserva.__v;
         const updates = req.body;
@@ -202,7 +232,7 @@ exports.updateReserva = async (req, res) => {
         }, {});
 
         if (Object.keys(filteredUpdates).length === 0) {
-            return res.status(400).json({ error: 'No se encontraron campos válidos para actualizar' });
+            return sendResponse(res, 400, 'No se encontraron campos válidos para actualizar')
         }
 
         const reservaData = {
@@ -213,9 +243,7 @@ exports.updateReserva = async (req, res) => {
 
         const validationError = await validateReserva(reservaData);
         if (validationError) {
-            return res.status(validationError.statusCode || 400).json({
-                error: validationError.message
-            });
+            return sendResponse(res, validationError.statusCode || 400, validationError.message);
         }
 
         // Agregar modUser para seguimiento del usuario que realiza la actualización
@@ -229,19 +257,14 @@ exports.updateReserva = async (req, res) => {
         );
 
         if (result.n === 0) {
-            return res.status(409).json({
-                error: 'Conflicto de versión, por favor intente de nuevo',
-                currentVersion: _v
-            });
+            return sendResponse(res, 404, 'Reserva no encontrada o no se realizaron cambios');
         }
 
         await session.commitTransaction();
-        res.status(200).json({
-            mensaje: 'Reserva actualizada con éxito',
-        });
+        return sendResponse(res, 200, 'Reserva actualizada con éxito');
     } catch (error) {
         await session.abortTransaction();
-        handleValidationError(res, error, 'Error al actualizar la reserva');
+        return handleValidationError(res, error, 'Error al actualizar la reserva');
     } finally {
         session.endSession();
     }
@@ -256,7 +279,7 @@ exports.deleteReserva = async (req, res) => {
 
         const reserva = await Reserva.findById(id).select('_v');
         if (!reserva) {
-            return res.status(404).json({ error: 'Reserva no encontrada' });
+            return sendResponse(res, 404, 'Reserva no encontrada');
         }
         const _v = reserva.__v;
 
@@ -266,16 +289,86 @@ exports.deleteReserva = async (req, res) => {
         );
 
         if (result.n === 0) {
-            return res.status(404).json({ error: 'Reserva no encontrada o no se realizaron cambios' });
+            return sendResponse(res, 404, 'Reserva no encontrada o no se realizaron cambios');
         }
 
-        res.status(200).json({
-            mensaje: 'Reserva eliminada con éxito',
-        });
+        return sendResponse(res, 200, 'Reserva eliminada con éxito');
     } catch (error) {
-        res.status(500).json({
-            error: 'Error al eliminar la reserva',
-            detalles: error.message,
+        return sendResponse(res, 500, 'Error al eliminar la reserva', null, error.message);
+    }
+};
+
+// Eliminar (desactivar) su reserva
+exports.deleteSelfReserva = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const usuarioId = req.user._id.toString(); // 确保是字符串
+
+        await mongoIdSchema.validateAsync({ id });
+
+        // 查找预约
+        const reserva = await Reserva.findById(id).select('id_usuario __v desactivado');
+        if (!reserva) {
+            return sendResponse(res, 404, 'Reserva no encontrada');
+        }
+
+        if (reserva.id_usuario.toString() !== usuarioId) {
+            return sendResponse(res, 403, 'No tienes permiso para cancelar esta reserva');
+        }
+
+        if (reserva.desactivado) {
+            return sendResponse(res, 400, 'Esta reserva ya ha sido cancelada');
+        }
+
+        const _v = reserva.__v;
+
+        const result = await Reserva.updateOne(
+            { _id: id, __v: _v, desactivado: false },
+            { $set: { desactivado: true, modUser: usuarioId, offTime: new Date() }, $inc: { __v: 1 } }
+        );
+
+        if (result.modifiedCount === 0) {
+            return sendResponse(res, 404, 'Reserva no encontrada o no se realizaron cambios');
+        }
+
+        return sendResponse(res, 200, 'Reserva eliminada con éxito');
+
+    } catch (error) {
+        return sendResponse(res, 500, 'Error al eliminar la reserva', null, error.message);
+    }
+};
+
+// 获取房间已被预约的所有日期，排除特定的预约日期
+exports.getReservedDaysForRoom = async (req, res) => {
+    try {
+        const { id_habitacion, id } = req.query;
+
+        // 验证房间ID是否有效
+        await mongoIdSchema.validateAsync({ id: id_habitacion });
+
+        await mongoIdSchema.validateAsync({ id });
+
+        const reservas = await Reserva.find({
+            id_habitacion,
+            desactivado: false,
+            _id: { $ne: id } // 排除指定的 reservaId
+        });;
+
+
+        let reservedDates = [];
+
+        reservas.forEach(reserva => {
+            const startDate = new Date(reserva.fecha_entrada);
+            const endDate = new Date(reserva.fecha_salida);
+            reservedDates.push({
+                fecha_entrada: startDate.toISOString().split('T')[0],
+                fecha_salida: endDate.toISOString().split('T')[0]
+            });
         });
+
+        return sendResponse(res, 200, 'Obtenido fecha con exito', { reservedDates });
+
+    } catch (error) {
+        return handleValidationError(res, error, 'Fallado al tener fecha');
     }
 };

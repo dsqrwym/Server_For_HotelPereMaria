@@ -13,7 +13,7 @@ const habitacionSchema = new mongoose.Schema({
 });
 
 // Crear el modelo basado en el esquema
-const Habitacion = mongoose.model('Habitacion', habitacionSchema);
+const Habitacion = mongoose.model('Habitacion', habitacionSchema, 'habitaciones');
 
 // Exportar el modelo para poder utilizarlo en otras partes de la aplicación
 module.exports = Habitacion;

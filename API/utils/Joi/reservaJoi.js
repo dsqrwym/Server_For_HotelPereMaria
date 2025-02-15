@@ -52,6 +52,17 @@ const crearReservaSchema = Joi.object({
 });
 
 
+const dateSchema = Joi.object({
+    fecha_entrada: Joi.date().iso().messages({
+        'date.base': 'Fecha de entrada debe ser una fecha válida',
+        'date.format': 'Fecha de entrada debe estar en formato ISO 8601.',
+    }).required(),
+    fecha_salida: Joi.date().iso().messages({
+        'date.base': 'Fecha de salida debe ser una fecha válida',
+        'date.format': 'Fecha de salida debe estar en formato ISO 8601.',
+    }).required(),
+});
+
 // Obtener todas las reservas activas con soporte para campos específicos
 // 获取所有活跃的预订，支持指定字段
 const queryAndPaginationSchema = Joi.object({
@@ -151,5 +162,6 @@ const queryAndPaginationSchema = Joi.object({
 
 module.exports = {
     crearReservaSchema,
-    queryAndPaginationSchema
+    queryAndPaginationSchema,
+    dateSchema
 }

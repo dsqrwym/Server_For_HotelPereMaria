@@ -64,7 +64,10 @@ async function checkHabitacionExists(reservaData) {
 // 验证 extras 是否有效
 async function validateExtras(reservaData, habitacion) {
     if (reservaData.extrasSeleccionados) {
-        const habitacionExtrasNombres = habitacion.extras.map(extra => extra.nombre);
+        // 从 Map 提取 extra 名称
+        const habitacionExtrasNombres = Array.from(habitacion.Extras.keys());
+
+        // 过滤出无效的 extras
         const invalidExtras = reservaData.extrasSeleccionados.filter(
             extra => !habitacionExtrasNombres.includes(extra.nombre)
         );
@@ -77,7 +80,6 @@ async function validateExtras(reservaData, habitacion) {
         }
     }
     return null;
-
 }
 
 // 验证人数是否超出房间容量
