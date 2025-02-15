@@ -62,7 +62,7 @@ fun Slider(field: String, maxim: Float, onValueChange: (Float) -> Unit) {
                     state = it
                 },
                 valueRange = 1f..maxim,
-                steps = maxim.toInt() - 2,
+                steps = maxim.toInt() - 1,
                 modifier = Modifier.weight(3.2f),
                 colors = SliderDefaults.colors().copy(thumbColor = colorResource(R.color.btnPrin), activeTrackColor = colorResource(R.color.fondo))
             )

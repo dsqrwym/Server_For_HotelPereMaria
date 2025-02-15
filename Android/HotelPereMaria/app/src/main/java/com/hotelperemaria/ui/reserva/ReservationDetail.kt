@@ -22,12 +22,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.hotelperemaria.R
-import com.hotelperemaria.data.model.Reserva
+import com.hotelperemaria.data.model.ReservaForList
 import com.hotelperemaria.data.model.ReservaEstado
 import com.hotelperemaria.ui.reserva.components.formatInstant
 
 @Composable
-fun ReservationDetail(reserva: Reserva, onDismiss: () -> Unit) {
+fun ReservationDetail(reservaForList: ReservaForList, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(text = stringResource(R.string.reservation_details_title)) },
@@ -38,33 +38,33 @@ fun ReservationDetail(reserva: Reserva, onDismiss: () -> Unit) {
                     .verticalScroll(rememberScrollState())) {
                 InfoRow(
                     label = stringResource(R.string.room_field_type_room),
-                    value = reserva.tipo_habitacion
+                    value = reservaForList.tipo_habitacion.uppercase()
                 )
                 HorizontalDivider()
                 // 日期范围
                 InfoRow(
                     label = stringResource(R.string.reservation_field_date),
-                    value = "${formatInstant(reserva.fecha_entrada)}\n~\n${formatInstant(reserva.fecha_salida)}"
+                    value = "${formatInstant(reservaForList.fecha_entrada)}\n~\n${formatInstant(reservaForList.fecha_salida)}"
                 )
                 HorizontalDivider()
                 // 入住人数
                 InfoRow(
                     label = stringResource(R.string.reservation_field_guests),
-                    value = reserva.huespedes.toString()
+                    value = reservaForList.huespedes.toString()
                 )
                 HorizontalDivider()
                 // 总价
                 InfoRow(
                     label = stringResource(R.string.reservation_field_price),
-                    value = "${reserva.precio_total}€"
+                    value = "${reservaForList.precio_total}€"
                 )
 
                 // 附加服务
-                if (reserva.extrasSeleccionados.isNotEmpty()) {
+                if (reservaForList.extrasSeleccionados.isNotEmpty()) {
                     HorizontalDivider()
                     InfoRow(
                         label = stringResource(R.string.reservation_field_additional_services),
-                        value = reserva.extrasSeleccionados
+                        value = reservaForList.extrasSeleccionados
                             .joinToString(",\n") { "${it.nombre} (+${it.precio}€)" }
 
                     )
@@ -73,7 +73,7 @@ fun ReservationDetail(reserva: Reserva, onDismiss: () -> Unit) {
                 // 状态
                 InfoRow(
                     label = stringResource(R.string.reservation_field_state),
-                    value = when (reserva.estado) {
+                    value = when (reservaForList.estado) {
                         ReservaEstado.ACTIVA -> stringResource(R.string.reservation_field_state_activated)
                         ReservaEstado.COMPLETADA -> stringResource(R.string.reservation_field_state_completed)
                     }

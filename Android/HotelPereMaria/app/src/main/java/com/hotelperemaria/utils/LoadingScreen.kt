@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.hotelperemaria.R
 import kotlinx.coroutines.delay
 
@@ -36,7 +37,7 @@ fun LoadingScreen(isLoading: Boolean) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background.copy(alpha = 0.6f)), // 半透明背景
+                .background(MaterialTheme.colorScheme.background.copy(alpha = 0.6f)).zIndex(10f), // 半透明背景
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {

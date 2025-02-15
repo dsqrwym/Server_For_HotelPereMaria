@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin.Companion.kotlinNodeJsExtension
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -67,16 +65,18 @@ dependencies {
     implementation(libs.androidx.material3)
 
     implementation(libs.hilt.android)
-    implementation(libs.androidx.runtime.livedata) //implementation of hilt
+    implementation(libs.androidx.runtime.livedata)//imlementacion de livedata
+    implementation(libs.androidx.security.crypto.ktx)// implementation of security
     kapt(libs.hilt.android.compiler) //implementation of hilt
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")//implementation of hilt-navigation
+    implementation(libs.androidx.hilt.navigation.compose)//implementation of hilt-navigation
     implementation(libs.androidx.navigation.compose) //navgation
     implementation(libs.androidx.lifecycle.viewmodel.compose) //viewmodel
     implementation(libs.coil.compose) //implementation of coil
     implementation(libs.coil.network.okhttp) //implementation of coil network
     implementation(libs.retrofit) //implementation of retrofit
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation(libs.converter.gson)//implementation of retrofit gson
+    implementation(libs.retrofit2.kotlinx.serialization.converter)
+    implementation(libs.kotlinx.serialization.json)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -9,6 +9,7 @@
 
     <string name="top_bar_reservation">Reservación</string>
     <string name="top_bar_reservation_list">Lista de Reservaciones</string>
+    <string name="top_bar_reservation_modify">Modificar Reservación</string>
 
     <string name="alert_dialog_error_title_missing_data">Datos incompletos</string>
     <string name="alert_dialog_error_message_missing_data">Por favor, complete todos los campos requeridos.</string>
@@ -21,7 +22,7 @@
 
     <string name="room_field_type_room">Tipo de habitacion</string>
 
-    <string name="reservation_details_title">Detalle de la reserva</string>
+    <string name="reservation_details_title">Detalle de la reservaForList</string>
     <string name="reservation_field_state">Estado</string>
     <string name="reservation_field_state_activated">Activado</string>
     <string name="reservation_field_state_completed">Completado</string>
@@ -36,7 +37,12 @@
     <string name="reservation_field_additional_services_checked">Seleccionado</string>
     <string name="reservation_field_additional_services_unchecked">No seleccionado</string>
     <string name="reservation_button_confirm">Confirmar</string>
+    <string name="reservation_button_modify">Modificar</string>
+    <string name="reservation_cancel_message">¿Estás seguro de que deseas cancelar la reservaForList? \n Esta acción no se puede deshacer.</string>
+    <string name="reservation_cancel_title">Confirmar cancelación</string>
 
+    <string name="reservation_no_result">No tienes reservas</string>"
+    <string name="reservation_no_filter_result">No hay resultado para los filtros seleccionados</string>"
     <string name="reservation_filter_more">Más filtros</string>
     <string name="reservation_filter_hide">Ocultar filtros</string>
     <string name="reservation_filter_range_price">Rango de precios</string>">

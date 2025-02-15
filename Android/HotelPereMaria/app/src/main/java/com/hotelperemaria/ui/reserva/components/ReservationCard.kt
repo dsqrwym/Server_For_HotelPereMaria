@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -43,9 +44,10 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.hotelperemaria.R
 import com.hotelperemaria.data.model.ExtraService
-import com.hotelperemaria.data.model.Reserva
+import com.hotelperemaria.data.model.ReservaForList
 import com.hotelperemaria.data.model.ReservaEstado
 import com.hotelperemaria.ui.reserva.ReservationDetail
+import com.hotelperemaria.utils.ConfirmationDialog
 import com.hotelperemaria.utils.DateUtils
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
@@ -54,15 +56,16 @@ import kotlin.math.roundToInt
 
 @Composable
 fun ReservaCard(
-    reserva: Reserva,
-    onEdit: (Reserva) -> Unit,
-    onCancel: (Reserva) -> Unit
+    reservaForList: ReservaForList,
+    onEdit: (ReservaForList) -> Unit,
+    onCancel: (ReservaForList) -> Unit
 ) {
     val maxOffset = -390f // 允许滑动的最大偏移量（负数，向左滑）
     val coroutineScope = rememberCoroutineScope()
     val offsetX = remember { Animatable(0f) } // 记录当前卡片偏移量
     var isDragging by remember { mutableStateOf(false) } // 记录是否在滑动
     var showDialog by remember { mutableStateOf(false) } // 是否显示详情对话框
+    var showCancelDialog by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -105,7 +108,7 @@ fun ReservaCard(
                             }
                         },
                         onHorizontalDrag = { _, dragAmount ->
-                            if (reserva.estado == ReservaEstado.ACTIVA) {
+                            if (reservaForList.estado == ReservaEstado.ACTIVA) {
                                 coroutineScope.launch {
                                     // 计算滑动后的位置，并确保它在 [-maxOffset, 0] 范围内
                                     offsetX.snapTo(
@@ -141,16 +144,16 @@ fun ReservaCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = reserva.tipo_habitacion,
+                        text = reservaForList.tipo_habitacion.uppercase(),
                         style = MaterialTheme.typography.titleMedium
                     )
                     Text(
                         text = "${stringResource(R.string.reservation_field_date)}: ${
                             formatInstant(
-                                reserva.fecha_entrada
+                                reservaForList.fecha_entrada
                             )
                         } - ${
-                            formatInstant(reserva.fecha_salida)
+                            formatInstant(reservaForList.fecha_salida)
                         }",
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -164,20 +167,20 @@ fun ReservaCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "${stringResource(R.string.reservation_field_price)}: ${reserva.precio_total}€",
+                        text = "${stringResource(R.string.reservation_field_price)}: ${reservaForList.precio_total}€",
                         style = MaterialTheme.typography.bodyLarge
                     )
                     Text(
-                        text = "${stringResource(R.string.reservation_field_state)}: " + if (reserva.estado == ReservaEstado.ACTIVA) stringResource(
+                        text = "${stringResource(R.string.reservation_field_state)}: " + if (reservaForList.estado == ReservaEstado.ACTIVA) stringResource(
                             R.string.reservation_field_state_activated
                         ) else stringResource(R.string.reservation_field_state_completed),
-                        color = if (reserva.estado == ReservaEstado.ACTIVA) Color.Blue else Color.Gray
+                        color = if (reservaForList.estado == ReservaEstado.ACTIVA) Color.Blue else Color.Gray
                     )
                 }
 
             }
         }
-        if (reserva.estado == ReservaEstado.ACTIVA) {
+        if (reservaForList.estado == ReservaEstado.ACTIVA) {
             Row(
                 modifier = Modifier
                     .align(Alignment.CenterEnd) // 让按钮靠右对齐
@@ -189,7 +192,7 @@ fun ReservaCard(
                     } // ✅ 使用 lambda 版本，按钮随滑动变化
             ) {
                 IconButton(
-                    onClick = { onEdit(reserva) }
+                    onClick = { onEdit(reservaForList) }
                 ) {
                     Icon(Icons.Filled.Edit, "Edit", tint = MaterialTheme.colorScheme.primary)
                 }
@@ -197,8 +200,7 @@ fun ReservaCard(
                 Spacer(Modifier.width(8.dp))
                 IconButton(
                     onClick = {
-
-                        onCancel(reserva)
+                        showCancelDialog = true
                     }
                 ) {
                     Icon(Icons.Filled.Clear, "Cancel", tint = MaterialTheme.colorScheme.error)
@@ -208,10 +210,26 @@ fun ReservaCard(
         }
     }
     if (showDialog) {
-        ReservationDetail(reserva) {
+        ReservationDetail(reservaForList) {
             showDialog = false
         }
     }
+
+    ConfirmationDialog(
+        showDialog = showCancelDialog,
+        title = stringResource(R.string.reservation_cancel_title),
+        message = stringResource(R.string.reservation_cancel_message),
+        icon = Icons.Default.Info,
+        icontTnt = MaterialTheme.colorScheme.error,
+        confirmText = stringResource(R.string.reservation_button_confirm),
+        cancelText = stringResource(R.string.dialog_cancel),
+        confirmButtonColor = MaterialTheme.colorScheme.error,  // 红色强调操作危险性
+        onDismiss = { showCancelDialog = false },
+        onConfirm = {
+            onCancel(reservaForList)
+        }
+    )
+
 }
 
 
@@ -221,14 +239,14 @@ fun formatInstant(instant: Instant): String {
     return DateUtils.convertMillisToLocalDate(instant.toEpochMilli())
 }
 
-
+/*
 // 预览 - 预订激活状态
 @Preview(showBackground = true)
 @Composable
 fun ReservaCardPreviewActiveCancel() {
     MaterialTheme {
         ReservaCard(
-            reserva = Reserva(
+            reservaForList = ReservaForList(
                 id = "1",
                 id_habitacion = "203",
                 fecha_entrada = Instant.now().minusSeconds(86400),
@@ -252,7 +270,7 @@ fun ReservaCardPreviewActiveCancel() {
 fun ReservaCardPreviewActive() {
     MaterialTheme {
         ReservaCard(
-            reserva = Reserva(
+            reservaForList = ReservaForList(
                 id = "1",
                 id_habitacion = "203",
                 fecha_entrada = Instant.now().plusSeconds(86400), // 明天
@@ -276,7 +294,7 @@ fun ReservaCardPreviewActive() {
 fun ReservaCardPreviewCompleted() {
     MaterialTheme {
         ReservaCard(
-            reserva = Reserva(
+            reservaForList = ReservaForList(
                 id = "2",
                 id_habitacion = "305",
                 fecha_entrada = Instant.now().minusSeconds(259200), // 3天前
@@ -290,3 +308,4 @@ fun ReservaCardPreviewCompleted() {
         )
     }
 }
+*/

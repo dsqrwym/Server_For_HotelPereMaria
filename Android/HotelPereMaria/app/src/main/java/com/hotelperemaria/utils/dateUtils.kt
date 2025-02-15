@@ -40,6 +40,7 @@ object DateUtils {
 
     // 转换 ISO 8601 日期字符串为毫秒
     fun convertISO8601ToMillis(dateString: String, timeZone: TimeZone = TimeZone.getTimeZone("UTC")): Long? {
+        if (dateString.isBlank()) return null
         return parseDate(dateString, getISO8601Format(timeZone))
     }
 

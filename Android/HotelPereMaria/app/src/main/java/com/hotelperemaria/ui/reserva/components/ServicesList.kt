@@ -33,6 +33,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -55,10 +57,18 @@ import java.math.BigDecimal
 
 @Composable
 fun ServicesList(reservaViewModel: ReservaViewModel) {
-    val sortedServices = reservaViewModel.extraServices.sortedWith(
-        compareByDescending<ExtraService> { reservaViewModel.selectedServices.contains(it) } // 先按是否选中排序（已选在前）
-            .thenBy { it.nombre } // 然后按名字排序（升序）
-    )
+    val extraServices by reservaViewModel.extraServices.collectAsState()
+    val selectedServices by reservaViewModel.selectedServices.collectAsState()
+    val totalPrice by reservaViewModel.totalPrice.collectAsState(initial = BigDecimal.ZERO)
+
+    val sortedServices by remember(extraServices, selectedServices) {
+        derivedStateOf {
+            extraServices.sortedWith(
+                compareByDescending<ExtraService> { selectedServices.contains(it) }
+                    .thenBy { it.nombre }
+            )
+        }
+    }
     Column(
         Modifier
             .fillMaxWidth()
@@ -93,7 +103,7 @@ fun ServicesList(reservaViewModel: ReservaViewModel) {
                     if (index == 0){
                         Spacer(modifier = Modifier.height(15.dp))
                     }
-                    val isChecked = reservaViewModel.selectedServices.contains(service)
+                    val isChecked = selectedServices.contains(service)
                     ServiceItem(
                         extraService = service,
                         isChecked = isChecked,
@@ -120,7 +130,7 @@ fun ServicesList(reservaViewModel: ReservaViewModel) {
         )
         // 最后一行：总价格
         Text(
-            text = "${stringResource(R.string.reservation_field_total_price)}: ${reservaViewModel.totalPrice}€",
+            text = "${stringResource(R.string.reservation_field_total_price)}: ${totalPrice}€",
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary

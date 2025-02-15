@@ -14,9 +14,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -31,12 +34,13 @@ import java.util.Calendar
 @Composable
 fun DatePicker(viewModel: ReservaViewModel = hiltViewModel()) {
     // 使用 derivedStateOf 优化状态监听，只有关键状态变化时才重组
-    val showDatePicker by remember { derivedStateOf { viewModel.showDatePicker.value } }
+    var showDatePicker by remember { mutableStateOf(false) }
 
     // 使用 remember 缓存转换结果，避免每次重组都重新计算
-    val unselectableDates = remember(viewModel.unselectableDates.value) {
-        viewModel.unselectableDates.value?.mapNotNull { (first, second) ->
-            if (first != null && second != null) Pair(first, second) else null
+    val unselectableDates by viewModel.unselectableDates.collectAsState()
+    val processedUnselectableDates = remember(unselectableDates) {
+        unselectableDates?.mapNotNull { (start, end) ->
+            if (start != null && end != null) start..end else null
         }?.toSet() ?: emptySet()
     }
 
@@ -53,44 +57,19 @@ fun DatePicker(viewModel: ReservaViewModel = hiltViewModel()) {
             )
     ) {
         // 使用 remember 缓存日期字符串，避免重复格式化
-        val startDate = remember(viewModel.startDate.value) { viewModel.startDate.value }
-        val endDate = remember(viewModel.endDate.value) { viewModel.endDate.value }
+        val startDate = viewModel.startDate.collectAsState()
+        val endDate = viewModel.endDate.collectAsState()
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { viewModel.showDatePicker.value = true }
+                .clickable { showDatePicker = true }
                 .padding(18.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column {
-                // Fecha inicial
-                Text(
-                    text = stringResource(R.string.reservation_field_start_date),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Text(
-                    text = startDate,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-            }
-
-            Column {
-                // Fecha final
-                Text(
-                    text = stringResource(R.string.reservation_field_end_date),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Text(
-                    text = endDate,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-            }
+            DateInfoColumn(R.string.reservation_field_start_date, startDate.value)
+            DateInfoColumn(R.string.reservation_field_end_date, endDate.value)
         }
 
         // 弹出 DateRangePicker 对话框
@@ -99,11 +78,27 @@ fun DatePicker(viewModel: ReservaViewModel = hiltViewModel()) {
             DateRangePickerModal(
                 onDateRangeSelected = { range ->
                     viewModel.updateDateRange(range.first, range.second)
-                    viewModel.toggleDatePicker(false)
+                    showDatePicker = false
                 },
-                unselectableDates = unselectableDates,
-            ){ viewModel.toggleDatePicker(false) }
+                unselectableDates = processedUnselectableDates,
+            ){ showDatePicker = false }
         }
+    }
+}
+
+@Composable
+private fun DateInfoColumn(labelRes: Int, date: String) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceAround) {
+        Text(
+            text = stringResource(labelRes),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        Text(
+            text = date,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface
+        )
     }
 }
 
@@ -111,14 +106,14 @@ fun DatePicker(viewModel: ReservaViewModel = hiltViewModel()) {
 @Composable
 fun DateRangePickerModal(
     onDateRangeSelected: (Pair<Long?, Long?>) -> Unit,
-    unselectableDates: Set<Pair<Long, Long>>,
+    unselectableDates: Set<ClosedRange<Long>>,
     noDateBeforeTaday: Boolean = true,
     dateInput: Boolean = false,
     onDismiss: () -> Unit
 ) {
     // 缓存日期区间预处理结果
     val dateRanges = remember(unselectableDates) {
-        unselectableDates.map { it.first..it.second }.sortedBy { it.first }
+        unselectableDates.sortedBy { it.start }
     }
 
     val pickerState = androidx.compose.material3.rememberDateRangePickerState(
@@ -211,10 +206,4 @@ fun getStartOfToday(): Long {
     calendar.set(Calendar.SECOND, 0)
     calendar.set(Calendar.MILLISECOND, 0)
     return calendar.timeInMillis
-}
-
-@Preview
-@Composable
-fun DatePickerPreview() {
-    DatePicker(viewModel = ReservaViewModel())
 }

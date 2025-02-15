@@ -10,18 +10,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -32,14 +34,27 @@ import com.hotelperemaria.ui.reserva.components.ReservationButton
 import com.hotelperemaria.ui.reserva.components.ServicesList
 import com.hotelperemaria.ui.reserva.components.Slider
 import com.hotelperemaria.ui.reserva.components.TopBar
+import com.hotelperemaria.utils.ConfirmationDialog
 import com.hotelperemaria.utils.LoadingScreen
 
 @Composable
 fun ReservationScreen(reservaViewModel : ReservaViewModel = hiltViewModel()) {
-    if (reservaViewModel.showErrorDialog) {
+    val isLoading = reservaViewModel.isLoading.collectAsState()
+    val errorMessage by reservaViewModel.errorMessage.collectAsState()
+    var showErrorDialog by remember { mutableStateOf(false) }
+
+    // 当 errorMessage 变化时更新对话框状态
+    LaunchedEffect(errorMessage) {
+        showErrorDialog = errorMessage.isNotEmpty()
+    }
+
+    if (showErrorDialog) {
         ErrorDialog(
-            message = reservaViewModel.errorMessage,
-            onDismiss = { reservaViewModel.showErrorDialog = false }
+            message = errorMessage,
+            onDismiss = {
+                showErrorDialog = false
+                reservaViewModel.clearErrorMessage()
+            }
         )
     }
     Column(
@@ -55,14 +70,14 @@ fun ReservationScreen(reservaViewModel : ReservaViewModel = hiltViewModel()) {
         RoomInfoCard("Informacion de la habitacion")
         DatePicker(reservaViewModel)
         Slider("${stringResource(R.string.reservation_field_guests)}: ", reservaViewModel.maxHuesped) {
-            reservaViewModel.huespedSelected = it
+            reservaViewModel.updateHuespedSelected(it)
         }
         ServicesList(reservaViewModel)
         ReservationButton(stringResource(R.string.reservation_button_confirm)) {
             reservaViewModel.confirmReservation()
         }
     }
-    LoadingScreen(isLoading = reservaViewModel.isLoading)
+    LoadingScreen(isLoading = isLoading.value)
 }
 
 @Composable
@@ -95,19 +110,22 @@ fun RoomInfoCard(info: String) {
 fun ErrorDialog(
     message: String,
     onDismiss: () -> Unit
-){
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        icon = { Icon(Icons.Default.Warning, "Error", tint = MaterialTheme.colorScheme.error) },
-        title = { Text(stringResource(R.string.alert_dialog_error_title_missing_data), color = MaterialTheme.colorScheme.error) },
-        text = { Text(message, Modifier.fillMaxWidth() ,color = MaterialTheme.colorScheme.onSurface, textAlign = TextAlign.Center) },
-        confirmButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.dialog_confirm), color = MaterialTheme.colorScheme.primary)
-            }
-        }
+) {
+    ConfirmationDialog(
+        showDialog = true,
+        title = stringResource(R.string.alert_dialog_error_title_missing_data),
+        message = message,
+        icon = Icons.Default.Warning,
+        icontTnt = MaterialTheme.colorScheme.error,
+        confirmText = stringResource(R.string.dialog_confirm),
+        confirmButtonColor = MaterialTheme.colorScheme.primary,
+        cancelButtonColor = MaterialTheme.colorScheme.onSurface,
+        showCancelButton = false, // 只显示确认按钮
+        onDismiss = onDismiss,
+        onConfirm = onDismiss // 确认按钮和关闭操作相同
     )
 }
+
 @Preview
 @Composable
 fun ReservationScreenPreview() {

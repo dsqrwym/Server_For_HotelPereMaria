@@ -24,33 +24,49 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hotelperemaria.R
 import com.hotelperemaria.ui.reserva.CompositeFilterState
-import com.hotelperemaria.ui.reserva.FilterReservaViewModel
+import com.hotelperemaria.ui.reserva.ReservationListViewModel
 import com.hotelperemaria.ui.reserva.components.DateRangePickerModal
 
 
 @Composable
 fun FilterBar(
     modifier: Modifier = Modifier,
-    viewModel: FilterReservaViewModel
+    viewModel: ReservationListViewModel,
+    expanded: Boolean,
+    toggleExpandState:() -> Unit
 ) {
     val state by viewModel.state.collectAsState()
     val compositeState = state as? CompositeFilterState ?: return
 
-    var expanded by remember { mutableStateOf(false) }
     Column(
-        modifier = Modifier
+        modifier = modifier
+            .drawBehind {
+                // 只在底部绘制阴影
+                val shadowColor = Color.Black.copy(alpha = 0.2f) // 设置阴影颜色
+
+                // 绘制阴影
+                drawRoundRect(
+                    color = shadowColor,
+                    size = size.copy(width = size.width, height = size.height-130), // 增加高度以适应阴影
+                    topLeft = Offset(0f, 0f), // 只在下方绘制
+                    cornerRadius = CornerRadius(35f, 15f),
+                )
+            }
             .background(Color.Transparent)
     ) {
         Column(
             modifier = Modifier
-                .shadow(elevation = 8.dp, shape = RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp))
+                .shadow(elevation = 0.5.dp, shape = RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp))
                 .background(
                     MaterialTheme.colorScheme.secondaryContainer,
                     RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp)
@@ -107,7 +123,7 @@ fun FilterBar(
                     color = MaterialTheme.colorScheme.primary
                 )
                 IconButton(
-                    onClick = { expanded = !expanded }
+                    onClick = toggleExpandState
                 ) {
                     Icon(
                         if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
@@ -217,10 +233,12 @@ fun FilterBar(
 
 
 
-
+/*
 @Preview(showBackground = true)
 @Composable
 fun PreviewFilterBar() {
+    var expandedFilter by remember { mutableStateOf(false) }
     // 由于 ReservaViewModel 需要传递，我们可以创建一个 Mock 版本来测试
-    FilterBar(viewModel = FilterReservaViewModel())
+    FilterBar(expanded = expandedFilter, toggleExpandState = { expandedFilter=!expandedFilter}, viewModel = ReservationListViewModel())
 }
+ */

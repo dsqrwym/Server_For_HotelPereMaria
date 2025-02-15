@@ -9,6 +9,7 @@ import androidx.compose.material3.RangeSlider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -22,9 +23,11 @@ fun PriceFilter(
     fullRange: ClosedFloatingPointRange<Float>,
     onValueChange: (ClosedFloatingPointRange<Float>) -> Unit
 ) {
-
-    val stepSize = 0.5f
-    val totalSteps = ((fullRange.endInclusive - fullRange.start) / stepSize).toInt() - 1
+    val ( totalSteps) = remember(fullRange) {
+        val stepSize = 0.1f
+        val totalSteps = ((fullRange.endInclusive - fullRange.start) / stepSize).toInt() - 1
+        stepSize to totalSteps
+    }
 
     Column(
         modifier = modifier
@@ -48,7 +51,7 @@ fun PriceFilter(
             value = currentRange,
             onValueChange = onValueChange,
             valueRange = fullRange,
-            steps = totalSteps,
+            steps = totalSteps.toInt(),
             modifier = Modifier.padding(vertical = 5.dp),
             colors = SliderDefaults.colors().copy(thumbColor = colorResource(R.color.btnPrin), activeTrackColor = colorResource(R.color.fondo))
         )
