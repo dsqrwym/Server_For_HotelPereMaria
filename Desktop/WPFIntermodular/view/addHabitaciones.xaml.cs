@@ -49,24 +49,28 @@ namespace WPFIntermodular.view
                 titulo.Content = "Crear";
 
             }
+
             this.DataContext = new addHabsViewModel(h, editar);
 
            
            
         }
 
-        
 
-        private void btnFinal_Click(object sender, RoutedEventArgs e)
+
+        private async void btnFinal_Click(object sender, RoutedEventArgs e)
         {
             if (this.DataContext is addHabsViewModel vm)
             {
+                if (vm.GuardarHabitacionCommand != null)
+                {
 
-                this.Close();
-                vm.CerrarVentana();
+                    vm.RequestClose += () => this.Close();
+
+                }
+
+
             }
-
-            
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

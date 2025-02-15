@@ -32,6 +32,141 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
         private byte[] _imageBytes;
         private string imageb64;
 
+
+        private bool _wifi;
+        private bool _miniBar;
+        private bool _spa;
+        private bool _gimnasio;
+        private bool _pensionCompleta;
+
+        public bool Wifi
+        {
+            get => _wifi;
+            set
+            {
+                _wifi = value;
+                OnPropertyChanged(nameof(Wifi));
+                ExtrasSeleccionados("WIFI");
+            }
+        }
+
+        public bool MiniBar
+        {
+            get => _miniBar;
+            set
+            {
+                _miniBar = value;
+                OnPropertyChanged(nameof(MiniBar));
+                ExtrasSeleccionados("MINIBAR");
+            }
+        }
+
+        public bool Spa
+        {
+            get => _spa;
+            set
+            {
+                _spa = value;
+                OnPropertyChanged(nameof(Spa));
+                ExtrasSeleccionados("SPA");
+
+            }
+        }
+
+        public bool Gimnasio
+        {
+            get => _gimnasio;
+            set
+            {
+                _gimnasio = value;
+                OnPropertyChanged(nameof(Gimnasio));
+                ExtrasSeleccionados("GYM");
+
+            }
+        }
+
+        public bool PensionCompleta
+        {
+            get => _pensionCompleta;
+            set
+            {
+                _pensionCompleta = value;
+                OnPropertyChanged(nameof(PensionCompleta));
+                ExtrasSeleccionados("COMPLETA");
+
+            }
+        }
+
+        public Dictionary<string, double> Extras { get; set; } = new Dictionary<string, double>();
+
+        public void ExtrasSeleccionados(string tipo)
+        {
+            switch (tipo)
+            {
+                case "WIFI":
+                    if (_wifi)
+                    {
+                        Extras.Add("Wifi",10.0);
+                        Precio = Precio + 10;
+                    }
+                    else
+                    {
+                        Extras.Remove("Wifi");
+                        Precio = Precio - 10;
+                    }
+                    break;
+                case "MINIBAR":
+                    if (_miniBar)
+                    {
+                        Extras.Add("Minibar", 35.0);
+                        Precio = Precio + 35;
+                    }
+                    else
+                    {
+                        Extras.Remove("Minibar");
+                        Precio = Precio -35;
+                    }
+                    break;
+                case "SPA":
+                    if (_spa)
+                    {
+                        Extras.Add("Spa", 50.0);
+                        Precio = Precio + 50;
+                    }
+                    else
+                    {
+                        Extras.Remove("Spa");
+                        Precio = Precio -50;
+                    }
+                    break;
+                case "GYM":
+                    if (_gimnasio)
+                    {
+                        Extras.Add("Gimnasio", 50.0);
+                        Precio = Precio + 50;
+                    }
+                    else
+                    {
+                        Extras.Remove("Gimnasio");
+                        Precio = Precio -50;
+                    }
+                    break;
+                case "COMPLETA":
+                    if (_pensionCompleta)
+                    {
+                        Extras.Add("PensionCompleta", 100.0);
+                        Precio = Precio + 100;
+                    }
+                    else
+                    {
+                        Extras.Remove("PensionCompleta");
+                        Precio = Precio -100;
+                    }
+                    break;
+
+            }
+        }
+
         // Propiedad para el precio (enlazada al TextBox de Precio)
         public double Precio
         {
@@ -46,8 +181,20 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
             }
         }
 
-        // Propiedad para determinar si se está editando o creando
-       
+        public int Capacidad
+        {
+            get => _habitacion?.Capacidad ?? 0;
+            set
+            {
+                if (_habitacion != null && _habitacion.Capacidad != value)
+                {
+                    _habitacion.Capacidad = value;
+                    OnPropertyChanged(nameof(Capacidad));
+                }
+            }
+        }
+
+
 
         // Objeto Habitacion (contiene ID, Capacidad, Extras, etc.)
         public Habitacion Habitacion
@@ -80,7 +227,39 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
                     {
                         SelectedTipoIndex = newIndex;
                     }
+                    PrecioYCap(Tipo);
+
                 }
+            }
+        }
+
+
+        public void PrecioYCap(string tipo)
+        {
+
+            switch (tipo)
+            {
+                case "Individual":
+                    Precio= 30;
+                    Capacidad=1;
+                    break;
+                case "Estandar":
+                    Precio= 50;
+                    Capacidad=2;
+                    break;
+                case "Lujo":
+                    Precio= 80;
+                    Capacidad=3;
+                    break;
+                case "Suite":
+                    Precio= 160;
+                    Capacidad=6;
+                    break;
+                case "Duplex":
+                    Precio= 300;
+                    Capacidad=10;
+                    break;
+
             }
         }
 
@@ -117,7 +296,15 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
         public ICommand GuardarHabitacionCommand { get; }
         public ICommand CerrarCommand { get; }
 
+
         private NavigationService _navigationService;
+
+        public event Action RequestClose;
+        protected void OnRequestClose()
+        {
+            RequestClose?.Invoke();
+            
+        }
 
         private bool Editar;
         public addHabsViewModel(Habitacion habitacion, bool editar)
@@ -128,22 +315,38 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
             _navigationService = new NavigationService();
 
             SeleccionarImagenCommand = new RelayCommand(SeleccionarImagen);
-            GuardarHabitacionCommand = new RelayCommand(async () => await CrearHabitacionAsync());
             CerrarCommand = new RelayCommand(CerrarVentana);
+
+            GuardarHabitacionCommand = new RelayCommand(async () =>
+            {
+                bool resultado = await CrearHabitacionAsync();
+                if (resultado)
+                {
+                    OnRequestClose(); // Cerrar ventana si se guardó correctamente
+                }
+            });
+
+            OnRequestClose();
 
             if (Editar)
             {
+                Habitacion.Id = habitacion.Id;
                 Nombre = habitacion.Nombre;
+                Habitacion.Capacidad = habitacion.Capacidad;
                 Tipo = habitacion.Tipo;
-                Descripcion = habitacion.Descripccion; 
                 SelectedTipoIndex = Array.IndexOf(_tiposHabitacion, habitacion.Tipo);
+                Descripcion = habitacion.Descripccion;
+                Precio = habitacion.Precio;
             }
             else
             {
+                Habitacion.Id = "H0";
                 Nombre = string.Empty;
+                Habitacion.Capacidad = 0;
                 Tipo = _tiposHabitacion[0];
                 SelectedTipoIndex = 0;
                 Descripcion = string.Empty;
+                Precio = 30;
             }
         }
 
@@ -192,86 +395,52 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
         }
 
         // Método asíncrono para crear/guardar la habitación
-        public async Task<Habitacion> CrearHabitacionAsync()
+        public async Task<bool> CrearHabitacionAsync()
         {
-
-            if (Editar)
+            try
             {
-                bool result = comps();
-                if (result)
+                if (!comps()) return false; // Si la validación falla, no se guarda la habitación.
+
+                ConexionController c = new ConexionController();
+                bool resultado;
+
+                Habitacion nuevaHabitacion = new Habitacion(
+                    Habitacion.Id,
+                    Tipo,
+                    Habitacion.Capacidad,
+                    Precio,
+                    Extras,
+                    imageb64,
+                    Nombre,
+                    Descripcion
+                );
+
+                if (Editar)
                 {
-                    ConexionController c = new ConexionController();
-                    Habitacion nuevaHabitacion = new Habitacion(
-                        Habitacion.Id,
-                        Tipo,
-                        Habitacion.Capacidad,
-                        Precio, // Utilizamos la propiedad Precio
-                        new Dictionary<string, double>(Habitacion.Extras), // Conversión de extras si es necesario
-                        imageb64, // Imagen en Base64
-                        Nombre,
-                        Descripcion);
-                    bool resultado = await c.editHab(nuevaHabitacion);
+                    resultado = await c.editHab(nuevaHabitacion);
                     if (resultado)
                     {
-                        //buscarHabitacionViewModel.instance.AgregarHabitacion(nuevaHabitacion);
-
+                        MessageBox.Show("Se ha editado con éxito la habitación");
+                        _navigationService.NavigateTo("buscarHab");
                     }
-                    else
-                    {
-                        MessageBox.Show("Ha habido un problema al editar la habitación.");
-                    }
-                    return resultado ? nuevaHabitacion : null;
                 }
-                return null;
-
-            }
-            else
-            {
-
-                try
+                else
                 {
-                    bool result = comps();
-                    if (result)
+                    resultado = await c.GuardarHab(nuevaHabitacion);
+                    if (resultado)
                     {
-                        Habitacion nuevaHabitacion = new Habitacion(
-                                            Habitacion.Id,
-                                            Tipo,
-                                            Habitacion.Capacidad,
-                                            Precio, // Utilizamos la propiedad Precio
-                                            new Dictionary<string, double>(Habitacion.Extras), // Conversión de extras si es necesario
-                                            imageb64, // Imagen en Base64
-                                            Nombre,
-                                            Descripcion
-                                        );
-
-                        MessageBox.Show("Procesando creación de habitación...");
-
-                        // Se asume que tienes un controlador de conexión para guardar la habitación
-                        ConexionController c = new ConexionController();
-                        bool resultado = await c.GuardarHab(nuevaHabitacion);
-
-                        if (resultado)
-                        {
-                            buscarHabitacionViewModel.instance.AgregarHabitacion(nuevaHabitacion);
-
-                        }
-                        else
-                        {
-                            MessageBox.Show("Ha habido un problema al guardar la habitación.");
-                        }
-
-                        return resultado ? nuevaHabitacion : null;
+                        MessageBox.Show("Se ha creado con éxito la habitación");
+                        buscarHabitacionViewModel.instance.AgregarHabitacion(nuevaHabitacion);
+                        _navigationService.NavigateTo("buscarHab");
                     }
+                }
 
-                    return null;
-
-
+                return resultado; // Si la operación fue exitosa, devuelve true.
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error al crear la habitación: {ex.Message}");
-                return null;
-            }
+                return false;
             }
         }
 
@@ -341,6 +510,7 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
         }
         public void CerrarVentana()
         {
+            
             _navigationService.NavigateTo("buscarHab");
         }
 

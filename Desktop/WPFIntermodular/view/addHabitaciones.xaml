@@ -59,12 +59,12 @@
 
                     <StackPanel Grid.Column="0" Margin="0,0,20,0">
                         <TextBlock Style="{StaticResource SubTitle}" Text="Capacidad" Margin="0,0,0,5"/>
-                        <TextBox Text="{Binding Habitacion.Capacidad, Mode=TwoWay}" Height="40"/>
+                        <TextBox Text="{Binding Capacidad, Mode=TwoWay}" Height="40" IsEnabled="False"/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="1">
                         <TextBlock Style="{StaticResource SubTitle}" Text="Precio" Margin="0,0,0,5"/>
-                        <TextBox Text="{Binding Precio, Mode=TwoWay}" Height="40"/>
+                        <TextBox Text="{Binding Precio, Mode=TwoWay}" Height="40" IsEnabled="False"/>
                     </StackPanel>
                 </Grid>
 
@@ -80,9 +80,18 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0">
-                        <TextBlock Text="Seleccionar imagen" Style="{StaticResource SubTitle}" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <TextBlock Text="Seleccionar imagen" Style="{StaticResource SubTitle}" FontWeight="Bold" Margin="0,0,0,5" />
                         <Button Content="Seleccionar archivo" Command="{Binding SeleccionarImagenCommand}" Width="302"/>
                         <Image Source="{Binding ImagenPreview}" Width="200" Height="150"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Extras" Style="{StaticResource SubTitle}"></TextBlock>
+                        <CheckBox Content="Wifi" IsChecked="{Binding Wifi, Mode=TwoWay}" />
+                        <CheckBox Content="MiniBar" IsChecked="{Binding MiniBar, Mode=TwoWay}" />
+                        <CheckBox Content="Spa" IsChecked="{Binding Spa, Mode=TwoWay}" />
+                        <CheckBox Content="Gimnasio" IsChecked="{Binding Gimnasio, Mode=TwoWay}" />
+                        <CheckBox Content="Pension completa" IsChecked="{Binding PensionCompleta, Mode=TwoWay}" />
+
                     </StackPanel>
                 </Grid>
             </Grid>

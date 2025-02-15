@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using WPFIntermodular.model;
 
 
@@ -29,6 +30,8 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
         private ObservableCollection<Habitacion> _habitaciones;
 
         private static buscarHabitacionViewModel _instancia;
+
+      
 
         public RelayCommand BuscarEditCommand { get; private set; }
         public bool Editar { get; set; }
@@ -58,12 +61,17 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
         }
         public int IndiceSeleccionado => Habitaciones.IndexOf(HabitacionSeleccionada);
 
+        public ICommand CerrarVentanaCommand { get;}
+
+
+       
         public buscarHabitacionViewModel()
         {
             c = new ConexionController();
             Habitaciones = new ObservableCollection<Habitacion>();
             _navigationService = new NavigationService();
             NavigateToSecondWindowCommand = new RelayCommand(nav);
+            CerrarVentanaCommand = new RelayCommand(CerrarVentana);
             CargarDatos();
         }
 
@@ -145,7 +153,10 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
             }
         }
 
-
+        public void CerrarVentana()
+        {
+            _navigationService.NavigateTo("buscarReserva");
+        }
         public void  nav()
         {
             if (Editar)

@@ -13,7 +13,8 @@ namespace WPFIntermodular.network.reservaService
     {
         private static readonly HttpClient _httpClient = new HttpClient();
         private static string baseUrl = "http://localhost:3000/api/reservas/";
-        private static string _authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OTJhY2M4NDcxYzI5MDk3NDgxMWQ2ZiIsInRpcG8iOjUsImlhdCI6MTczOTU3NDg0NywiZXhwIjoxNzM5NTc2NjQ3fQ.bKOnYe4yXUciY7nVRqmY1ZslY3wQvyruHHzYyT3xIss";
+        private static string _authToken =   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OTJhY2M4NDcxYzI5MDk3NDgxMWQ2ZiIsInRpcG8iOjUsImlhdCI6MTczOTYxOTkxNywiZXhwIjoxNzM5NjIxNzE3fQ.720vi9prb3Ebvc8mM8J54fkpVeURhv8-jCNsjA7cFhs";
+
 
         public static void SetAuthToken(string token)
         {

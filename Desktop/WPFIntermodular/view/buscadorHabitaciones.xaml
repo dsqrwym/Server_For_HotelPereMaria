@@ -20,7 +20,7 @@
             <StackPanel Grid.Column="0" Margin="20">
                 <Border Style="{StaticResource Border}" Padding="10" CornerRadius="15" VerticalAlignment="Stretch">
                     <StackPanel>
-                        <Button Content="←" FontSize="20" Background="Transparent" HorizontalContentAlignment="Left" />
+                        <Button Content="←" FontSize="20" Background="Transparent" HorizontalContentAlignment="Left" Command="{Binding CerrarVentanaCommand}" Click="Button_Click_1" />
 
                         <Label FontSize="20">ID habitación</Label>
                         <TextBox Name="idText" Height="24" Width="244" HorizontalAlignment="Left"
@@ -35,7 +35,6 @@
           SelectedIndex="{Binding SelectedTipoIndex, Mode=TwoWay}" />
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10,0,0">
-                            <Button Style="{DynamicResource BtnSec}" Width="124" Height="37" Margin="0,0,10,0">Ofertas</Button>
                             <Button Style="{StaticResource BtnPrin}" Width="139">Buscar</Button>
                         </StackPanel>
                     </StackPanel>
