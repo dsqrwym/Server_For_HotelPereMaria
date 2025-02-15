@@ -16,6 +16,8 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
     internal class buscarHabitacionViewModel : INotifyPropertyChanged
     {
         private readonly ConexionController c = new ConexionController();
+        private readonly string[] _tiposHabitacion = { "Individual", "Estandar", "Lujo", "Suite", "Duplex" };
+        public string[] TiposHabitacion => _tiposHabitacion;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 

@@ -17,10 +17,10 @@ namespace WPFIntermodular.model
         public int Capacidad { get; set; }
 
         [JsonProperty("Precio")]
-        public double Precio { get; set; }  // Cambio aquí a MongoDouble
+        public double Precio { get; set; }  
 
         [JsonProperty("Extras")]
-        public Dictionary<string,double> Extras { get; set; } = new Dictionary<string, double>(); // Cambio aquí a MongoDouble
+        public Dictionary<string,double> Extras { get; set; } = new Dictionary<string, double>();
 
         [JsonProperty("Images")]
         public string Images { get; set; }

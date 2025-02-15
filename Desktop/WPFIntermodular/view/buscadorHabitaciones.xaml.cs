@@ -71,16 +71,8 @@ namespace WPFIntermodular.view
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            bool valido = true;
-            int id = -1;
-            bool? ocupadao = null;
-
-            // Validar el ID
-            if (!string.IsNullOrEmpty(idText.Text))
-            {
-                valido = int.TryParse(idText.Text, out id);
-            }
-
+           
+            
            
 
         }

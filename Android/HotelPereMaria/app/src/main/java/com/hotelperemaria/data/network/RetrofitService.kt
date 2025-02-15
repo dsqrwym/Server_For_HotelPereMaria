@@ -15,7 +15,7 @@ interface RetrofitService {
 
 object RetrofitServiceFactory {
     private const val BASE_URL = "http://10.0.2.2:3000"
-    private var authToken= "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OTJhY2M4NDcxYzI5MDk3NDgxMWQ2ZiIsInRpcG8iOjUsImlhdCI6MTczOTUzNDk2MSwiZXhwIjoxNzM5NTM2NzYxfQ.7-a5_hEiydVT0Iyx3GBbcPFAi5we_lnkFeBJ0r-9jns"
+    private var authToken= "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OTJhY2M4NDcxYzI5MDk3NDgxMWQ2ZiIsInRpcG8iOjUsImlhdCI6MTczOTU0NDk3NSwiZXhwIjoxNzM5NTQ2Nzc1fQ.4uYyMcEoiVWmQeg5Tou2U1mvugASXPeTkotMq3drmWU"
 
     // Método para establecer el token
     fun setAuthToken(token: String) {
