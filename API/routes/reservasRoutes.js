@@ -10,7 +10,7 @@ router.post('/', reservaController.createReserva);
 
 router.get('/habitacion_disponible/', reservaController.getHabitacionesDisponibles);
 
-router.get('/', authorize([2, 3, 5]), reservaController.getReservas);
+router.get('/', reservaController.getReservas);
 
 router.get('/date/', reservaController.getReservedDaysForRoom);
 

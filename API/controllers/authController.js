@@ -29,7 +29,7 @@ exports.login = async (req, res) => {
         user.refreshToken = refreshToken;
         await user.save();
 
-        res.json({ accessToken, refreshToken });
+        res.json({ accessToken, refreshToken, user });
 
     } catch (error) {
         console.error('Error during login:', error);

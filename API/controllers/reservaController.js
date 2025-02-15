@@ -346,15 +346,22 @@ exports.getReservedDaysForRoom = async (req, res) => {
         // 验证房间ID是否有效
         await mongoIdSchema.validateAsync({ id: id_habitacion });
 
-        await mongoIdSchema.validateAsync({ id });
+        let reservas = null;
 
-        const reservas = await Reserva.find({
-            id_habitacion,
-            desactivado: false,
-            _id: { $ne: id } // 排除指定的 reservaId
-        });;
-
-
+        if(id){
+            await mongoIdSchema.validateAsync({ id });
+            reservas = await Reserva.find({
+                id_habitacion,
+                desactivado: false,
+                _id: { $ne: id } // 排除指定的 reservaId
+            });;
+        }else{
+            reservas = await Reserva.find({
+                id_habitacion,
+                desactivado: false
+            });;
+        }
+        
         let reservedDates = [];
 
         reservas.forEach(reserva => {
