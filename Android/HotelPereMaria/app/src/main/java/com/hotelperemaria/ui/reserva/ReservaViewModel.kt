@@ -173,8 +173,8 @@ class ReservaViewModel @Inject constructor(private val repository: ReservationRe
             val result = repository.getReservaById(reserva.id)
             when (result) {
                 is ReservationResult.Success -> {
-                    _extraServices.value = reserva.id_habitacion.extras
-                    maxHuesped = reserva.id_habitacion.Capacidad.toFloat()
+                    _extraServices.value = reserva.id_habitacion?.extras ?: emptyList()
+                    maxHuesped = reserva.id_habitacion?.Capacidad?.toFloat() ?: 2.toFloat()
                     _startDate.value = convertMillisToLocalDate(reserva.fecha_entrada.toEpochMilli())
                     _endDate.value = convertMillisToLocalDate(reserva.fecha_salida.toEpochMilli())
                     _huespedSelected.value = reserva.huespedes.toFloat()

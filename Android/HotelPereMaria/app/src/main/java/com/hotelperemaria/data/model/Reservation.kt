@@ -117,7 +117,7 @@ data class ExtraService(
 @Serializable
 data class ReservaForList(
     val id: String,
-    val id_habitacion: Habitacion,
+    val id_habitacion: Habitacion? = null,
     @Serializable(with = InstantSerializer::class)
     val fecha_entrada: Instant,
     @Serializable(with = InstantSerializer::class)
@@ -142,7 +142,7 @@ enum class ReservaEstado {
 @Serializable
 data class ReservaResponse(
     val _id: String,
-    val id_usuario: Usuario,
+    val id_usuario: Usuario? = null,
     val id_habitacion: Habitacion,
     val huespedes: Int,
     @Serializable(with = InstantSerializer::class)
@@ -152,9 +152,7 @@ data class ReservaResponse(
     @Serializable(with = BigDecimalSerializer::class)
     val precio_total: BigDecimal? = BigDecimal.ZERO,
     val extrasSeleccionados: List<ExtraService>? = emptyList()
-) {
-
-}
+)
 
 @Serializable
 data class ReservaRequest(

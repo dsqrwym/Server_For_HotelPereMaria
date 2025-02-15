@@ -146,7 +146,7 @@ class ReservationRepository @Inject constructor(
                 precio_total = precio_total,
                 extrasSeleccionados = extrasSeleccionados ?: emptyList()
             ).apply {
-                tipo_habitacion = id_habitacion.Tipo ?: "Unknown"
+                tipo_habitacion = id_habitacion?.Tipo ?: "Unknown"
             }
         }
     }
