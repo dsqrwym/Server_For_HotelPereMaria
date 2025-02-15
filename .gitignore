@@ -1,6 +1,6 @@
 # ❌ Ignorar archivos generados por la compilación
 bin/
-obj/
+**/obj/
 build/
 
 # ❌ Ignorar archivos de caché, logs y archivos de respaldo
