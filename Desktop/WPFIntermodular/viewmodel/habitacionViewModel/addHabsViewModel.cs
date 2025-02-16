@@ -31,13 +31,26 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
         private BitmapImage _imagenPreview;
         private byte[] _imageBytes;
         private string imageb64;
-
+        private double _precioFinal = 0;
 
         private bool _wifi;
         private bool _miniBar;
         private bool _spa;
         private bool _gimnasio;
         private bool _pensionCompleta;
+
+        public double PrecioFinal
+        {
+            get { return _precioFinal; }
+            set
+            {
+                if (_precioFinal != value)
+                {
+                    _precioFinal = value;
+                    OnPropertyChanged(nameof(PrecioFinal));
+                }
+            }
+        }
 
         public bool Wifi
         {
@@ -107,60 +120,60 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
                     if (_wifi)
                     {
                         Extras.Add("Wifi",10.0);
-                        Precio = Precio + 10;
+                        PrecioFinal = Precio + 10;
                     }
                     else
                     {
                         Extras.Remove("Wifi");
-                        Precio = Precio - 10;
+                        PrecioFinal = Precio - 10;
                     }
                     break;
                 case "MINIBAR":
                     if (_miniBar)
                     {
                         Extras.Add("Minibar", 35.0);
-                        Precio = Precio + 35;
+                        PrecioFinal = Precio + 35;
                     }
                     else
                     {
                         Extras.Remove("Minibar");
-                        Precio = Precio -35;
+                        PrecioFinal = Precio -35;
                     }
                     break;
                 case "SPA":
                     if (_spa)
                     {
                         Extras.Add("Spa", 50.0);
-                        Precio = Precio + 50;
+                        PrecioFinal = Precio + 50;
                     }
                     else
                     {
                         Extras.Remove("Spa");
-                        Precio = Precio -50;
+                        PrecioFinal = Precio -50;
                     }
                     break;
                 case "GYM":
                     if (_gimnasio)
                     {
                         Extras.Add("Gimnasio", 50.0);
-                        Precio = Precio + 50;
+                        PrecioFinal = Precio + 50;
                     }
                     else
                     {
                         Extras.Remove("Gimnasio");
-                        Precio = Precio -50;
+                        PrecioFinal = Precio -50;
                     }
                     break;
                 case "COMPLETA":
                     if (_pensionCompleta)
                     {
                         Extras.Add("PensionCompleta", 100.0);
-                        Precio = Precio + 100;
+                        PrecioFinal = Precio + 100;
                     }
                     else
                     {
                         Extras.Remove("PensionCompleta");
-                        Precio = Precio -100;
+                        PrecioFinal = Precio -100;
                     }
                     break;
 
@@ -195,22 +208,31 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
         }
 
 
+        public void CalcularPrecioFinal()
+        {
+            _precioFinal = Precio;
+            foreach (var item in Extras)
+            {
+                _precioFinal += item.Value;
+            }
 
-        // Objeto Habitacion (contiene ID, Capacidad, Extras, etc.)
+            OnPropertyChanged(nameof(PrecioFinal));
+
+        }
+
+
         public Habitacion Habitacion
         {
             get => _habitacion;
             set => SetProperty(ref _habitacion, value);
         }
 
-        // Propiedad para el nombre (enlazada al TextBox de Nombre)
         public string Nombre
         {
             get => _nombre;
             set => SetProperty(ref _nombre, value);
         }
 
-        // Propiedad para el tipo (enlazada al ComboBox)
         public string Tipo
         {
             get => _tipo;
@@ -328,6 +350,7 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
 
             OnRequestClose();
 
+            CalcularPrecioFinal();
             if (Editar)
             {
                 Habitacion.Id = habitacion.Id;
@@ -336,7 +359,7 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
                 Tipo = habitacion.Tipo;
                 SelectedTipoIndex = Array.IndexOf(_tiposHabitacion, habitacion.Tipo);
                 Descripcion = habitacion.Descripccion;
-                Precio = habitacion.Precio;
+                Precio = _precioFinal;
             }
             else
             {

@@ -125,5 +125,7 @@ namespace WPFIntermodular.view
         {
             this.Close();
         }
+
+       
     }
 }

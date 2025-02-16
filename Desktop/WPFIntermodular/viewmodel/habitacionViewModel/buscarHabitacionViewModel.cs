@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using WPFIntermodular.model;
 
@@ -57,14 +58,89 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
             {
                 _habitaciones = value;
                 OnPropertyChanged(nameof (Habitaciones));
+
+                Filtro = CollectionViewSource.GetDefaultView(_habitaciones);
             }
         }
         public int IndiceSeleccionado => Habitaciones.IndexOf(HabitacionSeleccionada);
 
         public ICommand CerrarVentanaCommand { get;}
 
+        private ICollectionView _filtro;
+        public ICollectionView Filtro
+        {
+            get => _filtro;
+            set
+            {
+                _filtro = value;
+                OnPropertyChanged(nameof(Filtro));
+            }
+        }
+        private string filtroNombre;
+        public string FiltroNombre
+        {
+            get => filtroNombre;
+            set
+            {
+                filtroNombre = value;
+                OnPropertyChanged(nameof(FiltroNombre));
+                Filtro.Refresh();
+            }
+        }
 
-       
+        private string filtroID;
+        public string FiltroID
+        {
+            get => filtroID;
+            set
+            {
+                filtroID = value;
+                OnPropertyChanged(nameof(FiltroID));
+                Filtro.Refresh();
+            }
+        }
+
+
+        private int _selectedTipoIndex;
+        public int SelectedTipoIndex
+        {
+            get => _selectedTipoIndex;
+            set
+            {
+                if (_selectedTipoIndex != value)
+                {
+                    _selectedTipoIndex = value;
+                    OnPropertyChanged(nameof(SelectedTipoIndex));
+                    if (_selectedTipoIndex >= 0 && _selectedTipoIndex < _tiposHabitacion.Length)
+                    {
+                        Tipo = _tiposHabitacion[_selectedTipoIndex];
+                    }
+                }
+            }
+        }
+
+        private string _tipo;
+        public string Tipo
+        {
+            get => _tipo;
+            set
+            {
+                if (_tipo != value)
+                {
+                    _tipo = value;
+                    OnPropertyChanged(nameof(Tipo));
+                    Filtro.Refresh();  
+
+                    int newIndex = Array.IndexOf(_tiposHabitacion, _tipo);
+                    if (newIndex != -1 && newIndex != _selectedTipoIndex)
+                    {
+                        SelectedTipoIndex = newIndex;
+                    }
+                }
+            }
+        }
+
+
         public buscarHabitacionViewModel()
         {
             c = new ConexionController();
@@ -72,7 +148,25 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
             _navigationService = new NavigationService();
             NavigateToSecondWindowCommand = new RelayCommand(nav);
             CerrarVentanaCommand = new RelayCommand(CerrarVentana);
+            Filtro = CollectionViewSource.GetDefaultView(Habitaciones);
+            Filtro.Filter = FiltrarHabitacion;
             CargarDatos();
+        }
+
+        private bool FiltrarHabitacion(object obj)
+        {
+            if (obj is Habitacion habitacion)
+            {
+                
+                bool cumpleNombre = string.IsNullOrEmpty(FiltroNombre) ||habitacion.Nombre.IndexOf(filtroNombre, StringComparison.OrdinalIgnoreCase) >= 0;
+
+                bool cumpleID = string.IsNullOrEmpty(filtroID) ||habitacion.Id.IndexOf(filtroID, StringComparison.OrdinalIgnoreCase) >= 0;
+
+                bool cumpleTipo = string.IsNullOrEmpty(Tipo) ||habitacion.Tipo.IndexOf(Tipo, StringComparison.OrdinalIgnoreCase) >= 0;
+
+                return cumpleNombre && cumpleID && cumpleTipo;
+            }
+            return false;
         }
 
         public static buscarHabitacionViewModel instance
@@ -86,6 +180,9 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
             }
           
         }
+
+        
+
 
         public void AgregarHabitacion(Habitacion nuevaHabitacion)
         {
@@ -125,8 +222,8 @@ namespace WPFIntermodular.viewmodel.habitacionViewModel
                         hab.Tipo,
                         hab.Capacidad,
                         hab.Precio,
-                        hab.Extras, // Extras vacíos
-                        hab.Images, // Lista de imágenes vacía
+                        hab.Extras, 
+                        hab.Images, 
                         hab.Nombre,
                         hab.Descripccion
                     ));

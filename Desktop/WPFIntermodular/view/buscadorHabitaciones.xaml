@@ -24,18 +24,18 @@
 
                         <Label FontSize="20">ID habitación</Label>
                         <TextBox Name="idText" Height="24" Width="244" HorizontalAlignment="Left"
-                                 Text="{Binding FiltroId, UpdateSourceTrigger=PropertyChanged}" />
+                                 Text="{Binding FiltroID, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label FontSize="20">Nombre</Label>
-                        <TextBox Name="NameText" Height="24" Width="244" HorizontalAlignment="Left"
+                        <TextBox Name="nomText" Height="24" Width="244" HorizontalAlignment="Left"
                                  Text="{Binding FiltroNombre, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label FontSize="20">Tipo</Label>
-                        <ComboBox ItemsSource="{Binding TiposHabitacion}"  
-          SelectedIndex="{Binding SelectedTipoIndex, Mode=TwoWay}" />
+                        <ComboBox x:Name="cajaTipo" ItemsSource="{Binding TiposHabitacion}" SelectedIndex="{Binding SelectedTipoIndex, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10,0,0">
-                            <Button Style="{StaticResource BtnPrin}" Width="139">Buscar</Button>
+
+                            <Button Style="{StaticResource BtnPrin}" Width="139" Margin="10">Buscar</Button>
                         </StackPanel>
                     </StackPanel>
                 </Border>
