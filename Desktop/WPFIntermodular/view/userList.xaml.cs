@@ -24,102 +24,106 @@ namespace WPFIntermodular.view
     public partial class userList : Window
     {
         private ObservableCollection<Usuario> usuarios;
+        private ObservableCollection<Usuario> UsuariosFiltrados { get; set; }
         private ICollectionView vistaUsuarios;
+
+        List<Usuario> listaUsuarios = new List<Usuario>();
 
         private NavigationService _navigationService;
 
         private bool editar = false;
         private Usuario u;
+        private ConexionApi apiConexion;
 
 
         private RelayCommand NavigateToSecondWindowCommand { get; set; }
         public userList()
         {
             InitializeComponent();
-            usuarios = new ObservableCollection<Usuario>
-            {
-                new Usuario { id = "0", nombre = "Iván Nieto", rol = "Administrador", email="ivanivienen@gmail.com", fechaNac="0/0/0", dni="84321059K" },
-                new Usuario { id = "1", nombre= "Kliman", rol= "Cliente", email="k@k.kom", fechaNac="0/0/0", dni="28394573K" },
-                new Usuario { id = "2", nombre= "Carlos", rol= "Empleado", email="carlos@mail.com", fechaNac="5/5/1990", dni="12345678Z" }
-            };
-            _navigationService = new NavigationService();  // Crear una instancia del servicio
+            _navigationService = new NavigationService();
             NavigateToSecondWindowCommand = new RelayCommand(nav);
+            CargarUsuarios();
+
             vistaUsuarios = CollectionViewSource.GetDefaultView(usuarios);
             UserListView.ItemsSource = vistaUsuarios;
         }
         private void FiltroRolComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            if (vistaUsuarios != null)
+            
+                int rol = FiltroRolComboBox.SelectedIndex;
+                FiltrarPorRol(rol);
+          
+
+        }
+        private void FiltrarPorRol(int rolSeleccionado)
+        {
+            MessageBox.Show("Filtrando "+rolSeleccionado);
+            if (rolSeleccionado == 0)
             {
-                string filtro = (FiltroRolComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+                CargarUsuarios();
+                vistaUsuarios = CollectionViewSource.GetDefaultView(usuarios);
+                UserListView.ItemsSource = vistaUsuarios;
+            }
+            else
+            {
 
-                vistaUsuarios.Filter = usuario =>
+                List<Usuario> listaUsuariosF = new List<Usuario>();
+
+                foreach (Usuario u in listaUsuarios)
                 {
-                    var u = usuario as Usuario;
-                    return filtro == "Todos" || u.rol == filtro;
-                };
+                    if (!string.IsNullOrEmpty(u.rol) && int.TryParse(u.rol, out int rol) && rol == rolSeleccionado)
+                    {
+                        listaUsuariosF.Add(u);
+                    }
+                }
 
-                vistaUsuarios.Refresh(); // Actualizar la lista
+                UsuariosFiltrados = new ObservableCollection<Usuario>(listaUsuariosF);
+
+                vistaUsuarios = CollectionViewSource.GetDefaultView(UsuariosFiltrados);
+                UserListView.ItemsSource = vistaUsuarios;
+            }
+        }
+
+        private async void CargarUsuarios()
+        {
+
+             apiConexion = new ConexionApi();
+            listaUsuarios = await apiConexion.AllUsuarios();
+            
+            if (listaUsuarios != null)
+            {
+                UserListView.ItemsSource = listaUsuarios;
             }
         }
 
         private void filterByID_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            if (vistaUsuarios != null)
-            {
-                string filtro = filterByID.Text.Trim();
+            List<Usuario> listaUsuariosF = new List<Usuario>();
 
-                vistaUsuarios.Filter = usuario =>
+            foreach (Usuario u in listaUsuarios)
+            {
+                bool cumpleFiltroRol = (!string.IsNullOrEmpty(u.rol) && int.TryParse(u.rol, out int rol) && rol == FiltroRolComboBox.SelectedIndex) || FiltroRolComboBox.SelectedIndex == 0;
+                bool cumpleFiltroNombre = string.IsNullOrEmpty(filterByID.Text) ||
+                          (!string.IsNullOrEmpty(u.nombre) &&
+                           u.nombre.IndexOf(filterByID.Text, StringComparison.OrdinalIgnoreCase) >= 0);
+
+
+                if (cumpleFiltroRol && cumpleFiltroNombre)
                 {
-                    var u = usuario as Usuario;
-                    return string.IsNullOrEmpty(filtro) || u.id.StartsWith(filtro);
-                };
-                vistaUsuarios.Refresh();
-            }
-        }
-
-        private void detallesBtn_Click(object sender, RoutedEventArgs e)
-        {
-            if (UserListView.SelectedItem is Usuario usuarioSeleccionado)
-            {
-                string mensaje = $"ID: {usuarioSeleccionado.id}\n" +
-                                 $"Nombre: {usuarioSeleccionado.nombre}\n" +
-                                 $"Rol: {usuarioSeleccionado.rol}\n" +
-                                 $"DNI: {usuarioSeleccionado.dni}\n" +
-                                 $"Email: {usuarioSeleccionado.email}\n" +
-                                 $"Fecha Nacimiento: {usuarioSeleccionado.fechaNac}";
-
-                MessageBox.Show(mensaje, "Detalles del Usuario", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                MessageBox.Show("Por favor, selecciona un usuario de la lista.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-        }
-
-        private void updateBtn_Click(object sender, RoutedEventArgs e)
-        {
-            if (UserListView.SelectedItem is Usuario usuarioSeleccionado)
-            {
-                u = usuarioSeleccionado;
-                updateUser ventanaActualizar = new updateUser(usuarioSeleccionado);
-                if (ventanaActualizar.ShowDialog() == true)
-                {
-                    vistaUsuarios.Refresh();
+                    listaUsuariosF.Add(u);
                 }
             }
-            else
-            {
-                MessageBox.Show("Por favor, selecciona un usuario para actualizar.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
+
+            UsuariosFiltrados = new ObservableCollection<Usuario>(listaUsuariosF);
+            vistaUsuarios = CollectionViewSource.GetDefaultView(UsuariosFiltrados);
+            UserListView.ItemsSource = vistaUsuarios;
         }
+
 
         private void anyadirBtn_Click(object sender, RoutedEventArgs e)
         {
-            int nuevoId = usuarios.Any() ? usuarios.Max(u => int.Parse(u.id)) + 1 : 0;
-            addUser newUser = new addUser(nuevoId);
+            addUser newUser = new addUser();
             newUser.ShowDialog();
-            usuarios.Add(newUser.nuevoUsuario);
         }
 
         private void nav()
@@ -136,6 +140,36 @@ namespace WPFIntermodular.view
                 _navigationService.NavigateTo("updateUser",u);
 
             }
+
+        }
+
+        private void updateBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ConexionApi conexion = new ConexionApi();
+            Usuario? u = UserListView.SelectedItem as Usuario;
+            updateUser us = new updateUser(u,conexion);
+            us.ShowDialog();
+
+            CargarUsuarios();
+        }
+
+        private void detallesBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (UserListView.SelectedItem is Usuario usuario) {
+                string mensaje = $"ID: {usuario.id}\n" +
+                         $"Nombre: {usuario.nombre}\n" +
+                         $"Apellido: {usuario.apellido}\n" +
+                         $"DNI: {usuario.dni}\n" +
+                         $"Rol: {usuario.rol}\n" +
+                         $"Email: {usuario.email}\n" +
+                    $"Telefono:{usuario.telefono}\n";
+
+                MessageBox.Show(mensaje, "Detalles del Usuario", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private void filtrarBtn_Click(object sender, RoutedEventArgs e)
+        {
 
         }
     }

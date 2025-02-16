@@ -15,9 +15,9 @@
                 <Label Content="Rol" Foreground="#026E81" Margin="100,0,0,0"/>
             </WrapPanel>
             <WrapPanel>
-                <TextBox Margin="5,0,0,0" Width="100px" x:Name="nameField"/>
-                <TextBox Margin="50,0,0,0" Width="100px" x:Name="surnameField"/>
-                <ComboBox Margin="55,0,0,0" Width="100px" x:Name="roleBox">
+                <TextBox Margin="5,0,0,0" Width="100px" x:Name="nameField" Text="{Binding Nombre, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Margin="50,0,0,0" Width="100px" x:Name="surnameField" Text="{Binding Apellido, UpdateSourceTrigger=PropertyChanged}"/>
+                <ComboBox Margin="55,0,0,0" Width="100px" x:Name="roleBox" SelectedValue="{Binding Rol}">
                     <ComboBoxItem Name="Admin" Tag="Admin" Content="Admin"/>
                     <ComboBoxItem Name="Empleado" Tag="Empleado" Content="Empleado"/>
                     <ComboBoxItem Name="Cliente" Tag="Cliente" Content="Cliente"/>
@@ -26,22 +26,23 @@
             <WrapPanel>
                 <Label Content="Email" Foreground="#026E81"/>
                 <Label Content="DNI" Foreground="#026E81" Margin="110,0,0,0"/>
-                <Label Content="Fecha de Nacimiento" Foreground="#026E81" Margin="130,0,0,0"/>
+                <Label Content="Pasword" Foreground="#026E81" Margin="130,0,0,0"/>
             </WrapPanel>
             <WrapPanel>
-                <TextBox Margin="5,0,0,0" Width="100px" x:Name="emailField"/>
-                <TextBox Margin="50,0,0,0" Width="100px" x:Name="dniField"/>
-                <DatePickerTextBox Margin="55,0,0,0" Width="100px" x:Name="birthField" />
+                <TextBox Margin="5,0,0,0" Width="100px" x:Name="emailField" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Margin="50,0,0,0" Width="100px" x:Name="dniField" Text="{Binding Dni,UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBox Margin="55,0,0,0" Width="100px" x:Name="passwordBox"  Text="{Binding NotifyOnSourceUpdated,UpdateSourceTrigger=PropertyChanged}"/>
             </WrapPanel>
             <WrapPanel>
                 <Label Content="Username" Foreground="#026E81"/>
                 <Label Content="Telefono" Foreground="#026E81" Margin="85,0,0,0"/>
             </WrapPanel>
             <WrapPanel>
-                <TextBox Margin="5,0,0,0" Width="100px" x:Name="usernameField"/>
-                <TextBox Margin="50,0,0,0" Width="100px" x:Name="phoneField"/>
+                <TextBox Margin="5,0,0,0" Width="100px" x:Name="usernameField" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Margin="50,0,0,0" Width="100px" x:Name="phoneField" Text="{Binding Telefono,UpdateSourceTrigger=PropertyChanged}"/>
             </WrapPanel>
-            <Button Margin="20px" Width="100px" Click="Button_Click">Enviar</Button>
+            <Button Margin="20px" Width="100px" Command="{Binding EnviarCommand}">Enviar</Button>
         </StackPanel>
     </Grid>
 </Window>
