@@ -48,7 +48,7 @@ fun NavigationWrapper() {
                 loginScreen(
                     hiltViewModel(),
                     { navController.navigate(Registro) },
-                    { navController.navigate(ReservationList) })
+                    { navController.navigate(Principal) })
             }
             composable<Registro> {
                 registerScreen(viewModel()) { navController.navigate(Login) }
