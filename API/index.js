@@ -8,6 +8,7 @@ const habitacionesRouter = require('./routes/habitacionesRouter.js');
 const habitacion = require('./routes/habitacionRoutes.js');
 const userRouter = require('./routes/usuarioRouter.js');
 const compression = require('compression');
+const usuariosRouter = require('./routes/usuariosRoutes.js');
 const zlib= require("zlib");
 require('./config/database.js');
 require('dotenv').config();
@@ -48,6 +49,8 @@ app.use('/api/auth', authAutenRouter);
 app.use('/api/reservas', reservaRouter);
 app.use('/api/habitacion', habitacion);
 app.use('/api/user',userRouter);
+
+app.use('/api/usuarios',usuariosRouter);
 //Habitacion
 app.use('/api/habitaciones', habitacionesRouter);
 //Imagen
