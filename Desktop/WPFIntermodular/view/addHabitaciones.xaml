@@ -64,7 +64,7 @@
 
                     <StackPanel Grid.Column="1">
                         <TextBlock Style="{StaticResource SubTitle}" Text="Precio" Margin="0,0,0,5"/>
-                        <TextBox Text="{Binding Precio, Mode=TwoWay}" Height="40" IsEnabled="False"/>
+                        <TextBox Text="{Binding PrecioFinal, Mode=TwoWay}" Height="40" IsEnabled="False"/>
                     </StackPanel>
                 </Grid>
 
