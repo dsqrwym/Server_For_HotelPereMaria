@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFIntermodular.view"
         mc:Ignorable="d"
-        Title="updateUser" Height="300" Width="400">
+        Title="Actualizar Usuario" Height="300" Width="400">
+
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -17,30 +18,26 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="ID:" Grid.Row="0"/>
-        <TextBox x:Name="IDTextBox" Grid.Row="0" Margin="80,0,0,5" IsReadOnly="True"/>
+        <TextBlock Text="Apellido:" Grid.Row="0"/>
+        <TextBox Text="{Binding Apellido, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Margin="80,0,0,5"/>
 
         <TextBlock Text="Nombre:" Grid.Row="1"/>
-        <TextBox x:Name="NombreTextBox" Grid.Row="1" Margin="80,0,0,5"/>
+        <TextBox Text="{Binding Nombre, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Margin="80,0,0,5"/>
 
         <TextBlock Text="Rol:" Grid.Row="2"/>
-        <ComboBox x:Name="RolComboBox" Grid.Row="2" Margin="80,0,0,5" Width="200">
-            <ComboBoxItem Content="Administrador"/>
-            <ComboBoxItem Content="Cliente"/>
-            <ComboBoxItem Content="Invitado"/>
+        <ComboBox SelectedValue="{Binding Rol, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Margin="80,0,0,5" Width="200">
+            <ComboBoxItem Content="1"/>
+            <ComboBoxItem Content="3"/>
+            <ComboBoxItem Content="5"/>
         </ComboBox>
 
         <TextBlock Text="DNI:" Grid.Row="3"/>
-        <TextBox x:Name="DNITextBox" Grid.Row="3" Margin="80,0,0,5"/>
+        <TextBox Text="{Binding Dni, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Margin="80,0,0,5"/>
 
         <TextBlock Text="Email:" Grid.Row="4"/>
-        <TextBox x:Name="EmailTextBox" Grid.Row="4" Margin="80,0,0,5"/>
-
-        <TextBlock Text="Fecha Nac.:" Grid.Row="5"/>
-        <TextBox x:Name="FechaNacTextBox" Grid.Row="5" Margin="80,0,0,5"/>
+        <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Margin="80,0,0,5"/>
 
         <Button Content="Guardar Cambios" Grid.Row="6" Margin="80,10,0,0" Width="150"
-                Click="GuardarCambios_Click"/>
+                Command="{Binding GuardarCambiosCommand}"/>
     </Grid>
 </Window>
-

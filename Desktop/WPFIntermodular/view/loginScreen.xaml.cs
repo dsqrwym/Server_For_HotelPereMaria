@@ -24,7 +24,6 @@ namespace WPFIntermodular.view
     {
         private NavigationService _navigationService;
 
-
         public RelayCommand NavigateToSecondWindowCommand { get; private set; }
 
         public loginScreen()
@@ -32,19 +31,28 @@ namespace WPFIntermodular.view
             InitializeComponent();
             _navigationService = new NavigationService();  // Crear una instancia del servicio
             NavigateToSecondWindowCommand = new RelayCommand(nav);
+            DataContext = new LoginViewModel();
         }
 
-       
 
-        private void loginBtn_Click(object sender, RoutedEventArgs e)
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            nav();
+            if (DataContext is LoginViewModel viewModel)
+            {
+                viewModel.Password = ((PasswordBox)sender).Password;
+            }
         }
-        private void nav()
+        public void nav()
         {
             this.Hide();
             _navigationService.NavigateTo("buscarReserva");
            
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            nav();
         }
     }
 }

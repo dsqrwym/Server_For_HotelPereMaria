@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WPFIntermodular.view"
         mc:Ignorable="d"
         Title="userList" Height="450" Width="800">
-    <Grid Background="#32586d">
+    <Grid Background="#32586d" Margin="0,0,-268,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="600"/>
@@ -42,20 +42,22 @@
                     <DropShadowEffect Color="Black" BlurRadius="0" ShadowDepth="3" Opacity="1"/>
                 </Label.Effect>
             </Label>
-            <ComboBox x:Name="FiltroRolComboBox" Width="150"
-                SelectionChanged="FiltroRolComboBox_SelectionChanged" Background="#32586d" Foreground="Orange">
+            <ComboBox x:Name="FiltroRolComboBox" Width="150" SelectionChanged="FiltroRolComboBox_SelectionChanged"
+                     Background="#32586d" Foreground="Orange">
                 <ComboBox.Resources>
                     <Style TargetType="ComboBoxItem">
                         <Setter Property="Background" Value="#32586d"/>
                         <Setter Property="Foreground" Value="Orange"/>
                     </Style>
                 </ComboBox.Resources>
-                <ComboBoxItem Content="Todos" IsSelected="True"/>
-                <ComboBoxItem Content="Administrador"/>
-                <ComboBoxItem Content="Cliente"/>
-                <ComboBoxItem Content="Empleado"/>
+                <ComboBoxItem Content="0"/>
+                <ComboBoxItem Content="1"/>
+                <ComboBoxItem Content="2"/>
+                <ComboBoxItem Content="3"/>
+                <ComboBoxItem Content="4"/>
+                <ComboBoxItem Content="5"/>
             </ComboBox>
-            <Label Content="ID" Foreground="Orange" FontSize="15px" Margin="10,0,0,0" RenderTransformOrigin="0.545,0.805" Height="32">
+            <Label Content="Nombre" Foreground="Orange" FontSize="15px" Margin="10,0,0,0" RenderTransformOrigin="0.545,0.805" Height="32">
                 <Label.Effect>
                     <DropShadowEffect Color="Black" BlurRadius="0" ShadowDepth="3" Opacity="1"/>
                 </Label.Effect>
@@ -81,20 +83,20 @@
             </Button>
         </StackPanel>
 
-        <ListView x:Name="UserListView" Margin="20,50,50,50" BorderThickness="2px" Grid.Column="1" Grid.Row="1" Background="White" BorderBrush="Orange">
+        <ListView x:Name="UserListView" Margin="20,50,-258,50" BorderThickness="2px" Grid.Column="1" Grid.Row="1" 
+          Background="White" BorderBrush="Orange" ItemsSource="{Binding Usuarios}" SelectionMode="Single">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="ID" Width="50"
-                            DisplayMemberBinding="{Binding id}" />
-                    <GridViewColumn Header="NombreUsuario" Width="140"
-                            DisplayMemberBinding="{Binding nombre}" />
-                    <GridViewColumn Header="Rol" Width="160"
-                            DisplayMemberBinding="{Binding rol}" />
-                    <GridViewColumn Header="DNI" Width="208"
-                            DisplayMemberBinding="{Binding dni}"/>
+                    <GridViewColumn Header="ID" Width="150" DisplayMemberBinding="{Binding id}" />
+                    <GridViewColumn Header="Nombre" Width="140" DisplayMemberBinding="{Binding nombre}" />
+                    <GridViewColumn Header="Apellido" Width="140" DisplayMemberBinding="{Binding apellido}" />
+                    <GridViewColumn Header="DNI" Width="140" DisplayMemberBinding="{Binding dni}" />
+                    <GridViewColumn Header="Rol" Width="160" DisplayMemberBinding="{Binding rol}" />
+                    <GridViewColumn Header="Email" Width="200" DisplayMemberBinding="{Binding email}" />
                 </GridView>
             </ListView.View>
         </ListView>
+
 
     </Grid>
 </Window>
