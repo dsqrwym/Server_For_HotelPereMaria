@@ -3,16 +3,12 @@ package com.hotelperemaria.ui.reserva
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -22,12 +18,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hotelperemaria.R
@@ -41,10 +35,14 @@ import com.hotelperemaria.utils.ConfirmationDialog
 import com.hotelperemaria.utils.LoadingScreen
 
 @Composable
-fun ReservationScreen(reservaViewModel : ReservaViewModel = hiltViewModel(LocalContext.current as ComponentActivity), onBack: () -> Unit) {
+fun ReservationScreen(
+    reservaViewModel: ReservaViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
+    onBack: () -> Unit
+) {
     val isLoading = reservaViewModel.isLoading.collectAsState()
     val errorMessage by reservaViewModel.errorMessage.collectAsState()
     val habitaciones = reservaViewModel.currentHabitacion.collectAsState()
+    val success = reservaViewModel.success.collectAsState()
     var showErrorDialog by remember { mutableStateOf(false) }
 
     // 当 errorMessage 变化时更新对话框状态
@@ -60,7 +58,16 @@ fun ReservationScreen(reservaViewModel : ReservaViewModel = hiltViewModel(LocalC
                 reservaViewModel.clearErrorMessage()
             }
         )
+    } else if (success.value) {
+        SuccessDialog(
+            success.value,
+            stringResource(R.string.alert_dialog_success_message_reservation_created),
+        ) {
+            reservaViewModel.restaurarSuccessState()
+            onBack()
+        }
     }
+
     Column(
         Modifier
             .fillMaxSize()
@@ -72,7 +79,7 @@ fun ReservationScreen(reservaViewModel : ReservaViewModel = hiltViewModel(LocalC
             onBack()
         }
 
-        if (habitaciones.value != null){
+        if (habitaciones.value != null) {
             HabitacionCard(habitaciones.value!!) { }
         }
         DatePicker(reservaViewModel)
@@ -108,9 +115,29 @@ fun ErrorDialog(
     )
 }
 
+@Composable
+fun SuccessDialog(
+    showDialog: Boolean = true,
+    message: String,
+    onDismiss: () -> Unit
+) {
+    ConfirmationDialog(
+        showDialog = showDialog,
+        title = stringResource(R.string.alert_dialog_success_title),
+        message = message,
+        icon = Icons.Default.CheckCircle,
+        icontTnt = MaterialTheme.colorScheme.primary,
+        confirmText = stringResource(R.string.dialog_confirm),
+        confirmButtonColor = MaterialTheme.colorScheme.primary,
+        showCancelButton = false,
+        onDismiss = onDismiss,
+        onConfirm = onDismiss
+    )
+}
+
 @Preview
 @Composable
 fun ReservationScreenPreview() {
     val reservaViewModel: ReservaViewModel = viewModel()
-    ReservationScreen(reservaViewModel){}
+    ReservationScreen(reservaViewModel) {}
 }

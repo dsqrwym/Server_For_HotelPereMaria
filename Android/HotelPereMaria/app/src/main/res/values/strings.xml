@@ -11,6 +11,10 @@
     <string name="top_bar_reservation_list">Lista de Reservaciones</string>
     <string name="top_bar_reservation_modify">Modificar Reservación</string>
 
+    <string name="alert_dialog_success_title">Éxito</string>
+    <string name="alert_dialog_success_message_reservation_created">Reserva creado con éxito</string>
+    <string name="alert_dialog_success_message_reservation_updated">Reserva modificado con éxito</string>
+
     <string name="alert_dialog_error_title_missing_data">Datos incompletos</string>
     <string name="alert_dialog_error_message_missing_data">Por favor, complete todos los campos requeridos.</string>
 

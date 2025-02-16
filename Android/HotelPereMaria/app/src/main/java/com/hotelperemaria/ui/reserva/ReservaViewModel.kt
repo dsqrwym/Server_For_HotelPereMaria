@@ -29,6 +29,13 @@ import javax.inject.Inject
 @HiltViewModel
 class ReservaViewModel @Inject constructor(private val repository: ReservationRepository) :
     ViewModel() {
+    private val _success = MutableStateFlow(false)
+    val success = _success.asStateFlow()
+
+    fun restaurarSuccessState(){
+        _success.value = false
+    }
+
     //日期相关状态
     private val _startDate = MutableStateFlow("")
     val startDate = _startDate.asStateFlow()
@@ -78,6 +85,7 @@ class ReservaViewModel @Inject constructor(private val repository: ReservationRe
     var currentHabitacion = _currentHabitacion.asStateFlow()
 
     fun creacionDeReserva(habitacion: Habitaciones) {
+        _success.value = false
         _isLoading.value = true
         _currentHabitacion.value = habitacion
         Log.d("ReservaViewModel", "habitacionId: ${habitacion.id}")
@@ -167,13 +175,6 @@ class ReservaViewModel @Inject constructor(private val repository: ReservationRe
 
     fun modifyReservation() {
         if (validateForm()) {
-            Log.d("ReservaViewModel", "currentDate: ${_startDate.value}")
-            Log.d("ReservaViewModel", "currentDate: ${_endDate.value}")
-            Log.d(
-                "ReservaViewModel",
-                "currentDate: ${convertDateToMillis(endDate.value)?.let { convertMillisToISO8601(it) }}"
-            )
-
             _isLoading.value = true
             viewModelScope.launch {
                 val result = repository.updateReserva(
@@ -192,15 +193,19 @@ class ReservaViewModel @Inject constructor(private val repository: ReservationRe
                 when (result) {
                     is ReservationResult.Success -> {
                         _isLoading.value = false
+                        _success.value = true
                     }
 
                     is ReservationResult.Error -> {
                         _isLoading.value = false
                         _errorMessage.value = result.message
+                        _success.value = false
                     }
 
                     else -> {
                         _isLoading.value = false
+                        _success.value = false
+                        _errorMessage.value = "Unknown error"
                     }
                 }
             }
@@ -208,6 +213,7 @@ class ReservaViewModel @Inject constructor(private val repository: ReservationRe
     }
 
     fun inicialModifyReservaScreen(reserva: ReservaForList) {
+        _success.value = false
         _isLoading.value = true
         currentReservaId = reserva.id
         viewModelScope.launch {
@@ -289,15 +295,19 @@ class ReservaViewModel @Inject constructor(private val repository: ReservationRe
             when (result) {
                 is ReservationResult.Success -> {
                     _isLoading.value = false
+                    _success.value = true
                 }
 
                 is ReservationResult.Error -> {
                     _isLoading.value = false
                     _errorMessage.value = result.message
+                    _success.value = false
                 }
 
                 else -> {
                     _isLoading.value = false
+                    _errorMessage.value = "Unknown error"
+                    _success.value = false
                 }
             }
         }

@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hotelperemaria.R
 import com.hotelperemaria.ui.principal.HabitacionCard
@@ -29,12 +28,16 @@ import com.hotelperemaria.ui.reserva.components.TopBar
 import com.hotelperemaria.utils.LoadingScreen
 
 @Composable
-fun ReservationModifyScreen(reservaViewModel : ReservaViewModel = hiltViewModel(LocalContext.current as ComponentActivity), onBack: () -> Unit) {
+fun ReservationModifyScreen(
+    reservaViewModel: ReservaViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
+    onBack: () -> Unit
+) {
     //reservaViewModel.inicialModifyReservaScreen(reserva)
     val isLoading = reservaViewModel.isLoading.collectAsState()
     val errorMessage by reservaViewModel.errorMessage.collectAsState()
     val habitaciones = reservaViewModel.currentHabitacion.collectAsState()
     var showErrorDialog by remember { mutableStateOf(false) }
+    val success = reservaViewModel.success.collectAsState()
 
     // 当 errorMessage 变化时更新对话框状态
     LaunchedEffect(errorMessage) {
@@ -49,36 +52,38 @@ fun ReservationModifyScreen(reservaViewModel : ReservaViewModel = hiltViewModel(
                 reservaViewModel.clearErrorMessage()
             }
         )
-    }
-    Column(
-        Modifier
-            .fillMaxSize()
-            .background(colorResource(R.color.fondo)),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
-        TopBar(stringResource(R.string.top_bar_reservation_modify)) {
+    } else if (success.value){
+        SuccessDialog(
+            success.value,
+            stringResource(R.string.alert_dialog_success_message_reservation_updated),
+        ) {
+            reservaViewModel.restaurarSuccessState()
             onBack()
         }
-        if (habitaciones.value != null){
-            HabitacionCard(habitaciones.value!!) { }
+        Column(
+            Modifier
+                .fillMaxSize()
+                .background(colorResource(R.color.fondo)),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            TopBar(stringResource(R.string.top_bar_reservation_modify)) {
+                onBack()
+            }
+            if (habitaciones.value != null) {
+                HabitacionCard(habitaciones.value!!) { }
+            }
+            DatePicker(reservaViewModel)
+            val maxim = reservaViewModel.maxHuesped.collectAsState()
+            Slider("${stringResource(R.string.reservation_field_guests)}: ", maxim.value) {
+                reservaViewModel.updateHuespedSelected(it)
+            }
+            ServicesList(reservaViewModel)
+            ReservationButton(stringResource(R.string.reservation_button_modify)) {
+                reservaViewModel.modifyReservation()
+                onBack()
+            }
         }
-        DatePicker(reservaViewModel)
-        val maxim = reservaViewModel.maxHuesped.collectAsState()
-        Slider("${stringResource(R.string.reservation_field_guests)}: ", maxim.value) {
-            reservaViewModel.updateHuespedSelected(it)
-        }
-        ServicesList(reservaViewModel)
-        ReservationButton(stringResource(R.string.reservation_button_modify)) {
-            reservaViewModel.modifyReservation()
-            onBack()
-        }
+        LoadingScreen(isLoading = isLoading.value)
     }
-    LoadingScreen(isLoading = isLoading.value)
-}
-
-@Preview
-@Composable
-fun ReservationModifyScreenPreview() {
-   // ReservationModifyScreen(reservaForList = ReservaForList(id = "", id_habitacion = "", fecha_salida = Instant.now(), fecha_entrada = Instant.now(), extrasSeleccionados = emptyList(), huespedes = 1, precio_total = 0.toBigDecimal()))
 }

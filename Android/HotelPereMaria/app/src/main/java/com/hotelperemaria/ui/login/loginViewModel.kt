@@ -10,10 +10,11 @@ import com.hotelperemaria.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 @HiltViewModel
-class loginViewModel @Inject constructor(private val authRepository: AuthRepository, private val sessionManager: SessionManager) : ViewModel(){
+class loginViewModel @Inject constructor(private val authRepository: AuthRepository, sessionManager: SessionManager) : ViewModel(){
 
     val sessionState: StateFlow<Boolean> = sessionManager.loginState
     // error
@@ -73,7 +74,26 @@ class loginViewModel @Inject constructor(private val authRepository: AuthReposit
                     _navigateToHome.value = true
                     _Correcto.value = true
                 } else {
-                    _errorMessage.value = "Error de internet o servidor"
+                    result.onFailure {
+                        _errorMessage.value = when (it) {
+                            is IOException -> "Error de conexión a Internet. Verifica tu red e intenta nuevamente."
+                            is HttpException -> "Error del servidor. Inténtalo de nuevo más tarde."
+                            is NullPointerException,
+                            is IllegalArgumentException,
+                            is IllegalStateException,
+                            is IndexOutOfBoundsException,
+                            is UnsupportedOperationException,
+                            is ArithmeticException,
+                            is ClassCastException,
+                            is AssertionError,
+                            is NoSuchElementException,
+                            is ConcurrentModificationException,
+                            is Error,
+                            is Exception-> "Se ha producido un error inesperado. Inténtalo de nuevo."
+                            else -> "Cuenta o contraseña incorrecta. Verifica tus credenciales e inténtalo nuevamente."
+                        }
+                    }
+
                 }
             } catch (e: Exception) {
                 _errorMessage.value = when (e) {
