@@ -39,14 +39,39 @@ router.get('/:username', async (req, res) => {
     }
 });
 
-router.put('/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
     try {
-        const id = new mongoose.Types.ObjectId(req.params.id); // ← Esto convierte el ID
-        const usuario = await Usuario.findByIdAndUpdate(id, req.body, { new: true });
-        if (!usuario) return res.status(404).send("Usuario no encontrado");
-        res.json(usuario);
+        const id = req.params.id;
+
+        console.log("actualizacion ID:", id);
+        console.log("datos:", req.body);
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            console.log("ID no válido");
+            return res.status(400).json({ error: "ID no válido" });
+        }
+
+        const usuarioAntes = await Usuario.findById(id);
+        if (!usuarioAntes) {
+            console.log("Usuario no encontrado");
+            return res.status(404).json({ error: "Usuario no encontrado" });
+        }
+
+        console.log("Usuario antes de la actualizacion:", usuarioAntes);
+
+        const usuarioDespues = await Usuario.findByIdAndUpdate(id, req.body, { new: true });
+
+        console.log("Usuario despues de la actualizacion:", usuarioDespues);
+
+        res.json({
+            mensaje: "Usuario actualizado correctamente",
+            antes: usuarioAntes,
+            despues: usuarioDespues
+        });
+
     } catch (error) {
-        res.status(500).send(error.message);
+        console.error("Error en la actualizacion:", error);
+        res.status(500).json({ error: error.message });
     }
 });
 

@@ -22,7 +22,7 @@ const usuarioSchema = new Schema({
         }
     },
     NIF: { type: String, maxlength: 12 },
-    username: { type: String, required: true, unique: true, maxlength: 30 },
+    username: { type: String, required: false, maxlength: 30 },
     password: { type: String, required: true },
     tipo: { type: Number, required: true, enum: [1, 2, 3, 5], default: 1 }, // 1 -> Cliente, 2 -> Empleado, 3 -> Administrador 5 -> SuperAdmin
     id_avatar: {
