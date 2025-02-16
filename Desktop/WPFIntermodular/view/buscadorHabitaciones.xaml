@@ -34,7 +34,6 @@
                         <ComboBox x:Name="cajaTipo" ItemsSource="{Binding TiposHabitacion}" SelectedIndex="{Binding SelectedTipoIndex, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10,0,0">
-                            <Button Style="{StaticResource BtnPrin}" Width="139" Margin="10" Click="Button_Click_2">Reset</Button>
 
                             <Button Style="{StaticResource BtnPrin}" Width="139" Margin="10">Buscar</Button>
                         </StackPanel>

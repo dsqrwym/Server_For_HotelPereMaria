@@ -126,15 +126,6 @@ namespace WPFIntermodular.view
             this.Close();
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-                idText.Text = "";
-                nomText.Text = "";
-                cajaTipo.SelectedIndex = -1;
-                 buscarHabitacionViewModel.instance.Filtro.Refresh();
-           
-            
-
-        }
+       
     }
 }
