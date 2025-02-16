@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hotelperemaria.data.model.ReservaForList
 import com.hotelperemaria.data.repository.ReservationRepository
 import com.hotelperemaria.data.repository.ReservationResult
@@ -15,7 +14,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.time.Instant
@@ -117,12 +115,13 @@ class ReservationListViewModel @Inject constructor(private val repository: Reser
     val filteredReservas: StateFlow<List<ReservaForList>> = _filteredReservas.asStateFlow()
 
     private fun loadInitialData() {
+        isLoading = true
         viewModelScope.launch {
             when (val result = repository.getReservasByUsuarioId()) {
                 is ReservationResult.Success -> {
                     _originalReservas.value = result.data
                     _filteredReservas.value = _originalReservas.value
-                    val priceRange = _filteredReservas.value.map { it.precio_total }
+                    val priceRange = _originalReservas.value.map { it.precio_total }
                         .let { prices -> prices.min().toFloat()..prices.max().toFloat() }
                     _state.update { state ->
                         (state as CompositeFilterState).copy(
@@ -139,9 +138,14 @@ class ReservationListViewModel @Inject constructor(private val repository: Reser
                             )
                         )
                     }
+                    isLoading = false
+                    applyFilters()
                 }
 
-                else -> {}
+                else -> {
+                    isLoading = false
+                    applyFilters()
+                }
             }
         }
     }
@@ -371,9 +375,5 @@ class ReservationListViewModel @Inject constructor(private val repository: Reser
             }
         }
        applyFilters()
-    }
-
-    fun editReserva(it: ReservaForList) {
-        applyFilters()
     }
 }

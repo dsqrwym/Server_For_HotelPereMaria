@@ -21,6 +21,7 @@ import com.hotelperemaria.ui.login.loginViewModel
 import com.hotelperemaria.ui.principal.PrincipalScreen
 import com.hotelperemaria.ui.registro.registerScreen
 import com.hotelperemaria.ui.reserva.ReservationListScreen
+import com.hotelperemaria.ui.reserva.ReservationModifyScreen
 import com.hotelperemaria.ui.reserva.ReservationScreen
 
 @Composable
@@ -47,22 +48,23 @@ fun NavigationWrapper() {
                 loginScreen(
                     hiltViewModel(),
                     { navController.navigate(Registro) },
-                    { navController.navigate(Principal) })
+                    { navController.navigate(ReservationList) })
             }
             composable<Registro> {
                 registerScreen(viewModel()) { navController.navigate(Login) }
             }
             composable<Principal> {
-                PrincipalScreen()
-            }
-
-            composable<Reservation> {
-                ReservationScreen()
+                PrincipalScreen{ navController.navigate(Reservation) }
             }
             composable<ReservationList> {
-                ReservationListScreen()
+                ReservationListScreen(onBack = {}){navController.navigate(ReservationModify)}
             }
-
+            composable<Reservation> {
+                ReservationScreen{ navController.navigate(Principal) }
+            }
+            composable<ReservationModify> {
+                ReservationModifyScreen{ navController.navigate(ReservationList) }
+            }
         }
     }
 }

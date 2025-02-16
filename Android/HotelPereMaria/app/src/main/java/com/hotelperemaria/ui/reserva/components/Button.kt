@@ -20,7 +20,7 @@ import com.hotelperemaria.R
 fun ReservationButton(name: String, onClick: () -> Unit) {
     Row(
         Modifier
-            .padding(18.dp)
+            .padding(13.dp)
             .fillMaxWidth(1f),
         horizontalArrangement = Arrangement.Center
     ) {

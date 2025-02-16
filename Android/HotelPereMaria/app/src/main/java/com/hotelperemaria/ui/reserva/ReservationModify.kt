@@ -1,5 +1,6 @@
 package com.hotelperemaria.ui.reserva
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,25 +14,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hotelperemaria.R
-import com.hotelperemaria.data.model.ReservaForList
+import com.hotelperemaria.ui.principal.HabitacionCard
 import com.hotelperemaria.ui.reserva.components.DatePicker
 import com.hotelperemaria.ui.reserva.components.ReservationButton
 import com.hotelperemaria.ui.reserva.components.ServicesList
 import com.hotelperemaria.ui.reserva.components.Slider
 import com.hotelperemaria.ui.reserva.components.TopBar
 import com.hotelperemaria.utils.LoadingScreen
-import java.time.Instant
 
 @Composable
-fun ReservationModifyScreen(reservaViewModel : ReservaViewModel = hiltViewModel(), reserva: ReservaForList) {
-    reservaViewModel.inicialModifyReservaScreen(reserva)
+fun ReservationModifyScreen(reservaViewModel : ReservaViewModel = hiltViewModel(LocalContext.current as ComponentActivity), onBack: () -> Unit) {
+    //reservaViewModel.inicialModifyReservaScreen(reserva)
     val isLoading = reservaViewModel.isLoading.collectAsState()
     val errorMessage by reservaViewModel.errorMessage.collectAsState()
+    val habitaciones = reservaViewModel.currentHabitacion.collectAsState()
     var showErrorDialog by remember { mutableStateOf(false) }
 
     // 当 errorMessage 变化时更新对话框状态
@@ -56,16 +58,20 @@ fun ReservationModifyScreen(reservaViewModel : ReservaViewModel = hiltViewModel(
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         TopBar(stringResource(R.string.top_bar_reservation_modify)) {
-            println("Back")
+            onBack()
         }
-        RoomInfoCard("Informacion de la habitacion")
+        if (habitaciones.value != null){
+            HabitacionCard(habitaciones.value!!) { }
+        }
         DatePicker(reservaViewModel)
-        Slider("${stringResource(R.string.reservation_field_guests)}: ", reservaViewModel.maxHuesped) {
+        val maxim = reservaViewModel.maxHuesped.collectAsState()
+        Slider("${stringResource(R.string.reservation_field_guests)}: ", maxim.value) {
             reservaViewModel.updateHuespedSelected(it)
         }
         ServicesList(reservaViewModel)
         ReservationButton(stringResource(R.string.reservation_button_modify)) {
             reservaViewModel.modifyReservation()
+            onBack()
         }
     }
     LoadingScreen(isLoading = isLoading.value)

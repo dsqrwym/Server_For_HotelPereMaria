@@ -26,7 +26,7 @@ fun Slider(field: String, maxim: Float, onValueChange: (Float) -> Unit) {
 
     Box(
         modifier = Modifier
-            .padding(18.dp)
+            .padding(13.dp)
             .shadow(
                 elevation = 10.dp,
                 shape = MaterialTheme.shapes.medium

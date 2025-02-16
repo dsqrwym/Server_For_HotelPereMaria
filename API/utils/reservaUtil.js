@@ -84,7 +84,7 @@ async function validateExtras(reservaData, habitacion) {
 
 // 验证人数是否超出房间容量
 async function validateHuespedes(reservaData, habitacion) {
-    if (reservaData.huespedes > habitacion.tipo_capacidad.capacidad) {
+    if (reservaData.huespedes > habitacion.Capacidad) {
         return { message: 'Numero de huesped superado a la capacidad maxima de dicha habitacion', statusCode: 400 };
     }
     return null;
@@ -93,9 +93,9 @@ async function validateHuespedes(reservaData, habitacion) {
 // 计算并返回总价格
 async function calculatePrecioTotal(reservaData, habitacion) {
     const nights = Math.ceil((new Date(reservaData.fecha_salida) - new Date(reservaData.fecha_entrada)) / (1000 * 60 * 60 * 24));
-    const habitacionPrecio = nights * habitacion.precio_noche;
-    const extrasPrecio = reservaData.extrasSeleccionados? reservaData.extrasSeleccionados.reduce((total, extra) => total + (extra.precio || 0), 0): 0;
-    return habitacionPrecio + extrasPrecio;
+    const habitacionPrecio = nights * habitacion.Precio;
+    const extrasPrecio = reservaData.extrasSeleccionados.length > 0 ? reservaData.extrasSeleccionados.reduce((total, extra) => total + (Number(extra.precio) || 0), 0): 0;
+    return (habitacionPrecio + extrasPrecio);
 }
 
 // 主验证函数

@@ -7,6 +7,7 @@ import com.hotelperemaria.data.model.ExtraService
 import com.hotelperemaria.data.model.ReservaForList
 import com.hotelperemaria.data.model.ReservaRequest
 import com.hotelperemaria.data.model.ReservaResponse
+import com.hotelperemaria.data.model.ReservedDate
 import com.hotelperemaria.data.model.TipoCapacidad
 import com.hotelperemaria.data.network.ApiReservaService
 import java.io.IOException
@@ -43,10 +44,12 @@ class ReservationRepository @Inject constructor(
                         ReservationResult.Success(successTransform(response.data))
                     } ?: ReservationResult.Error("Empty response data")
                 }
+
                 404 -> {
                     Log.w(TAG, "No data found (404), returning empty result")
                     ReservationResult.Error("No data found")
                 }
+
                 401 -> ReservationResult.Unauthorized
                 else -> ReservationResult.Error(response.message)
             }
@@ -69,6 +72,26 @@ class ReservationRepository @Inject constructor(
         }
     }
 
+    suspend fun getReservedDate(
+        idHabitacion: String,
+        id: String? = null
+    ): ReservationResult<List<ReservedDate>> {
+        return try {
+            val token = sessionManager.getAccessToken() ?: return ReservationResult.Unauthorized
+            Log.d("ReservaRepository", "getReservedDate hanitacionId: $idHabitacion, id: $id")
+            handleApiResponse(
+                apiCall = { apiReservaService.getReservedDaysForRoom(token, idHabitacion, id) },
+                successTransform = {
+                    Log.d("ReservaRepository", "getReservedDate: $it")
+                    Log.d("ReservaRepository", "getReservedDate: ${it.reservedDates}")
+                    it.reservedDates
+                }
+            )
+        } catch (e: Exception) {
+            handleException(e, "getReservedDate")
+        }
+    }
+
     suspend fun getReservaById(
         id: String,
         fields: String = DEFAULT_FIELDS,
@@ -88,7 +111,7 @@ class ReservationRepository @Inject constructor(
                         habitacionFields
                     )
                 },
-                successTransform = { it }
+                successTransform = { it.first() }
             )
         } catch (e: Exception) {
             handleException(e, "getReservaById")
@@ -101,28 +124,69 @@ class ReservationRepository @Inject constructor(
         fechaEntrada: Instant,
         fechaSalida: Instant,
         extrasSeleccionados: List<ExtraService>
-    ): ReservationResult<ReservaResponse> {
+    ): ReservationResult<ApiResponse<Unit>> {
         return try {
+            val token = sessionManager.getAccessToken() ?: return ReservationResult.Unauthorized
             val user = sessionManager.currentUser.value
             if (user == null) {
                 sessionManager.clearTokens()
                 return ReservationResult.Error("User not logged in")
             }
-            handleApiResponse(
-                apiCall = {
-                    apiReservaService.createReserva(
-                        ReservaRequest(
-                            id_usuario = user._id,
-                            id_habitacion = idHabitacion,
-                            huespedes = huespedes,
-                            fecha_entrada = fechaEntrada,
-                            fecha_salida = fechaSalida,
-                            extrasSeleccionados = extrasSeleccionados
-                        )
-                    )
-                },
-                successTransform = { it }
+            val result = apiReservaService.createReserva(
+                token,
+                ReservaRequest(
+                    id_usuario = user._id,
+                    id_habitacion = idHabitacion,
+                    huespedes = huespedes,
+                    fecha_entrada = fechaEntrada,
+                    fecha_salida = fechaSalida,
+                    extrasSeleccionados = extrasSeleccionados
+                )
             )
+            if (result.statusCode == 201) {
+                return ReservationResult.Success(result)
+            } else {
+                return ReservationResult.Error(result.message)
+            }
+
+        } catch (e: Exception) {
+            handleException(e, "createReserva")
+        }
+    }
+
+    suspend fun updateReserva(
+        id: String,
+        idHabitacion: String,
+        huespedes: Int,
+        fechaEntrada: Instant,
+        fechaSalida: Instant,
+        extrasSeleccionados: List<ExtraService>
+    ): ReservationResult<ApiResponse<Unit>> {
+        return try {
+            val token = sessionManager.getAccessToken() ?: return ReservationResult.Unauthorized
+            val user = sessionManager.currentUser.value
+            if (user == null) {
+                sessionManager.clearTokens()
+                return ReservationResult.Error("User not logged in")
+            }
+            val result = apiReservaService.updateReserva(
+                token,
+                id,
+                ReservaRequest(
+                    id_usuario = user._id,
+                    id_habitacion =idHabitacion,
+                    huespedes = huespedes,
+                    fecha_entrada = fechaEntrada,
+                    fecha_salida = fechaSalida,
+                    extrasSeleccionados = extrasSeleccionados
+                )
+            )
+            if (result.statusCode == 200) {
+                return ReservationResult.Success(result)
+            } else {
+                return ReservationResult.Error(result.message)
+            }
+
         } catch (e: Exception) {
             handleException(e, "createReserva")
         }
@@ -130,8 +194,7 @@ class ReservationRepository @Inject constructor(
 
     private fun convertToReservaForList(response: ReservaResponse): ReservaForList? {
         return with(response) {
-            if (id_habitacion == null || fecha_entrada == null ||
-                fecha_salida == null || precio_total == null || huespedes == null
+            if (fecha_entrada == null || fecha_salida == null || precio_total == null
             ) {
                 Log.w(TAG, "Incomplete reservation data: $this")
                 return null
@@ -146,7 +209,7 @@ class ReservationRepository @Inject constructor(
                 precio_total = precio_total,
                 extrasSeleccionados = extrasSeleccionados ?: emptyList()
             ).apply {
-                tipo_habitacion = id_habitacion?.Tipo ?: "Unknown"
+                tipo_habitacion = id_habitacion.Tipo
             }
         }
     }
@@ -246,7 +309,7 @@ class ReservationRepository @Inject constructor(
     suspend fun cancelarReserva(id: String): ReservationResult<Unit> {
         return try {
             val token = sessionManager.getAccessToken()
-            ?: return ReservationResult.Unauthorized
+                ?: return ReservationResult.Unauthorized
             handleApiResponse(
                 apiCall = { apiReservaService.cancelarReserva(token, id) },
                 successTransform = {}

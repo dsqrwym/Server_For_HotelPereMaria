@@ -1,6 +1,7 @@
 package com.hotelperemaria.utils
 
 import android.content.Context
+import android.util.Log
 import com.hotelperemaria.R
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -41,18 +42,24 @@ object DateUtils {
     // 转换 ISO 8601 日期字符串为毫秒
     fun convertISO8601ToMillis(dateString: String, timeZone: TimeZone = TimeZone.getTimeZone("UTC")): Long? {
         if (dateString.isBlank()) return null
-        return parseDate(dateString, getISO8601Format(timeZone))
+        val formattedDateString = if (dateString.matches(Regex("\\d{4}-\\d{2}-\\d{2}"))) {
+            "${dateString}T00:00:00.000Z"
+        } else {
+            dateString  // 如果已经是完整的 ISO8601 格式，直接使用
+        }
+        return parseDate(formattedDateString, getISO8601Format(timeZone))
     }
 
     // 解析日期字符串为毫秒
     private fun parseDate(dateString: String, dateFormat: SimpleDateFormat): Long? {
         return try {
-            return dateFormat.parse(dateString)?.time
+            val date = dateFormat.parse(dateString)?.time
+            Log.d("DateUtils", "parseDate: $date")
+            return date
         } catch (e: ParseException) {
             null
         }
     }
-
     // **获取本地日期格式**
     private fun getLocalDateFormat(timeZone: TimeZone): SimpleDateFormat {
         return localDateFormat.get() ?: SimpleDateFormat(displayDateFormat, Locale.getDefault()).apply {

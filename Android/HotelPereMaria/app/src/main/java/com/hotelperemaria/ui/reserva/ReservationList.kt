@@ -1,5 +1,6 @@
 package com.hotelperemaria.ui.reserva
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -42,7 +44,7 @@ import com.hotelperemaria.ui.reserva.components.filter.FilterBar
 import com.hotelperemaria.utils.LoadingScreen
 
 @Composable
-fun ReservationListScreen(viewModel: ReservationListViewModel = hiltViewModel()) {
+fun ReservationListScreen(viewModel: ReservationListViewModel = hiltViewModel(), onBack: () -> Unit, onItemClick: () -> Unit) {
     var expandedFilter by remember { mutableStateOf(false) }
     Column(
         Modifier
@@ -55,8 +57,9 @@ fun ReservationListScreen(viewModel: ReservationListViewModel = hiltViewModel())
             }
     ) {
         TopBar(stringResource(R.string.top_bar_reservation_list)) {
-            println("Back")
+            onBack()
         }
+        val reservaViewModel: ReservaViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
         Box {
             val originSouce by viewModel.originalReservas.collectAsState()
             val results by viewModel.filteredReservas.collectAsState()
@@ -66,7 +69,10 @@ fun ReservationListScreen(viewModel: ReservationListViewModel = hiltViewModel())
                 ReservationCardList(
                     results,
                     onCancel = { viewModel.cancelReserva(it) },
-                    onEdit = { viewModel.editReserva(it) }
+                    onEdit = {
+                        reservaViewModel.inicialModifyReservaScreen(it)
+                        onItemClick()
+                    }
                 ) {
                     if (expandedFilter) expandedFilter = false
                 }
@@ -157,5 +163,5 @@ fun ReservationCardList(
 @Composable
 fun ReservationListScreenPreview() {
     val viewModel: ReservationListViewModel = viewModel()
-    ReservationListScreen(viewModel)
+    ReservationListScreen(viewModel, onBack = {}){}
 }

@@ -13,3 +13,15 @@ data class ApiResponse<T>(
 data class ReservaData(
     val reservas: List<ReservaResponse>
 )
+
+
+@Serializable
+data class ReservedDate(
+    val fecha_entrada: String,
+    val fecha_salida: String
+)
+
+@Serializable
+data class ReservedDatesData(
+    val reservedDates: List<ReservedDate>
+)

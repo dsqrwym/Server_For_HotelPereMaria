@@ -64,7 +64,9 @@ fun ServicesList(reservaViewModel: ReservaViewModel) {
     val sortedServices by remember(extraServices, selectedServices) {
         derivedStateOf {
             extraServices.sortedWith(
-                compareByDescending<ExtraService> { selectedServices.contains(it) }
+                compareByDescending<ExtraService> {
+                    selectedServices.any { selectedService -> selectedService.nombre == it.nombre }
+                }
                     .thenBy { it.nombre }
             )
         }
@@ -78,7 +80,7 @@ fun ServicesList(reservaViewModel: ReservaViewModel) {
                 shape = MaterialTheme.shapes.medium,
                 color = MaterialTheme.colorScheme.secondaryContainer
             )
-            .padding(16.dp),
+            .padding(13.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -97,13 +99,13 @@ fun ServicesList(reservaViewModel: ReservaViewModel) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(max = 200.dp) // 限制最大高度
+                    .heightIn(max = 150.dp) // 限制最大高度
             ) {
                 itemsIndexed(sortedServices) { index, service ->
-                    if (index == 0){
+                    if (index == 0) {
                         Spacer(modifier = Modifier.height(15.dp))
                     }
-                    val isChecked = selectedServices.contains(service)
+                    val isChecked = selectedServices.any{service.nombre == it.nombre}
                     ServiceItem(
                         extraService = service,
                         isChecked = isChecked,
@@ -193,7 +195,9 @@ fun ServiceItem(
             ) { checked ->
                 Icon(
                     if (checked) Icons.Default.Check else Icons.Default.Close,
-                    contentDescription = if (checked) stringResource(R.string.reservation_field_additional_services_checked) else stringResource(R.string.reservation_field_additional_services_unchecked),
+                    contentDescription = if (checked) stringResource(R.string.reservation_field_additional_services_checked) else stringResource(
+                        R.string.reservation_field_additional_services_unchecked
+                    ),
                     modifier = Modifier
                         .size(16.dp)
                         .align(Alignment.Center),

@@ -4,8 +4,10 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
 import android.util.Log
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,14 +24,16 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hotelperemaria.R
 import com.hotelperemaria.data.model.Habitaciones
+import com.hotelperemaria.ui.reserva.ReservaViewModel
 
 @Composable
-fun PrincipalScreen(viewModel: PrinciapalScreenViewModel = hiltViewModel()) {
+fun PrincipalScreen(viewModel: PrinciapalScreenViewModel = hiltViewModel(), onItemClick: () -> Unit) {
     val habitaciones = viewModel.habitaciones.observeAsState(initial = emptyList())
 
     Box(
@@ -38,23 +42,29 @@ fun PrincipalScreen(viewModel: PrinciapalScreenViewModel = hiltViewModel()) {
             .background(color = colorResource(R.color.fondo)),
         contentAlignment = Alignment.Center
     ) {
+
+        val reservaViewModel: ReservaViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(habitaciones.value) { habitacion ->
-                HabitacionCard(habitacion)
+                HabitacionCard(habitacion){
+                    reservaViewModel.creacionDeReserva(habitacion)
+                    onItemClick()
+                }
             }
         }
     }
 }
 
 @Composable
-fun HabitacionCard(habitacion: Habitaciones) {
+fun HabitacionCard(habitacion: Habitaciones, onItemClick: (Habitaciones) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
+            .clickable { onItemClick(habitacion) }
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -69,7 +79,7 @@ fun HabitacionCard(habitacion: Habitaciones) {
                         contentDescription = "Imagen de la habitación",
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(200.dp)
+                            .height(190.dp)
                     )
                 }
             }

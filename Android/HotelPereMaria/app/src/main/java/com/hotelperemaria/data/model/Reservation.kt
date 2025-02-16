@@ -117,7 +117,7 @@ data class ExtraService(
 @Serializable
 data class ReservaForList(
     val id: String,
-    val id_habitacion: Habitacion? = null,
+    val id_habitacion: Habitacion,
     @Serializable(with = InstantSerializer::class)
     val fecha_entrada: Instant,
     @Serializable(with = InstantSerializer::class)
