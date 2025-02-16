@@ -73,7 +73,7 @@ class loginViewModel @Inject constructor(private val authRepository: AuthReposit
                     _navigateToHome.value = true
                     _Correcto.value = true
                 } else {
-                    _errorMessage.value = "${result.exceptionOrNull()}"
+                    _errorMessage.value = "Error de internet o servidor"
                 }
             } catch (e: Exception) {
                 _errorMessage.value = when (e) {

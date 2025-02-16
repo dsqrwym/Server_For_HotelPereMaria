@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
 import android.util.Log
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -32,7 +34,7 @@ fun PrincipalScreen(viewModel: PrincipalScreenViewModel = hiltViewModel(), onIte
     val nombre by viewModel.nombre.observeAsState("")
     val tiposSeleccionados by viewModel.tiposSeleccionados.observeAsState(emptyList())
 
-    val reservaViewModel: ReservaViewModel = hiltViewModel()
+    val reservaViewModel: ReservaViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
 
     Column(
         modifier = Modifier
