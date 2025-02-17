@@ -53,7 +53,7 @@
             <Button Canvas.Top="10" Canvas.Right="20" 
                     Content="Cerrar Sesión" 
                      FontSize="18" Height="50" Width="150"
-                    Style="{StaticResource RoundButtonStyle}" Command="{Binding CerrarSesionCommand}"/>
+                    Style="{StaticResource RoundButtonStyle}" Command="{Binding CerrarSesionCommand}" Click="Button_Click"/>
             <Button Canvas.Top="10" Canvas.Right="20" 
         Content="Lista habitaciones" 
          FontSize="18" Height="50" Width="166"
@@ -183,7 +183,10 @@ Style="{StaticResource RoundButtonStyle}" Command="{Binding NavegarAListaReserva
                                     <Run x:Name="precioHab" Text="{Binding PrecioNoche}" FontSize="12" FontWeight="Bold"/>
                                     <Run Text=" €/noche" FontSize="12" FontWeight="Bold"/>
                             </TextBlock>
-                            <Button Content="Reservar habitación" Height="39" Width="158" Style="{StaticResource RoundButtonStyle}" Margin="10" Command="{Binding DataContext.ReservarCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}"/>
+                            <Button Content="Reservar habitación" Height="39" Width="158" 
+                                    Style="{StaticResource RoundButtonStyle}" Margin="10" 
+                                    Command="{Binding DataContext.ReservarCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding}" IsEnabled="{Binding DataContext.Activado, RelativeSource={RelativeSource AncestorType=Window}}"/>
                         </StackPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

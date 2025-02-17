@@ -37,8 +37,8 @@
         <!--Menu-->
         <StackPanel Margin="10,0" Orientation="Horizontal" Grid.Column="1">
             <Button Margin="38 0" Content="Buscador" Style="{StaticResource FlatButtonStyle}" Command="{Binding CrearReservaScreen}"/>
-            <Button Margin="38 0" Content="Usuario" Style="{StaticResource FlatButtonStyle}"/>
-            <Button Margin="38 0" Content="Habitaciones" Style="{StaticResource FlatButtonStyle}"/>
+            <Button Margin="38 0" Content="Usuario" Style="{StaticResource FlatButtonStyle}" Command="{Binding NavegarUsuario}"/>
+            <Button Margin="38 0" Content="Habitaciones" Style="{StaticResource FlatButtonStyle}" Command="{Binding NavegarHabitacion}"/>
         </StackPanel>
 
         <!--Buscador-->
@@ -176,7 +176,7 @@
 
                                 <TextBlock Grid.Column="1" Text="{Binding Id}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="10 0 0 0"/>
 
-                                <Image Grid.Column="2" MaxHeight="20" Stretch="Uniform" Source="{Binding Habitacion.ImagesUrl}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                <Image Grid.Column="2" MaxHeight="20" Stretch="Uniform" Source="{Binding Habitacion.ImageSource}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
                                 <TextBlock Grid.Column="3" Text="{Binding Usuario.Nombre}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
@@ -212,7 +212,7 @@
 
         <!--Añadir nuevo-->
         <Canvas Grid.Column="3" Grid.Row="3">
-            <Button Canvas.Bottom="50" Canvas.Right="50" Style="{StaticResource cicleButton}" Click="ButtonCrear_Click">
+            <Button Canvas.Bottom="50" Canvas.Right="50" Style="{StaticResource cicleButton}" Command="{Binding CrearReservaScreen}">
                 <TextBlock Text="➕" FontSize="38" Foreground="White" />
             </Button>
         </Canvas>

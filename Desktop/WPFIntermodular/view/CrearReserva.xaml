@@ -21,13 +21,13 @@
         <!-- Body -->
         <Grid Grid.Row="1" Grid.Column="1" ClipToBounds="False">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="311*"/>
-                <ColumnDefinition Width="730*"/>
+                <ColumnDefinition Width="355*"/>
+                <ColumnDefinition Width="686*"/>
                 <ColumnDefinition Width="179*"/>
             </Grid.ColumnDefinitions>
 
             <!--Habitacion Info-->
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" ClipToBounds="False">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" ClipToBounds="False" Height="488" Width="312">
                 <!--Crear Reserva-->
                 <TextBlock x:Name="titulo" ClipToBounds="False" Foreground="{StaticResource azulNormal}" FontSize="40" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Crear Reserva"/>
 
@@ -38,14 +38,18 @@
                 <TextBlock x:Name="nombreHabitacion" Foreground="{StaticResource azulClick}" FontSize="28" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Habitación" AllowDrop="True"/>
             </StackPanel>
 
-            <Grid Grid.Column="1" VerticalAlignment="Center">
+            <Grid VerticalAlignment="Center" Height="399" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="683*"/>
+                    <ColumnDefinition Width="46*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
                     <!--Fecha de Entrada-->
                     <StackPanel Margin="20 10">
                         <Label Margin="10 5" Content="_Fecha de entrada" Target="{Binding ElementName=fechaEntradaInput}"/>
@@ -68,7 +72,7 @@
                     </StackPanel>
                 </StackPanel>
 
-                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="20 10">
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="20,10,20,10" Grid.ColumnSpan="2">
                     <!--Listas extras, si no hay servicio extras, cambiar visibility a collapse-->
                     <StackPanel x:Name="contenedorListaExtras">
                         <Label Content="_Seleccione servicios adicionales" Margin="10" Target="{Binding ElementName=extrasList}"/>
@@ -96,7 +100,7 @@
                 </StackPanel>
 
                 <!--Sellecionar Cliente-->
-                <StackPanel Grid.Row="2" Margin="20" Width="300" HorizontalAlignment="Left">
+                <StackPanel Grid.Row="2" Margin="20,20,0,20" Width="300" HorizontalAlignment="Left">
                     <Label Content="_Cliente" Margin="10 10 10 0" Target="{Binding ElementName=clienteComboBox}"/>
                     <ComboBox x:Name="clienteComboBox" 
                               Margin="10" Style="{StaticResource ComboBoxStyle}" 
@@ -115,7 +119,7 @@
             </Grid>
 
             <!--Operaciones-->
-            <Canvas Grid.Column="2">
+            <Canvas Grid.Column="2" Margin="41,0,0,0">
                 <!--Cancelar-->
                 <Button Canvas.Top="30" Canvas.Right="0" Style="{StaticResource cicleButton}" Click="Button_CloseClick">
                     <TextBlock Text="✖️" FontSize="26" Foreground="White"/>

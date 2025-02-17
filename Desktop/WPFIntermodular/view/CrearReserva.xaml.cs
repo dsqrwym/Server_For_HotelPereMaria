@@ -23,11 +23,13 @@ namespace WPFIntermodular.view
     /// </summary>
     public partial class CrearReserva : Window
     {
+        private readonly NavigationService _navigationService = new NavigationService();
         private decimal precio;
         private ObservableCollection<Usuario> listaClientes;
         private ObservableCollection<Usuario> listClientesOriginal;
         private ObservableCollection<Extras> extras;
 
+        private string currentReservaId;
         public readonly static byte DETALLE = 0;
 
         public readonly static byte MODIFICAR = 1;
@@ -52,6 +54,8 @@ namespace WPFIntermodular.view
         }
         private async void CargarDatosBasicos(Reserva reserva)
         {
+            currentReservaId = reserva.Id;
+            imageHabitacion.Source = reserva.Habitacion.ImageSource;
             var clientes = await ReservaApiService.ObtenerClientesAsync();
 
             listaClientes = new ObservableCollection<Usuario>(clientes);
@@ -82,7 +86,8 @@ namespace WPFIntermodular.view
         public CrearReserva(Reserva reserva, byte state)
         {
             InitializeComponent();
-            
+
+            imageHabitacion.Source = reserva.Habitacion.ImageSource;
             /* Falta obtener todos usuarios*/
             CargarDatosBasicos(reserva);
             extras = new ObservableCollection<Extras>(reserva.Habitacion.ExtrasList.Select(extra => {
@@ -163,7 +168,15 @@ namespace WPFIntermodular.view
             }
             else
             {
-                extrasList.ItemsSource = habitacion.ExtrasList;
+                extras = new ObservableCollection<Extras>(
+                    habitacion.ExtrasList.Select(e => new Extras
+                    {
+                        Nombre = e.Nombre,
+                        Precio = e.Precio,
+                        IsSelected = false
+                    }).ToList()
+                );
+                extrasList.ItemsSource = extras;
             }
 
             titulo.Text = habitacion.Tipo;
@@ -268,8 +281,11 @@ namespace WPFIntermodular.view
             }
 
             decimal precioBase = noches * precio; // 房间基础价格（每晚价格 * 天数）
-
-            decimal precioExtras = extras.Where(e => e.IsSelected).Sum(e => e.Precio); // 选中Extras的总价
+            decimal precioExtras = 0;
+            if (extras != null)
+            {
+                precioExtras += extras.Where(e => e.IsSelected).Sum(e => e.Precio);// 选中Extras的总价
+            }
 
             decimal precioFinal = precioBase + precioExtras;
 
@@ -350,7 +366,7 @@ namespace WPFIntermodular.view
             }
         }
 
-        private async Task crearNuevaReserva_ClickAsync(object sender, RoutedEventArgs e)
+        private async void crearNuevaReserva_ClickAsync(object sender, RoutedEventArgs e)
         {
 
             if (clienteComboBox.SelectedItem == null)
@@ -385,6 +401,7 @@ namespace WPFIntermodular.view
             // **2️⃣ 组装 Reserva 对象**
             Reserva nuevaReserva = new Reserva
             {
+                Id = currentReservaId,
                 Usuario = clienteSeleccionado,
                 Habitacion = habitacion,
                 Fecha_ini = fechaEntrada,
@@ -397,11 +414,11 @@ namespace WPFIntermodular.view
             {
                 if (crearNuevaReserva.Content.Equals("Modificar"))
                 {
-                    // **3️⃣ 更新预订**
                     bool exito = await ReservaApiService.ActualizarReservaAsync(nuevaReserva);
                     if (exito)
                     {
                         MessageBox.Show("Reserva actualizada con éxito.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                        _navigationService.NavigateTo("adminReserva");
                         this.Close();
                     }
                     else
@@ -411,11 +428,11 @@ namespace WPFIntermodular.view
                 }
                 else
                 {
-                    // **4️⃣ 创建预订**
                     bool exito = await ReservaApiService.CrearReservaAsync(nuevaReserva);
                     if (exito)
                     {
                         MessageBox.Show("Reserva creada con éxito.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                        _navigationService.NavigateTo("buscarReserva");
                         this.Close();
                     }
                     else

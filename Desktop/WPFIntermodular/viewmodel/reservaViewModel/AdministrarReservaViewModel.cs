@@ -55,6 +55,8 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
         // Comandos
         public RelayCommand EliminarSeleccionadosCommand { get; set; }
         public RelayCommand CrearReservaScreen { get; set; }
+        public RelayCommand NavegarUsuario { get; set; }
+        public RelayCommand NavegarHabitacion { get; set; }
         public RelayCommand FiltrarCommand { get; set; }
         public RelayCommand RestablecerFiltrosCommand { get; set; }
         public RelayCommand<Reserva> EditarCommand { get; set; }
@@ -81,11 +83,23 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
             VerDetallesCommand = new RelayCommand<Reserva>(MostrarDetallesReserva);
             EliminarIndividualCommand = new RelayCommand<Reserva>(EliminarReservaIndividual);
             CrearReservaScreen = new RelayCommand(NavegarBuscaReserva);
+            NavegarHabitacion = new RelayCommand(NavegarHabitacionScreen);
+            NavegarUsuario = new RelayCommand(NavegarUsuarioScreen);
+        }
+
+        private void NavegarUsuarioScreen()
+        {
+            _navigationService.NavigateTo("userList");
+        }
+
+        private void NavegarHabitacionScreen()
+        {
+            _navigationService.NavigateTo("buscarHab");
         }
 
         private void NavegarBuscaReserva()
         {
-            _navigationService.NavigateTo("BuscarReserva");
+            _navigationService.NavigateTo("buscarReserva");
         }
 
         private void ConfigurarManejoEventos()
@@ -337,14 +351,12 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
                 return;
             }
             new CrearReserva(reserva, CrearReserva.MODIFICAR).Show();
-            _navigationService.NavigateTo("CrearReserva", reserva, CrearReserva.MODIFICAR);
 
         }
 
         private void MostrarDetallesReserva(Reserva reserva)
         {
             new CrearReserva(reserva, CrearReserva.DETALLE).Show();
-            _navigationService.NavigateTo("CrearReserva", reserva, CrearReserva.DETALLE);
         }
     }
 }

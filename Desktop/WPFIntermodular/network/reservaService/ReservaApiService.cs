@@ -12,8 +12,9 @@ namespace WPFIntermodular.network.reservaService
     public static class ReservaApiService
     {
         private static readonly HttpClient _httpClient = new HttpClient();
-        private static string baseUrl = "http://localhost:3000/api/reservas/";
-        private static string _authToken =  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OTJhY2M4NDcxYzI5MDk3NDgxMWQ2ZiIsInRpcG8iOjUsImlhdCI6MTczOTYxOTkxNywiZXhwIjoxNzM5NjIxNzE3fQ.720vi9prb3Ebvc8mM8J54fkpVeURhv8-jCNsjA7cFhs";
+        private static string BASE = "http://localhost:3000/api/";
+        private static string baseUrl = BASE + "reservas/";
+        private static string _authToken;
 
 
         public static void SetAuthToken(string token)
@@ -25,9 +26,11 @@ namespace WPFIntermodular.network.reservaService
 
         public async static Task<List<Reserva>> ObtenerReservas()
         {
+
             try
             {
-                string _urlEndpoint = baseUrl+"?fields=id_usuario,id_habitacion,huespedes,fecha_entrada,fecha_salida,precio_total,extrasSeleccionados,altUser&page=0&limit=5&usuarioFields=nombre,tipo,email&habitacionFields=Tipo,Capacidad,Precio,Extras,Images"; // Cambia esto por tu URL real
+                SetAuthToken(new ConexionApi().CargarToken());
+                string _urlEndpoint = baseUrl + "?fields=id_usuario,id_habitacion,huespedes,fecha_entrada,fecha_salida,precio_total,extrasSeleccionados,altUser&usuarioFields=nombre,tipo,email&habitacionFields=Tipo,Capacidad,Precio,Extras,Images"; // Cambia esto por tu URL real
 
                 if (!string.IsNullOrEmpty(_authToken))
                 {
@@ -68,8 +71,10 @@ namespace WPFIntermodular.network.reservaService
 
         public static async Task<bool> EliminarReservaAsync(string reservaId)
         {
+
             try
             {
+                SetAuthToken(new ConexionApi().CargarToken());
                 // 设置认证头
                 _httpClient.DefaultRequestHeaders.Authorization =
                     new AuthenticationHeaderValue("Bearer", _authToken);
@@ -120,6 +125,7 @@ namespace WPFIntermodular.network.reservaService
         {
             try
             {
+                SetAuthToken(new ConexionApi().CargarToken());
                 var requestUrl = $"{baseUrl}date/?id_habitacion={id_habitacion}&id={id_reserva}";
                 Debug.WriteLine(requestUrl);
                 _httpClient.DefaultRequestHeaders.Authorization =
@@ -149,6 +155,7 @@ namespace WPFIntermodular.network.reservaService
         {
             try
             {
+                SetAuthToken(new ConexionApi().CargarToken());
                 _httpClient.DefaultRequestHeaders.Authorization =
                     new AuthenticationHeaderValue("Bearer", _authToken);
 
@@ -156,17 +163,17 @@ namespace WPFIntermodular.network.reservaService
                 var requestData = new
                 {
                     id_usuario = nuevaReserva.Usuario?.Id,
-                    id_habitacion = nuevaReserva.Habitacion?.Id,
+                    id_habitacion = nuevaReserva.Habitacion?._id,
                     huespedes = nuevaReserva.CantidadHuesped,
                     fecha_entrada = nuevaReserva.Fecha_ini.ToString("yyyy-MM-dd"),
                     fecha_salida = nuevaReserva.Fecha_fin.ToString("yyyy-MM-dd"),
-                    extrasSeleccionados = nuevaReserva.ExtrasSeleccionadas?
-                        .Where(e => e.IsSelected)
-                        .ToDictionary(e => e.Nombre, e => e.Precio)
+                    extrasSeleccionados = nuevaReserva.ExtrasSeleccionadas? .Where(e => e.IsSelected).Select(e => new { nombre = e.Nombre, precio = e.Precio })
+
                 };
 
                 var json = JsonConvert.SerializeObject(requestData);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
+                Debug.WriteLine(json);
 
                 var response = await _httpClient.PostAsync(baseUrl, content);
 
@@ -193,6 +200,7 @@ namespace WPFIntermodular.network.reservaService
         {
             try
             {
+                SetAuthToken(new ConexionApi().CargarToken());
                 _httpClient.DefaultRequestHeaders.Authorization =
                     new AuthenticationHeaderValue("Bearer", _authToken);
 
@@ -202,9 +210,7 @@ namespace WPFIntermodular.network.reservaService
                     huespedes = reservaActualizada.CantidadHuesped,
                     fecha_entrada = reservaActualizada.Fecha_ini.ToString("yyyy-MM-dd"),
                     fecha_salida = reservaActualizada.Fecha_fin.ToString("yyyy-MM-dd"),
-                    extrasSeleccionados = reservaActualizada.ExtrasSeleccionadas?
-                        .Where(e => e.IsSelected)
-                        .ToDictionary(e => e.Nombre, e => e.Precio)
+                    extrasSeleccionados = reservaActualizada.ExtrasSeleccionadas?.Where(e => e.IsSelected).Select(e => new { nombre = e.Nombre, precio = e.Precio })
                 };
 
                 var json = JsonConvert.SerializeObject(updateData);
@@ -251,7 +257,8 @@ namespace WPFIntermodular.network.reservaService
         {
             try
             {
-                var requestUrl = "http://localhost:3000/api/habitacion/extras";
+                SetAuthToken(new ConexionApi().CargarToken());
+                var requestUrl = BASE + "habitacion/extras";
                 _httpClient.DefaultRequestHeaders.Authorization =
                     new AuthenticationHeaderValue("Bearer", _authToken);
 
@@ -275,9 +282,10 @@ namespace WPFIntermodular.network.reservaService
         }
         public static async Task<List<TipoCapacidad>> ObtenerTiposHabitacionAsync()
         {
-            string url = "http://localhost:3000/api/habitacion/types";
+            string url = BASE + "habitacion/types";
             try
             {
+                SetAuthToken(new ConexionApi().CargarToken());
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authToken);
 
                 var response = await _httpClient.GetAsync(url);
@@ -302,8 +310,8 @@ namespace WPFIntermodular.network.reservaService
         {
             try
             {
-                // Construct the API URL
-                string url = $"http://localhost:3000/api/reservas/habitacion_disponible/?fecha_entrada={fechaEntrada:yyyy-MM-dd}&fecha_salida={fechaSalida:yyyy-MM-dd}";
+                SetAuthToken(new ConexionApi().CargarToken());
+                string url = $"{baseUrl}habitacion_disponible/?fecha_entrada={fechaEntrada:yyyy-MM-dd}&fecha_salida={fechaSalida:yyyy-MM-dd}";
 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authToken);
 
@@ -332,7 +340,8 @@ namespace WPFIntermodular.network.reservaService
         {
             try
             {
-                string url = "http://localhost:3000/api/user/client";
+                SetAuthToken(new ConexionApi().CargarToken());
+                string url = BASE + "user/client";
 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authToken);
 
@@ -347,7 +356,7 @@ namespace WPFIntermodular.network.reservaService
             catch (Exception ex)
             {
                 DialogService.ShowError(ex.Message, "Error obteniendo clientes");
-                return new List<Usuario>(); 
+                return new List<Usuario>();
             }
             finally
             {
@@ -359,7 +368,8 @@ namespace WPFIntermodular.network.reservaService
         {
             try
             {
-                string url = "http://localhost:3000/api/user/employee";
+                SetAuthToken(new ConexionApi().CargarToken());
+                string url = BASE + "user/employee";
 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authToken);
 

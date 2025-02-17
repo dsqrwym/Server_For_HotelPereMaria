@@ -17,12 +17,6 @@ namespace WPFIntermodular.view
         // 编辑按钮点击事件
 
 
-        private void ButtonCrear_Click(object sender, RoutedEventArgs e)
-        {
-            //new BuscarReserva(this).Show();
-            cerrarView();
-        }
-
         private void cerrarView()
         {
             Visibility = Visibility.Collapsed;
@@ -43,6 +37,9 @@ namespace WPFIntermodular.view
         {
             fechaFinalInput.SelectedDate = null;
             fechaInicioInput.SelectedDate = null;
+            nombreClienteSelect.SelectedItem = null;
+            nombreEmpleadoSelect.SelectedItem = null;
+            rol.SelectedItem = null;
         }
     }
 }

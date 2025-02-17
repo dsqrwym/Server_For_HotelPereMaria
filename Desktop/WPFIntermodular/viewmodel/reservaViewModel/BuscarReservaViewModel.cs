@@ -1,20 +1,19 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Documents;
 using WPFIntermodular.model.reserva;
 using WPFIntermodular.network.reservaService;
+using WPFIntermodular.view;
 
 namespace WPFIntermodular.viewmodel.reservaViewModel
 {
-    public class Room
-    {
-        public string ImageSource { get; set; }
-        public string RoomName { get; set; }
-        public double Price { get; set; }
-    }
+
     public class BuscarReservaViewModel : ViewModelBase
     {
         private readonly NavigationService _navigationService;
@@ -42,8 +41,29 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
         public DateTime startEndDate { get; set; }
         public List<TipoCapacidad> TiposHab { get; set; }
         public TipoCapacidad TipoSeleccionado { get; set; }
-        public DateTime? FechaEntrada { get; set; }
-        public DateTime? FechaSalida { get; set; }
+        private DateTime? _fechaEntrada;
+        public DateTime? FechaEntrada
+        {
+            get => _fechaEntrada;
+            set
+            {
+                _fechaEntrada = value;
+                Debug.WriteLine(value);
+                RaisePropertyChanged(nameof(FechaEntrada));
+                BuscarHabitacionesSiFechasValidas();
+            }
+        }
+        private DateTime? _fechaSalida;
+        public DateTime? FechaSalida
+        {
+            get => _fechaSalida;
+            set
+            {
+                _fechaSalida = value;
+                RaisePropertyChanged(nameof(FechaSalida));
+                BuscarHabitacionesSiFechasValidas();
+            }
+        }
         public bool IncluyeComidas { get; set; }
         public bool IncluyeParking { get; set; }
         public bool IncluyeGM { get; set; }
@@ -54,6 +74,18 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
         public string nombreUsuario { get; set; }
         private Habitacion selectedHabitacion { get; set; }
 
+        private bool _isLoading;
+        public bool Activado
+        {
+            get => _isLoading;
+            set
+            {
+                _isLoading = value;
+                Debug.WriteLine(Activado);
+                RaisePropertyChanged(nameof(Activado));
+            }
+        }
+
 
         public BuscarReservaViewModel()
         {
@@ -61,6 +93,7 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
 
             // 初始化房间数据
 
+            Activado = false;
 
             InicializarDatosAsync();
 
@@ -74,7 +107,7 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
             // 初始化命令
             BuscarCommand = new RelayCommand(BuscarHabitaciones);
             ResetearCommand = new RelayCommand(ResetearFiltros);
-            ReservarCommand = new RelayCommand<object>(Reservar);
+            ReservarCommand = new RelayCommand<object>(Reservar, CanReservar);
             CerrarSesionCommand = new RelayCommand(() => _navigationService.NavigateTo("login"));
             NavegarAUsuarioCommand = new RelayCommand(NavegarAUsuario);
             NavegarAHabitacionCommand = new RelayCommand(NavegarAHabitacion);
@@ -83,23 +116,15 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
         }
         private async Task InicializarDatosAsync()
         {
+            Activado = false;
             habitacionesOriginal = new ObservableCollection<Habitacion>();
-            var habitaciones = await obtenerHabitacion(DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(2));
-
-            if (habitaciones.Count == 0)
-            {
-                DialogService.ShowWarning("No hay habitaciones disponibles en las fechas seleccionadas.", "No se encontraron resultados");
-            }
-            foreach (var item in habitaciones)
-            {
-                habitacionesOriginal.Add(item);
-            }
 
             Habitaciones = new ObservableCollection<Habitacion>(habitacionesOriginal);
             TiposHab = await getHabitacionTipos();
             RaisePropertyChanged(nameof(TiposHab));  // 通知 UI 数据已更新
             RaisePropertyChanged(nameof(habitacionesOriginal));
             RaisePropertyChanged(nameof(Habitaciones));
+            Activado = true;
         }
         private async Task<List<TipoCapacidad>> getHabitacionTipos()
         {
@@ -126,13 +151,14 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
                 DateTime fechaEntrada = (DateTime)FechaEntrada;
                 DateTime fechaSalida = (DateTime)FechaSalida;
 
+                Activado = false;
                 var habitaciones = await obtenerHabitacion(fechaEntrada, fechaSalida);
+                Activado = true;
 
                 if (habitaciones.Count == 0)
                 {
                     DialogService.ShowWarning("No hay resultado", "Datos vacios");
                 }
-
                 habitacionesOriginal.Clear();
                 foreach (var item in habitaciones)
                 {
@@ -173,6 +199,15 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
             }
         }
 
+        private async void BuscarHabitacionesSiFechasValidas()
+        {
+            if (FechaEntrada != null && FechaSalida != null && FechaSalida > FechaEntrada)
+            {
+                BuscarHabitaciones();
+            }
+            Debug.WriteLine(Activado);
+        }
+
         private void ResetearFiltros()
         {
             InicializarDatosAsync();
@@ -198,6 +233,10 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
             RaisePropertyChanged(nameof(PrecioDesde));
             RaisePropertyChanged(nameof(PrecioHasta));
         }
+        private bool CanReservar(object obj)
+        {
+            return Activado; 
+        }
 
         private void Reservar(object obj)
         {
@@ -205,7 +244,8 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
             {
                 if (FechaEntrada != null && FechaSalida != null)
                 {
-                    _navigationService.NavigateTo("CrearReserva", habitacion, FechaEntrada, FechaSalida);
+                    // _navigationService.NavigateTo("CrearReserva", habitacion, FechaEntrada, FechaSalida);
+                    new CrearReserva(habitacion, FechaEntrada, FechaSalida).Show();
                 }
                 else
                 {

@@ -1,7 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.CompilerServices;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
 
 namespace WPFIntermodular.model.reserva
 {
@@ -200,6 +203,14 @@ namespace WPFIntermodular.model.reserva
         public int Capacidad { get; set; }
         [JsonProperty("Images")]
         public string ImagesUrl { get; set; }
+        public ImageSource ImageSource
+        {
+            get
+            {
+                return ConvertBase64ToImage(ImagesUrl);
+            }
+        }
+
         [JsonProperty("Extras")]
         public Dictionary<string, decimal> extrasDict { get; set; }
 
@@ -226,8 +237,32 @@ namespace WPFIntermodular.model.reserva
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-    }
+    
+        private ImageSource ConvertBase64ToImage(string base64String)
+        {
+            if (string.IsNullOrEmpty(base64String))
+                return null;
 
+            try
+            {
+                byte[] imageBytes = Convert.FromBase64String(base64String);
+                using (var ms = new MemoryStream(imageBytes))
+                {
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.StreamSource = ms;
+                    bitmap.EndInit();
+                    return bitmap;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error converting Base64 to Image: {ex.Message}");
+                return null;
+            }
+        }
+    }
     public class TipoCapacidad
     {
         [JsonProperty("tipo")]
@@ -239,10 +274,26 @@ namespace WPFIntermodular.model.reserva
     public class Extras : INotifyPropertyChanged
     {
         [JsonProperty("nombre")]
-        public string Nombre { get; set; }
+        private string _nombre;
+        public string Nombre {
+            get => _nombre;
+            set
+            {
+                _nombre = value;
+                OnPropertyChanged(nameof(Nombre));
+            }
+        }
 
         [JsonProperty("precio")]
-        public decimal Precio { get; set; }
+        private decimal _precio;
+        public decimal Precio {
+            get => _precio;
+            set
+            {
+                _precio = value;
+                OnPropertyChanged(nameof(Precio));
+            }
+        }
 
         private bool _isSelected;
         public bool IsSelected
@@ -251,12 +302,13 @@ namespace WPFIntermodular.model.reserva
             set
             {
                 _isSelected = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsSelected));
             }
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
