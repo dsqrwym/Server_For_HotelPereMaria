@@ -26,7 +26,7 @@
 
     <string name="room_field_type_room">Tipo de habitacion</string>
 
-    <string name="reservation_details_title">Detalle de la reservaForList</string>
+    <string name="reservation_details_title">Detalle de la reserva</string>
     <string name="reservation_field_state">Estado</string>
     <string name="reservation_field_state_activated">Activado</string>
     <string name="reservation_field_state_completed">Completado</string>

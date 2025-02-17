@@ -176,7 +176,7 @@
 
                                 <TextBlock Grid.Column="1" Text="{Binding Id}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="10 0 0 0"/>
 
-                                <Image Grid.Column="2" MaxHeight="20" Stretch="Uniform" Source="{Binding Habitacion.ImageSource}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                <Image Grid.Column="2" MaxHeight="20" Stretch="Uniform" Source="{Binding Habitacion.ImageSource}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
                                 <TextBlock Grid.Column="3" Text="{Binding Usuario.Nombre}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 

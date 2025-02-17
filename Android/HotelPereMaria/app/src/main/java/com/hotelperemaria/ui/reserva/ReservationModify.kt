@@ -52,7 +52,7 @@ fun ReservationModifyScreen(
                 reservaViewModel.clearErrorMessage()
             }
         )
-    } else if (success.value){
+    } else if (success.value) {
         SuccessDialog(
             success.value,
             stringResource(R.string.alert_dialog_success_message_reservation_updated),
@@ -60,30 +60,30 @@ fun ReservationModifyScreen(
             reservaViewModel.restaurarSuccessState()
             onBack()
         }
-        Column(
-            Modifier
-                .fillMaxSize()
-                .background(colorResource(R.color.fondo)),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            TopBar(stringResource(R.string.top_bar_reservation_modify)) {
-                onBack()
-            }
-            if (habitaciones.value != null) {
-                HabitacionCard(habitaciones.value!!) { }
-            }
-            DatePicker(reservaViewModel)
-            val maxim = reservaViewModel.maxHuesped.collectAsState()
-            Slider("${stringResource(R.string.reservation_field_guests)}: ", maxim.value) {
-                reservaViewModel.updateHuespedSelected(it)
-            }
-            ServicesList(reservaViewModel)
-            ReservationButton(stringResource(R.string.reservation_button_modify)) {
-                reservaViewModel.modifyReservation()
-                onBack()
-            }
-        }
-        LoadingScreen(isLoading = isLoading.value)
     }
+    Column(
+        Modifier
+            .fillMaxSize()
+            .background(colorResource(R.color.fondo)),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        TopBar(stringResource(R.string.top_bar_reservation_modify)) {
+            onBack()
+        }
+        if (habitaciones.value != null) {
+            HabitacionCard(habitaciones.value!!) { }
+        }
+        DatePicker(reservaViewModel)
+        val maxim = reservaViewModel.maxHuesped.collectAsState()
+        Slider("${stringResource(R.string.reservation_field_guests)}: ", maxim.value) {
+            reservaViewModel.updateHuespedSelected(it)
+        }
+        ServicesList(reservaViewModel)
+        ReservationButton(stringResource(R.string.reservation_button_modify)) {
+            reservaViewModel.modifyReservation()
+            onBack()
+        }
+    }
+    LoadingScreen(isLoading = isLoading.value)
 }
