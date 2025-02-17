@@ -248,7 +248,7 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
             RaisePropertyChanged(nameof(IsAllSelected));
         }
 
-        private void RestablecerFiltros()
+        private async void RestablecerFiltros()
         {
             SelectedRole = null;
             SearchClientName = null;
@@ -257,6 +257,16 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
             FilterEndDate = null;
             ActualizarListaReservas(_reservasOriginal);
             IsAllSelected = false;
+
+            var reservas = await ReservaApiService.ObtenerReservas();
+
+            Reservas.Clear();
+            _reservasOriginal.Clear();
+            foreach (var reserva in reservas)
+            {
+                Reservas.Add(reserva);
+                _reservasOriginal.Add(reserva);
+            }
         }
 
         private void EliminarReservasSeleccionadas()
