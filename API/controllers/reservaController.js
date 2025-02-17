@@ -30,7 +30,7 @@ exports.getHabitacionesDisponibles = async (req, res) => {
         }).distinct('id_habitacion');  // 获取在此日期范围内已被预订的房间ID
 
         // 筛选出没有被预订的房间
-        const habitacionesDisponibles = habitaciones.filter(habitacion => 
+        const habitacionesDisponibles = habitaciones.filter(habitacion =>
             !habitacionesReservadas.includes(habitacion._id.toString())
         );
 
@@ -116,18 +116,25 @@ exports.getReservas = async (req, res) => {
 
         const validatedQuery = await queryAndPaginationSchema.validateAsync(req.query);
 
-        const { page, limit, includeTotal, includePagination, fields, usuarioFields, habitacionFields } = validatedQuery;
+        const { page, limit, includeTotal, includePagination, fields, usuarioFields, habitacionFields, pagination } = validatedQuery;
 
         const queryConditions = buidQueryConditions(validatedQuery);
 
         const selectFields = fields ? fields.split(',').join(' ') : null;
 
-        // Construir la consulta
-        let query = Reserva.find(queryConditions)
-            .select(selectFields) // Especificar campos seleccionados / 指定选择的字段
-            .skip(page * limit)   // Saltar registros para paginación / 跳过记录以实现分页
-            .limit(parseInt(limit)); // Limitar el número de registros por página / 限制每页的记录数
 
+
+        // Construir la consulta
+        let query;
+        if (pagination) {
+            query = Reserva.find(queryConditions)
+                .select(selectFields) // Especificar campos seleccionados / 指定选择的字段
+                .skip(page * limit)   // Saltar registros para paginación / 跳过记录以实现分页
+                .limit(parseInt(limit)); // Limitar el número de registros por página / 限制每页的记录数
+        }else{
+            query = Reserva.find(queryConditions)
+            .select(selectFields); // Especificar campos seleccionados / 指定选择的字段
+        }
         // 只有在请求相关字段时才添加 populate
         if (!fields || fields.includes('id_usuario')) {
             query = query.populate({
@@ -147,7 +154,9 @@ exports.getReservas = async (req, res) => {
         // 执行查询
         const reservas = await query.exec();
         const response = { reservas };
-        if (includeTotal || includePagination) {
+        console.log(includeTotal);
+        console.log(includePagination);
+        if (pagination && (includeTotal || includePagination)) {
             const totalReservas = await Reserva.countDocuments(queryConditions);
             if (includeTotal) response.total = totalReservas;
             if (includePagination) {
@@ -348,20 +357,20 @@ exports.getReservedDaysForRoom = async (req, res) => {
 
         let reservas = null;
 
-        if(id){
+        if (id) {
             await mongoIdSchema.validateAsync({ id });
             reservas = await Reserva.find({
                 id_habitacion,
                 desactivado: false,
                 _id: { $ne: id } // 排除指定的 reservaId
             });;
-        }else{
+        } else {
             reservas = await Reserva.find({
                 id_habitacion,
                 desactivado: false
             });;
         }
-        
+
         let reservedDates = [];
 
         reservas.forEach(reserva => {

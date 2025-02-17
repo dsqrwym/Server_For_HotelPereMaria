@@ -156,6 +156,9 @@ const queryAndPaginationSchema = Joi.object({
     }),
     includePagination: Joi.boolean().default(false).messages({
         'boolean.base': 'includePagination debe ser un valor booleano.'
+    }), 
+    pagination: Joi.boolean().default(false).messages({
+        'boolean.base': 'pagination debe ser un valor booleano.'
     })
 });
 
