@@ -17,11 +17,6 @@ namespace WPFIntermodular.view
         // 编辑按钮点击事件
 
 
-        private void cerrarView()
-        {
-            Visibility = Visibility.Collapsed;
-        }
-
         private void comboBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
             ComboBox comboBox = sender as ComboBox;

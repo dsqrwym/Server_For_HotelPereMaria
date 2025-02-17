@@ -307,11 +307,12 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
                 Advertencia);
         }
 
-        private void EliminarReservas(IEnumerable<Reserva> reservas)
+        private async void EliminarReservas(IEnumerable<Reserva> reservas)
         {
             foreach (var reserva in reservas.ToList())
             {
-                if (ReservaApiService.EliminarReservaAsync(reserva.Id).Result)
+                var success = await ReservaApiService.EliminarReservaAsync(reserva.Id);
+                if (success)
                 {
                     Reservas.Remove(reserva);
                     _reservasOriginal.Remove(reserva);
@@ -319,7 +320,7 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
             }
         }
 
-        private void EliminarReservaIndividual(Reserva reserva)
+        private async void EliminarReservaIndividual(Reserva reserva)
         {
             if (reserva == null) return;
 
@@ -337,7 +338,8 @@ namespace WPFIntermodular.viewmodel.reservaViewModel
 
             if (confirmacion == MessageBoxResult.Yes)
             {
-                if (ReservaApiService.EliminarReservaAsync(reserva.Id).Result)
+                var success = await ReservaApiService.EliminarReservaAsync(reserva.Id);
+                if (success)
                 {
                     Reservas.Remove(reserva);
                     _reservasOriginal.Remove(reserva);

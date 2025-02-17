@@ -154,8 +154,6 @@ exports.getReservas = async (req, res) => {
         // 执行查询
         const reservas = await query.exec();
         const response = { reservas };
-        console.log(includeTotal);
-        console.log(includePagination);
         if (pagination && (includeTotal || includePagination)) {
             const totalReservas = await Reserva.countDocuments(queryConditions);
             if (includeTotal) response.total = totalReservas;
