@@ -176,7 +176,7 @@ Style="{StaticResource RoundButtonStyle}" Command="{Binding NavegarAListaReserva
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Margin="20" HorizontalAlignment="Left">
-                            <Image Source="{Binding ImagesUrl}" MaxHeight="186"/>
+                            <Image Source="{Binding ImageSource}" MaxHeight="186"/>
                             <TextBlock TextAlignment="Center" Margin="10">
                                     <Run x:Name="nombreHab" Text="{Binding Tipo}" FontSize="18" FontWeight="Bold"/>
                                     <LineBreak/>
